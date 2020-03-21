@@ -55,7 +55,6 @@
         </style>
     </head>
     <body>
-        //hola amiguitos de youtube 
         <script type="text/javascript">
             $(document).ready(function () {
                 setTimeout(function () {
@@ -140,7 +139,6 @@
                         out.println(" <a href=\"home.jsp?id=" + perro.get(i).getNombre() + "#Eliminar\"><input type=\"button\" value=\"Eliminar\"></a>");
                         out.println("  <a href=\"home.jsp?id=" + perro.get(i).getNombre() + "#Agendarcita\"><input type=\"button\" value=\"Agendar cita\"></a>");
                         out.println("<br>");
-                        out.println("caca2");
                         out.println("</article>");
                     }
                 } else {
