@@ -11,27 +11,26 @@ and open the template in the editor.
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Registrar</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="Css/Estilos.css">
-        <link rel="stylesheet" type="text/css" href="css/styles.css">
-        <link href="https://file.myfontastic.com/mqb57Y99DoZRtKZYZ7jXPD/icons.css" rel="stylesheet">
         <link rel="icon" href="Img/Techno-bit.png">
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="../Css/materialize.min.css">
+        <link rel="stylesheet" href="../Css/Estilos.css">
+        <!-- Compiled and minified JavaScript -->
+        <script src="../JS/materialize.min.js"></script> 
     </head>
     <body>
-
-        <header class="header">
-            <div class="contenedor">
-                <h1 class="logo">Can-Contento</h1>
-                <span class="icon-menu" id="btn-menu"></span>
-                <nav class="nav" id="nav">
-                    <ul class="menu">
+        <header>
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="" class="brand-logo">Can-Contento</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li class="menu__item"><a class="menu__link" href="../index.html">Inicio</a></li>
                         <li class="menu_item"><a class="menu__link" href="SesionUsuario.html">Iniciar Sesion</a></li>
                         <li class="menu__item"><a class="menu__link select" href="RegistroUsuario.html">Registrarse</a></li>
                     </ul>
-                </nav>
-            </div>
+                </div>
+            </nav>
         </header>
-
         <script>
             function Registro_Exitoso() {
                 window.location = '../../index.html';
@@ -45,31 +44,61 @@ and open the template in the editor.
                 alert("Hay espacios vacios");
                 window.location = '../HTML/RegistroUsuario.html';
             }
-
         </script>
-    <div class="form">
-        <form action="..\Cliente" method="post" aling="">
-            <h1>Llena los siguientes campos</h1>
-            <br><br>
-            <h3>Nombre</h3>
-            <input type=text name="nom_clie"><br>
-            <h3>Apellido</h3>
-            <input type=text name="ape_clie"><br>
-            <h3>Direccion</h3>
-            <input type=text name="dir_clie"><br>
-            <h3>Correo</h3>
-            <input type=text name="cor_clie"><br>
-            <h3>N° Telefonico</h3>
-            <input type=text name="tel_clie"><br>
-            <h3>Contraseña</h3>
-            <input type=password name="con_clie"><br>
-            <h3>Confirmar contraseña</h3>
-            <input type=password name="con2_clie"><br>
-            <br>
-            <input type="hidden" value="alta" name="accion">
-            <input type="hidden" value="pag" name="place">
-            <input type=submit value="Aceptar">
-        </form>
-    </dib>
-</body>
+        <div class="container">
+            <div class="row">
+                <h4>Llena los siguientes campos</h4>
+                <form action="..\Cliente" method="post" class="col s12 m7 l7">                                
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <input type=text name="nom_clie" id="nom_clie">
+                            <label for="nom_clie">Nombre</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <input type=text name="ape_clie" id="ape_clie">
+                            <label for="ape_clie">Apellido</label>
+                        </div> 
+                    </div>  
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type=text name="dir_clie" id="dir_clie">
+                            <label for="dir_clie">Dirección</label>
+                        </div> 
+                    </div> 
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="email" name="cor_clie" id="cor_clie">
+                            <label for="cor_clie">Correo electrónico</label>
+                        </div> 
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type=text name="tel_clie" id="tel_clie">
+                            <label for="tel_clie">N° Telefonico</label>
+                        </div> 
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type=password name="con_clie" id="con_clie">
+                            <label for="con_clie">Contraseña</label>
+                        </div> 
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type=password name="con2_clie" id="con2_clie">
+                            <label for="con2_clie">Confirmar contraseña</label>
+                        </div> 
+                    </div>
+                    <div class="row">                        
+                        <input type="hidden" value="alta" name="accion">
+                        <input type="hidden" value="pag" name="place">
+                        <input type=submit value="Aceptar" class="btn">
+                    </div>
+                </form>
+                <div class="col hide-on-small-and-down m5 l5">
+                    <img src="../Img/singup.png">
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

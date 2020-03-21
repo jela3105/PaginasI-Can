@@ -12,36 +12,23 @@ and open the template in the editor.
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Techno-Bit</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="Css/Estilos.css">
+
         <link href="https://file.myfontastic.com/mqb57Y99DoZRtKZYZ7jXPD/icons.css" rel="stylesheet">
         <link rel="icon" href="Img/Techno-bit.png">
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="Css/materialize.min.css">
+        <link rel="stylesheet" href="Css/Estilos.css">
         <!-- Compiled and minified JavaScript -->
-        <script src="JS/materialize.min.js"></script>
+        <script src="JS/materialize.min.js"></script>        
+
     </head>
 
     <body>
-        <nav>
-            <div class="nav-wrapper">
-                <a href="" class="brand-logo">Can-Contento</a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li class="menu__item"><a class="menu__link select" href="index.html">Inicio</a></li>
-                    <!--
-                    <li class="menu__item"><a class="menu__link" href="HTML/notificaciones.html">Notificaciones</a></li>
-                    <li class="menu__item"><a class="menu__link" href="HTML/moduloempleado.html">Empleado</a></li>
-                    -->
-                    <li class="menu__item"><a class="menu__link" href="HTML/SesionUsuario.html">Iniciar Sesión</a></li>
-                    <li class="menu__item"><a class="menu__link" href="HTML/RegistroUsuario.html">Registrarse</a></li>
-                </ul>
-            </div>
-        </nav>
-        <header class="header">
-            <div class="contenedor">
-                <h1 class="logo">Can-Contento</h1>
-                <span class="icon-menu" id="btn-menu"></span>
-                <nav class="nav" id="nav">
-                    <ul class="menu">
+        <header>
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="" class="brand-logo">Can-Contento</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li class="menu__item"><a class="menu__link select" href="index.html">Inicio</a></li>
                         <!--
                         <li class="menu__item"><a class="menu__link" href="HTML/notificaciones.html">Notificaciones</a></li>
@@ -50,175 +37,192 @@ and open the template in the editor.
                         <li class="menu__item"><a class="menu__link" href="HTML/SesionUsuario.html">Iniciar Sesión</a></li>
                         <li class="menu__item"><a class="menu__link" href="HTML/RegistroUsuario.html">Registrarse</a></li>
                     </ul>
-                </nav>
-            </div>
-            <div class="wave" style="height: 150px; overflow: hidden;"><svg viewBox="0 0 500 150" preserveAspectRatio="none"
-                                                                            style="height: 100%; width: 100%;">
-                <path d="M0.00,49.98 C150.00,150.00 349.20,-50.00 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
-                      style="stroke: none; fill: #fff;"></path>
-                </svg></div>
-
+                </div>
+            </nav>
         </header>
-
-        <div class="banner">
-            <img src="Img/banner2.0.jpg" alt="" class="banner__img">
-            <div class="contenedor">
-                <h2 class="banner__titulo"></h2>
-            </div>
+        <div class="parallax-container">
+            <div class="parallax"><img src="Img/banner2.0.jpg"></div>
         </div>
-
         <main class="main">
-
-            <div class="contenedor">
+            <div class="container">
                 <section class="info">
                     <div class="info__columna" id="wrap">
                         <div class="tarjeta-wrap">
                             <div class="tarjeta">
-                                <div class="adelante"> <h2 class="info__titulo"><img src="Img/foto1.1.jpg" class="info__img"></div>
-                                        <div class="atras">
-                                            <p class="info__txt">
-                                                Veterinario
-                                            <p>
-                                                Veterinaria Profesional que atenderá a tus mascotas en caso de enfermedad
-                                            </p>
-                                            </p>
+                                <div class="adelante"><img src="Img/foto1.1.jpg" class="info__img"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div classO="info__columna" id="wrap">
+                        <div class="tarjeta-wrap">
+                            <div class="tarjeta">
+                                <div class="adelante1"> <h2 class="info__titulo"></h2> <img src="Img/foto1.2.jpg" alt="" class="info__img"> </div>                                    
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info__columna" id="wrap">
+                        <div class="tarjeta-wrap">
+                            <div class="tarjeta">
+                                <div class="adelante2"><h2 class="info__titulo"></h2><img src="Img/foto1.3.jpg" alt="" class="info__img"></div>                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info__columna" id="wrap">
+                        <div class="tarjeta-wrap">
+                            <div class="tarjeta">
+                                <div class="adelante3"> <img src="Img/foto1.4.jpg" alt="" class="info__img"></div>                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info__columna" id="wrap">
+                        <div class="tarjeta-wrap">
+                            <div class="tarjeta">
+                                <div class="adelante4">
+                                    <img src="Img/foto1.5.jpg" class="info__img">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="row">
+                        <h2 class="section__titulo">Tus mascotas tratadas de la mejor manera para que siempre sean un Can-Contento</h2>
+                        <div class="col s12 m6">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="Img/veterinario.jpg">
+                                    <h4>Veterinario</h4>
+                                </div>
+                                <div class="card-content">
+                                    <p>Veterinaria Profesional que atenderá a tus mascotas en caso de enfermedad</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m6">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="Img/estetica.jpg">
+                                    <h4>Estética Canina</h4>
+                                </div>
+                                <div class="card-content">
+                                    <p>Baño con agua tibia que incluye limpieza de orejas, glándulas perianales, corte de uñas, secado , corte de la raza, incluye aroma y adornos.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m6">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="Img/accesorios.jpg">
+                                    <h4>Accesorios</h4>
+                                </div>
+                                <div class="card-content">
+                                    <p>Todo tipo de accesorios para tu perro, peines, juguetes, camas, cadenas. tratamientos.Se pueden hacer encargos específicos.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m6">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="Img/paseos.jpg">
+                                    <h4>Paseos</h4>
+                                </div>
+                                <div class="card-content">
+                                    <p>Paseo con duración de una hora, se recoge a domicilio (área circundante a Tacuba).</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="Img/hotel.jpg">
+                                    <h4>Hotel</h4>
+                                </div>
+                                <div class="card-content">
+                                    <p>Estancia, paseo y alimentación.Traer plato, comida, cobija o cama, juguete.</p>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="col s12 m6">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="Img/entrenamiento.jpg">
+                                    <h4>Entrenamiento</h4>
+                                </div>
+                                <div class="card-content">
+                                    <p>1 hora • Dependiendo del caso, Duración 6 semanas
+                                        Básico: Obediencia: comandos de voz de echado, sentado, quieto, junto con correa.
+                                        Intermedio:  Obediencia: Comandos de voz y señas de echado , sentado, quieto, junto. Sin correa, a distancia.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m6">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="Img/guarderia.jpg">
+                                    <h4>Guarderia</h4>
+                                </div>
+                                <div class="card-content">
+                                    <p> Duración variable • $40 a $110 dependiendo del tamaño del perro
+                                        Horario 10:00 a 19:00,
+                                        Cuidado y supervisión de la mascota, 1 ó 2 paseos al día, alimentación. </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12">
+                            <div class="card">
+                                <div class="card-image">                                    
+                                    <h4>LA COMUNIDAD NOS RECOMIENDA</h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="row">
+                                        <div class="col s6">                                    
+                                            <img src="Img/opinion1.jpg">                                                 
                                         </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div classO="info__columna" id="wrap">
-                            <div class="tarjeta-wrap">
-                                <div class="tarjeta">
-                                    <div class="adelante1"> <h2 class="info__titulo"></h2> <img src="Img/foto1.2.jpg" alt="" class="info__img"> </div>
-                                    <div class="atras1">
-                                        <p class="info__txt">
-                                            Estética Canina
-                                        <p>
-                                            Baño con agua tibia que incluye limpieza de orejas, glándulas perianales, corte de uñas, secado , corte de la raza, incluye aroma y adornos.
-                                        </p>
-                                        </p>
+                                        <div class="col s6">                                    
+                                            <img src="Img/opinion2.jpg">                                                 
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="info__columna" id="wrap">
-                            <div class="tarjeta-wrap">
-                                <div class="tarjeta">
-                                    <div class="adelante2"><h2 class="info__titulo"></h2><img src="Img/foto1.3.jpg" alt="" class="info__img"></div>
-                                    <div class="atras2">
-                                        <p class="info__txt">
-                                        <center>
-                                            Accesorios
-                                            <p>
-                                                Todo tipo de accesorios para tu perro, peines, juguetes, camas, cadenas. tratamientos.Se pueden hacer encargos específicos 
-                                            </p>
-                                        </center>    
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="info__columna" id="wrap">
-                            <div class="tarjeta-wrap">
-                                <div class="tarjeta">
-                                    <div class="adelante3"> <img src="Img/foto1.4.jpg" alt="" class="info__img"></div>
-                                    <div class="atras3">
-                                        <p class="info__txt">
-                                            Paseos
-                                        <p>
-                                            Paseo con duración de una hora, se recoge a domicilio (área circundante a Tacuba) 
-                                        </p>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="info__columna" id="wrap">
-                            <div class="tarjeta-wrap">
-                                <div class="tarjeta">
-                                    <div class="adelante4">
-                                        <img src="Img/foto1.5.jpg" class="info__img">
-                                    </div>
-                                    <div class="atras4">
-                                        <p class="info__txt">
-                                            Hotel
-                                        <p>
-                                            Estancia, paseo y alimentación.Traer plato, comida, cobija o cama, juguete. 
-                                        </p>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                </section>
-
-                <section class="empresa">
-                    <h2 class="section__titulo">Tus mascotas tratadas de la mejor manera para que siempre sean un Can-Contento</h2>
-                    <div class="empresa__columna">
-                        <img src="Img/foto1.jpg" alt="" class="empresa__img">
-                        <div class="empresa__descripcion">
-                            <h3 class="empresa__titulo">ENTRENAMIENTO</h3>
-                            <p class="empresa__txt">
-                                1 hora • Dependiendo del caso, Duración 6 semanas
-                                Básico: Obediencia: comandos de voz de echado, sentado, quieto, junto con correa.
-                                Intermedio:  Obediencia: Comandos de voz y señas de echado , sentado, quieto, junto. Sin correa, a distancia.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="empresa__columna">
-                        <img src="Img/foto1.jpg" alt="" class="empresa__img">
-                        <div class="empresa__descripcion">
-                            <h3 class="empresa__titulo">GUARDERIA</h3>
-                            <p class="empresa__txt">
-                                Duración variable • $40 a $110 dependiendo del tamaño del perro
-                                Horario 10:00 a 19:00,
-                                Cuidado y supervisión de la mascota, 1 ó 2 paseos al día, alimentación. 
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="empresa__columna">
-                        <img src="Img/foto1.jpg" alt="" class="empresa__img">
-                        <div class="empresa__descripcion">
-                            <h3 class="empresa__titulo">DIRECCION</h3>
-                            <p class="empresa__txt">
-                            <ul>Golfo de Campeche # 51, Col. Tacuba 11410 Ciudad de México</ul>
-                            <ul>Teléfono: 55 1295 6883</ul>   
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="empresa__columna">
-                        <img src="Img/foto1.jpg" alt="" class="empresa__img">
-                        <div class="empresa__descripcion">
-                            <h3 class="empresa__titulo">LA COMUNIDAD NOS RECOMIENDA</h3>
-                            <p class="empresa__txt">
-                                <a herf="Img/opinion1.jpg">             
-                            </p>
-                        </div>
-                    </div>
-
+                    </div>     
                 </section>
             </div>
-        </main>
-
-        <footer class="footer">
-            <div class="social">
-                <a href="https://www.facebook.com/CanContentoMascotas/" class="icon-fcebook"></a>
-                <a href="" class="icon-youtube"></a>
-                <a href="" class="icon-twitter"></a>
+        </main> 
+        <footer class="page-footer grey darken-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col l6 s12">
+                        <h5 class="white-text">Dirección</h5>
+                        <p class="grey-text text-lighten-4">Golfo de Campeche # 51, Col. Tacuba 11410 Ciudad de México</p>
+                        <h5 class="white-text">Número de contacto</h5>
+                        <p class="grey-text text-lighten-4">Teléfono: 55 1295 6883</p>
+                    </div>
+                    <div class="col l4 offset-l2 s12">
+                        <h5 class="white-text">Links</h5>
+                        <ul>
+                            <li><a class="grey-text text-lighten-3" href="https://www.facebook.com/CanContentoMascotas/"><img src="Img/facebook.png" style="width: 50px"></a></li>
+                            <li class="grey-text text-lighten-3">Facebook</li>
+                            <li><a class="grey-text text-lighten-3" href="#!"><img src="Img/youtube.png" style="width: 50px"></a></li>
+                            <li class="grey-text text-lighten-3">Youtube</li>
+                            <li><a class="grey-text text-lighten-3" href="#!"><img src="Img/twitter.png" style="width: 50px"></a></li>        
+                            <li class="grey-text text-lighten-3">Twitter</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <p class="copy">&copy; Techno-Bit</p>
-
+            <div class="footer-copyright">
+                <div class="container">
+                    <p class="copy">&copy; Techno-Bit</p>                   
+                </div>
+            </div>
         </footer>
 
         <script src="Js/Menu.js"></script>
-
-    </body>
+        <script src="JS/Efectos.js"></script>
+    </body>    
 </html>
