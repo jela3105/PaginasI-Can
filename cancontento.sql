@@ -65,7 +65,7 @@ CREATE TABLE `cita` (
   KEY `cor_usu` (`cor_usu`),
   CONSTRAINT `cita_ibfk_1` FOREIGN KEY (`id_per`) REFERENCES `perro` (`id_per`),
   CONSTRAINT `cita_ibfk_2` FOREIGN KEY (`cor_usu`) REFERENCES `usuario` (`cor_usu`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +74,7 @@ CREATE TABLE `cita` (
 
 LOCK TABLES `cita` WRITE;
 /*!40000 ALTER TABLE `cita` DISABLE KEYS */;
-INSERT INTO `cita` VALUES (1,'2002-05-20','12:00:00',0,_binary 'codigocita',NULL,0,67,'jela'),(2,'2020-03-27','14:02:00',0,_binary 'algoritmodecodigoxd',NULL,0,67,'jela'),(3,'2020-03-24','14:02:00',0,_binary 'algoritmodecodigoxd',NULL,0,67,'jela'),(4,'2020-03-26','13:09:00',0,_binary 'algoritmodecodigoxd',NULL,0,67,'jela');
+INSERT INTO `cita` VALUES (9,'2020-04-21','17:00:00',0,_binary 'algoritmodecodigoxd',NULL,0,79,'jela'),(10,'2020-04-18','15:05:00',0,_binary 'algoritmodecodigoxd',NULL,0,79,'jela'),(11,'2002-02-12','03:03:00',0,_binary 'algoritmodecodigoxd',NULL,0,79,'jela'),(12,'2020-04-16','15:33:00',0,_binary 'algoritmodecodigoxd',NULL,0,79,'jela');
 /*!40000 ALTER TABLE `cita` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +160,7 @@ CREATE TABLE `perro` (
   PRIMARY KEY (`id_per`),
   KEY `cor_usu` (`cor_usu`),
   CONSTRAINT `perro_ibfk_1` FOREIGN KEY (`cor_usu`) REFERENCES `usuario` (`cor_usu`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +169,7 @@ CREATE TABLE `perro` (
 
 LOCK TABLES `perro` WRITE;
 /*!40000 ALTER TABLE `perro` DISABLE KEYS */;
-INSERT INTO `perro` VALUES (67,'elchicodenew','C:\\Users\\jela3\\Documents\\NetBeansProjects\\Preciso\\build\\web\\Img\\jela\\elchicodenew.png','2012-12-23',1,'Chico',0,'jela'),(69,'fi','C:\\Users\\jela3\\Documents\\NetBeansProjects\\Preciso\\build\\web\\Img\\jela\\fi.png','2017-12-20',1,'Grande',0,'jela'),(70,'elpug','C:\\Users\\jela3\\Documents\\NetBeansProjects\\Preciso\\build\\web\\Img\\jela\\elpepe.png','2020-02-02',1,'Chico',0,'jela');
+INSERT INTO `perro` VALUES (79,'Elsesentayocho','C:\\Users\\jela3\\Documents\\NetBeansProjects\\PaginasI-Can\\build\\web\\Img\\jela\\Elsesentayocho.png','2020-04-09',1,'Gigante',0,'jela');
 /*!40000 ALTER TABLE `perro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,7 +215,7 @@ CREATE TABLE `servicio` (
   `des_ser` varchar(200) NOT NULL,
   `pre_ser` float NOT NULL,
   PRIMARY KEY (`id_ser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,6 +224,7 @@ CREATE TABLE `servicio` (
 
 LOCK TABLES `servicio` WRITE;
 /*!40000 ALTER TABLE `servicio` DISABLE KEYS */;
+INSERT INTO `servicio` VALUES (6,'Baño pequeño','Se realiza un baño a la mascota con shampoo para mascotas, especificamente para mascotas pequeñas',200),(7,'Baño mediano','Se realiza un baño a la mascota con shampoo para mascotas, especificamente para mascotas de tamaño mediano',250),(8,'Baño grande','Se realiza un baño a la mascota con shampoo para mascotas, especificamente para mascotas grandes',300),(9,'Baño gigante','Se realiza un baño a la mascota con shampoo para mascotas, especificamente para mascotas gigantes',350),(10,'corte de pelo pequeño','se realiza un corte de pelaje con peinado deseado, para mascotas pequeñas',120),(11,'corte de pelo mediano','se realiza un corte de pelaje con peinado deseado, para mascotas medianas',160),(12,'corte de pelo grande','se realiza un corte de pelaje con peinado deseado, para mascotas grandes',200),(13,'corte de pelo gigante','se realiza un corte de pelaje con peinado deseado, para mascotas gigantes',250),(14,'Corte garras','se realiza un corte de garras a la mascota',40),(15,'Baño especial pequeño','Se realiza un baño a las mascota con shampoo de caballo para un acabado brilloso y suave, para mascotas pequeñas',250),(16,'Baño especial mediano','Se realiza un baño a las mascota con shampoo de caballo para un acabado brilloso y suave, para mascotas medianas',300),(17,'Baño especial grande','Se realiza un baño a las mascota con shampoo de caballo para un acabado brilloso y suave, para mascotas grandes',350),(18,'Baño especial gigante','Se realiza un baño a las mascota con shampoo de caballo para un acabado brilloso y suave, para mascotas gigantes',400),(19,'Paseo','Se realiza un paseo de una hora a la mascota',50);
 /*!40000 ALTER TABLE `servicio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -342,4 +343,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-20 22:09:23
+-- Dump completed on 2020-04-09 14:22:38
