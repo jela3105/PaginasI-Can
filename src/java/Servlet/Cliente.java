@@ -8,6 +8,7 @@ package Servlet;
 import Clases.Cita;
 import Clases.Perro;
 import Clases.Producto;
+import Clases.Servicio;
 import Clases.Usuario;
 import Clases.UsuarioBD;
 import Conexion.Conexion;
@@ -320,13 +321,10 @@ public class Cliente extends HttpServlet {
         String contra = request.getParameter("contra_compara");
         String place = request.getParameter("place");
         HttpSession misesion = request.getSession();
-        //HttpSession sesion = request.getSession();
-        //campos vacios 
         if (correo.equals("") || contra.equals("")) {
             System.out.println("Campos vacios");
             if (place.equals("pag")) {
                 System.out.println("Respuesta pagina");
-
                 String men = "Llena todos los campos";
                 response.sendRedirect("JSP/SesionUsuario.jsp?mens=" + men);
             } else if (place.equals("app")) {
@@ -339,9 +337,7 @@ public class Cliente extends HttpServlet {
                     pw.print(jsonObject.toString());
 
                     System.out.println("Registro vacio" + jsonObject.toString());
-
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -359,10 +355,9 @@ public class Cliente extends HttpServlet {
                         misesion.setAttribute("correo", usu.getCor());
                         misesion.setAttribute("miniaturaperro", miniaturaMascota(usu.getCor()));
                         misesion.setAttribute("miniaturacitas", miniaturaCita(usu.getCor()));
+                        misesion.setAttribute("servicios", servicios());
                         if (place.equals("pag")) {
-                            //HttpSession sesion = request.getSession();
-                            //sesion.setAttribute("correo", usu.getCor());
-                            response.sendRedirect("JSP/cliente/home.jsp");
+                              response.sendRedirect("JSP/cliente/home.jsp");
                         } else if (place.equals("app")) {
                             System.out.println("Contrase;a bien cliente");
                             JSONObject jsonObject1 = new JSONObject();
@@ -375,7 +370,6 @@ public class Cliente extends HttpServlet {
                                 System.out.println("Cliente inicio sesion" + jsonObject1.toString());
 
                             } catch (JSONException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                         }
@@ -394,7 +388,6 @@ public class Cliente extends HttpServlet {
                                 System.out.println("Login exitoso empleado" + jsonObject.toString());
 
                             } catch (JSONException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                         }
@@ -413,7 +406,6 @@ public class Cliente extends HttpServlet {
                                 System.out.println("Login exitoso Encargado" + jsonObject.toString());
 
                             } catch (JSONException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                         }
@@ -456,7 +448,6 @@ public class Cliente extends HttpServlet {
                         System.out.println("Login fail usuario" + jsonObject.toString());
 
                     } catch (JSONException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
@@ -487,9 +478,9 @@ public class Cliente extends HttpServlet {
             try {
                 Part filePart = request.getPart("imagenp");
                 if (filePart.getSize() > 0) {
-                    System.out.println(filePart.getName());
-                    System.out.println(filePart.getSize());
-                    System.out.println(filePart.getContentType());
+                    System.out.println("la imagen se llama "+filePart.getName());
+                    System.out.println("la imagen se midio "+filePart.getSize());
+                    System.out.println("el content type "+filePart.getContentType());
                     System.out.println(context + "\\" + correo + "\\" + nombre + ".png");
                     filecontent = filePart.getInputStream();
 
@@ -586,10 +577,7 @@ public class Cliente extends HttpServlet {
     private String validarTel(String tel_clie) {
         int contador = 0;
         String comparar = "0123456789";
-        //System.out.println("antes del for");
         for (int i = 0; i < tel_clie.length(); i++) {
-            //System.out.println("primer for");
-            //System.out.println("pf " + i);
             for (int j = 0; j < comparar.length(); j++) {
                 System.out.println("sf " + j);
                 if (tel_clie.charAt(i) == comparar.charAt(j)) {
@@ -817,15 +805,17 @@ public class Cliente extends HttpServlet {
                 System.out.println("datos completos");
                 Cita cita = new Cita();
                 cita.setCliente(correo);
-                cita.setCodigo(cita.generarCodigo());
                 cita.setEstado(false);
                 cita.setFecha(fecha);
                 cita.setHora(hora);
                 cita.setMascota(mascota);
+                cita.setCodigo(cita.generarCodigo());
                 UsuarioBD usu = new UsuarioBD();
                 if (usu.altaCita(cita) == true) {
                     if (request.getParameter("place").equals("pag")) {
                         System.out.println("entro a la respuesta pagina");
+                        misesion.removeAttribute("miniaturacitas");
+                        misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));
                         String men="Cita enviada, espera la respuesta de confirmacion";
                         response.sendRedirect("JSP/cliente/home.jsp?mens=" + men);
                     } else if (request.getParameter("app").equals("app")) {
@@ -839,10 +829,13 @@ public class Cliente extends HttpServlet {
     public ArrayList<Cita> miniaturaCita(String correo) throws IOException {
         UsuarioBD usu = new UsuarioBD();
         ArrayList<Cita> citas = usu.consutarMiniaturaCita(correo);
-        System.out.println("caca");
         return citas;
-
     }
     
+    public ArrayList<Servicio> servicios(){
+        UsuarioBD usu = new UsuarioBD();
+        ArrayList<Servicio> servicios= usu.consultarServicios();
+        return servicios;
+    }
     
 }

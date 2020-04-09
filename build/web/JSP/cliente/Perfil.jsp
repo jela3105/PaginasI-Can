@@ -10,28 +10,27 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Servicios</title>
-        <link rel="stylesheet" href="../../HTML/Css/Estilos.css">
+        <link rel="icon" href="../../Img/Techno-bit.png">
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="../../Css/materialize.min.css">
+        <link rel="stylesheet" href="../../Css/Estilos.css">
+        <!-- Compiled and minified JavaScript -->
+        <script src="../../JS/materialize.min.js"></script>  
+        <script src="../../JS/Efectos.js"></script>
     </head>
     <body>
-       <header class="header">
-            <div class="contenedor">
-                <h1 class="logo">Can-Contento</h1>
-                <span class="icon-menu" id="btn-menu"></span>
-                <nav class="nav" id="nav">
-                    <ul class="menu">
-                        <li class="menu__item"><a class="menu__link" href="home.jsp">Home</a></li>
-                        <li class="menu__item"><a class="menu__link" href="Servicios.jsp">Servicios</a></li>
-                        <li class="menu__item"><a class="menu__link select" href="Perfil.jsp">Mi perfil</a></li>
+       <header>
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="" class="brand-logo">Can-Contento</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li class="menu__item"><a class="menu__link select" href="home.jsp">Home</a></li>
+                        <li class="menu__item"><a class="menu__link" href="../../JSP/cliente/Servicios.jsp">Servicios</a></li>
+                        <li class="menu__item"><a class="menu__link" href="Perfil.jsp">Mi perfil</a></li>
                         <li class="menu__item"><a class="menu__link" href="Notificaciones.jsp">Notificaciones</a></li>
                     </ul>
-                </nav>
-            </div>
-            <div class="wave" style="height: 150px; overflow: hidden;"><svg viewBox="0 0 500 150" preserveAspectRatio="none"
-                                                                            style="height: 100%; width: 100%;">
-                <path d="M0.00,49.98 C150.00,150.00 349.20,-50.00 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
-                      style="stroke: none; fill: #fff;"></path>
-                </svg></div>
-
+                </div>
+            </nav>
         </header>
     </body>
 </html>

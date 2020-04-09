@@ -286,7 +286,7 @@ public class UsuarioBD {
         return resp;
     }
 
-    public ArrayList<Cita> consutarMiniaturaCita(String correo) {
+    public static ArrayList<Cita> consutarMiniaturaCita(String correo) {
         System.out.println("pidiocitas");
         Connection cn;
         Conexion con = new Conexion();
@@ -301,12 +301,12 @@ public class UsuarioBD {
                 Cita cita = new Cita();
                 DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
                 cita.setFecha(df.format(rs.getDate("fec_cit")));
-                cita.setHora(rs.getTime("hor_cit")+"00");
+                cita.setHora(rs.getTime("hor_cit") + "00");
                 cita.setCodigo(rs.getString("codi_cit"));
                 cita.setMascota(rs.getString("nom_per"));
                 cita.setEstado(rs.getBoolean("est_cit"));
                 obtenido.add(cita);
-                
+
                 System.out.println(cita.getMascota());
             }
 
@@ -315,6 +315,7 @@ public class UsuarioBD {
         }
         return obtenido;
     }
+
     public static boolean editarCita(Cita cita) {
         System.out.println("si llama al metodo");
         boolean resp = false;
@@ -329,7 +330,7 @@ public class UsuarioBD {
             ps2.setString(2, cita.getCliente());
             ResultSet rs = ps2.executeQuery();
             while (rs.next()) {
-                PreparedStatement ps = cn.prepareStatement("INSERT into cita (fec_cit, hor_cit, est_cit, codi_cit, id_per, cor_usu, fin_cit) VALUES (?,?,?,?,?,?,?)");
+                PreparedStatement ps = cn.prepareStatement("UPDATE cita SET fec_cit=?, hor_cit=?, est_cit=?, codi_cit=?, cor_usu=?, fin_cit=? WHERE cod_cit=?");
                 ps.setDate(1, java.sql.Date.valueOf(cita.getFecha()));
                 ps.setTime(2, java.sql.Time.valueOf(cita.getHora() + ":00"));
                 ps.setInt(3, 0);
@@ -350,4 +351,27 @@ public class UsuarioBD {
         }
         return resp;
     }
+
+    public ArrayList<Servicio> consultarServicios() {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        ArrayList<Servicio>servicios = new ArrayList<Servicio>();
+        try {
+            PreparedStatement ps = cn.prepareStatement("SELECT nom_ser, des_ser, pre_ser FROM servicio");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Servicio ser = new Servicio();
+                ser.setNombreservicio(rs.getString("nom_ser"));
+                ser.setDescripcion(rs.getString("des_ser"));
+                ser.setPrecio(rs.getFloat("pre_ser"));
+                servicios.add(ser);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return servicios;
+    }
 }
+
