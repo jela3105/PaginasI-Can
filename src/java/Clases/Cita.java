@@ -74,6 +74,6 @@ public class Cita {
         this.mascota = mascota;
     }
     public String generarCodigo(){
-        return "algoritmodecodigoxd";
+        return cliente.substring(0, 5) + mascota.substring(0, 3) + fecha.substring(5,7)+ fecha.substring(8,10) + hora.substring(0, 2)+ hora.substring(3,5); 
     }
 }

@@ -1,3 +1,0 @@
-Validar que sean solo letras en nombres de perros
-validar espacios en nombres de perros
-mostrar caracteres como la ñ

@@ -38,19 +38,18 @@
                 opacity: 1;
             }
             #popupBody{
-                
-                width: 40%;  
+                width: 46%;
                 padding: 2%;
                 border-radius: 15px;
                 box-shadow: 0 0 5px #CCC;
                 background: #FFF;
                 position: relative;
                 transition: all 5s ease-in-out;
-                margin: 10% auto;    
+                margin: 4% auto;    
             }
             #cerrar{
                 position: absolute;
-                top: 0px;
+                top: 20px;
                 right: 30px;
                 transition: all 200ms;
                 font-size: 30px;
@@ -117,7 +116,7 @@
                         <div class="input-field col s12 m6">
                             <select name="tallap">
                                 <option disabled selected>Selecciona la talla</option>
-                                <option >Chico</option>
+                                <option >Pequeño</option>
                                 <option >Mediano</option>
                                 <option >Grande</option>
                                 <option >Gigante</option>
@@ -184,14 +183,13 @@
                     </tr>                
                 </thead>
                 <tbody>
-                    <%                        
-                        ArrayList<Cita> citas = (ArrayList<Cita>) request.getSession().getAttribute("miniaturacitas");
+                    <%                        ArrayList<Cita> citas = (ArrayList<Cita>) request.getSession().getAttribute("miniaturacitas");
                         if (citas != null) {
                             for (int i = 0; i < citas.size(); i++) {
                                 out.println("<tr " + "id=\"" + citas.get(i).getMascota() + "\"" + ">");
                                 out.println("<td>" + citas.get(i).getMascota() + "</td>");
-                                out.println("<td>" + citas.get(i).getFecha().substring(0,10) + "</td>");
-                                out.println("<td>" + citas.get(i).getHora().substring(0,5) + "</td>");
+                                out.println("<td>" + citas.get(i).getFecha().substring(0, 10) + "</td>");
+                                out.println("<td>" + citas.get(i).getHora().substring(0, 5) + "</td>");
                                 out.println("<td>" + citas.get(i).getCodigo() + "</td>");
                                 if (citas.get(i).isEstado()) {
                                     out.println("<td>Confirmada</td>");
@@ -199,7 +197,7 @@
                                     out.print("<td>No confirmada</td>");
                                 }
                                 out.println("<td><a href=\"home.jsp?id=" + citas.get(i).getMascota() + "#Editarcita\"><input type=\"button\" value=\"Editar cita\" class=\"btn-small yellow darken-2\"></a></td>");
-                                out.println("</tr>");     
+                                out.println("</tr>");
                             }
                         } else {
                             out.print("<h3>No hay citas registradas</h3>");
@@ -208,10 +206,6 @@
                 </tbody>
             </table>                
         </section>   
-                <section>
-                    <h1> holaf</h1>
-                   
-                </section>
         <div id="Eliminar" class="overlay">
             <div id="popupBody">
                 <h2>Eliminar</h2>
@@ -305,30 +299,30 @@
                     <input type="time" name="horacita">
                     <select name="servicio">
                         <option disabled selected>Selecciona el servicio</option>
-                        <% 
-                        ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getSession().getAttribute("servicios");
-                        for (int i = 0; i < perro.size(); i++) {
-                            if (perro.get(i).getNombre().equals(request.getParameter("id"))) {
-                                datos = perro.get(i);
+                        <%
+                            ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getSession().getAttribute("servicios");
+                            for (int i = 0; i < perro.size(); i++) {
+                                if (perro.get(i).getNombre().equals(request.getParameter("id"))) {
+                                    datos = perro.get(i);
+                                }
                             }
-                        }
-                        
-                        String tallaservicio="";
-                        if (datos.getTalla().equals("Pequeño")){
-                           tallaservicio = "pequeño";
-                        }else if(datos.getTalla().equals("Mediano")){
-                            tallaservicio = "mediano";
-                        }else if(datos.getTalla().equals("Grande")){
-                            tallaservicio="grande";
-                        }else if(datos.getTalla().equals("Gigante")){
-                            tallaservicio="gigante";
-                        }
-                        System.out.println(tallaservicio);
-                        for(int i=0;i<servicios.size();i++){
-                            if(servicios.get(i).getNombreservicio().contains(tallaservicio)){
-                                out.print("<option>"+servicios.get(i).getNombreservicio()+"</option>");
+
+                            String tallaservicio = "";
+                            if (datos.getTalla().equals("Pequeño")) {
+                                tallaservicio = "pequeño";
+                            } else if (datos.getTalla().equals("Mediano")) {
+                                tallaservicio = "mediano";
+                            } else if (datos.getTalla().equals("Grande")) {
+                                tallaservicio = "grande";
+                            } else if (datos.getTalla().equals("Gigante")) {
+                                tallaservicio = "gigante";
                             }
-                        }
+                            System.out.println(tallaservicio);
+                            for (int i = 0; i < servicios.size(); i++) {
+                                if (servicios.get(i).getNombreservicio().contains(tallaservicio)) {
+                                    out.print("<option>" + servicios.get(i).getNombreservicio() + "</option>");
+                                }
+                            }
                         %>
                     </select>
                     <label>Tipo de servicio: </label>
@@ -360,6 +354,15 @@
                     <input type="submit" value="Agendar">
                 </form>
                 <a href="#"><input type="button" value="Cancelar"></a>
+            </div>        
+        </div>
+    </div>        
+    <div id="Bienvenido" class="overlay">
+        <div id="popupBody">
+            <h2>Bienvenido</h2>
+            <a id="cerrar" href="#">&times;</a>
+            <div class="popupContent">
+                <a href="#"><input type="button" value="Aceptar"></a>
             </div>        
         </div>
     </div>        
