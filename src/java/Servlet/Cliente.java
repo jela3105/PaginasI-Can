@@ -6,6 +6,7 @@ package Servlet;
  * and open the template in the editor.
  */
 import Clases.Cita;
+import Clases.DescripcionServicio;
 import Clases.Perro;
 import Clases.Producto;
 import Clases.Servicio;
@@ -99,6 +100,8 @@ public class Cliente extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         processRequest(request, response);
     }
 
@@ -291,7 +294,7 @@ public class Cliente extends HttpServlet {
                 if (place.equals("pag")) {
                     System.out.println("Respuesta pagina ");
 
-                    String men = "Contrase;as no coinciden";
+                    String men = "Contraseñas no coinciden";
                     response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
                     //Respuesta en caso de que la app haya hecho la peticion    
                 } else if (place.equals("app")) {
@@ -412,7 +415,7 @@ public class Cliente extends HttpServlet {
                     }
                 } else {
                     if (place.equals("pag")) {
-                        String error = "Contrase;a incorrecta";
+                        String error = "Contraseña incorrecta";
                         response.sendRedirect("JSP/SesionUsuario.jsp?mens=" + error);
                     } else if (place.equals("app")) {
                         System.out.println("Inicio Sesion contrase;a fail");
@@ -810,8 +813,11 @@ public class Cliente extends HttpServlet {
                 cita.setHora(hora);
                 cita.setMascota(mascota);
                 cita.setCodigo(cita.generarCodigo());
+                DescripcionServicio ds = new DescripcionServicio();
+                ds.setCodigoCita(cita.generarCodigo());
+                ds.setNombreServicio(servicio);
                 UsuarioBD usu = new UsuarioBD();
-                if (usu.altaCita(cita) == true) {
+                if (usu.altaCita(cita) && usu.altaServicio(ds)) {
                     if (request.getParameter("place").equals("pag")) {
                         System.out.println("entro a la respuesta pagina");
                         misesion.removeAttribute("miniaturacitas");

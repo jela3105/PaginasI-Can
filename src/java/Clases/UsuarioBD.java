@@ -251,33 +251,27 @@ public class UsuarioBD {
     }
 
     public static boolean altaCita(Cita cita) {
-        System.out.println("si llama al metodo");
         boolean resp = false;
         Connection cn;
         Conexion con = new Conexion();
         cn = con.conectar();
 
         try {
-
-            PreparedStatement ps2 = cn.prepareStatement("SELECT id_per FROM perro WHERE nom_per=? and cor_usu=?");
-            ps2.setString(1, cita.getMascota());
-            ps2.setString(2, cita.getCliente());
-            ResultSet rs = ps2.executeQuery();
-            while (rs.next()) {
-                PreparedStatement ps = cn.prepareStatement("INSERT into cita (fec_cit, hor_cit, est_cit, codi_cit, id_per, cor_usu, fin_cit) VALUES (?,?,?,?,?,?,?)");
-                ps.setDate(1, java.sql.Date.valueOf(cita.getFecha()));
-                ps.setTime(2, java.sql.Time.valueOf(cita.getHora() + ":00"));
-                ps.setInt(3, 0);
-                ps.setString(4, cita.getCodigo());
-                ps.setString(5, String.valueOf(rs.getInt("id_per")));
-                ps.setString(6, cita.getCliente());
-                ps.setInt(7, 0);
-                int i = ps.executeUpdate();
-                System.out.println("se ejecuto");
-                System.out.println(i);
-                if (i == 1) {
-                    resp = true;
-                }
+            PreparedStatement ps = cn.prepareStatement("INSERT into cita (fec_cit, hor_cit, est_cit, codi_cit, id_per, cor_usu, fin_cit) VALUES (?,?,?,?,(SELECT id_per FROM perro WHERE nom_per=? and cor_usu=?),?,?)");
+            ps.setDate(1, java.sql.Date.valueOf(cita.getFecha()));
+            ps.setTime(2, java.sql.Time.valueOf(cita.getHora() + ":00"));
+            ps.setInt(3, 0);
+            ps.setString(4, cita.getCodigo());
+            ps.setString(5, cita.getMascota());
+            ps.setString(6, cita.getCliente());
+            //ps.setString(7, String.valueOf(rs.getInt("id_per")));
+            ps.setString(7, cita.getCliente());
+            ps.setInt(8, 0);
+            int i = ps.executeUpdate();
+            System.out.println("se ejecuto");
+            System.out.println(i);
+            if (i == 1) {
+                resp = true;
             }
 
         } catch (Exception e) {
@@ -352,11 +346,40 @@ public class UsuarioBD {
         return resp;
     }
 
-    public ArrayList<Servicio> consultarServicios() {
+    public static boolean altaServicio(DescripcionServicio descripcionServicio) {
         Connection cn;
         Conexion con = new Conexion();
         cn = con.conectar();
-        ArrayList<Servicio>servicios = new ArrayList<Servicio>();
+        boolean resp= false;
+        //INSERT INTO descripcion (com_des, cal_des, id_cit, id_ser, id_ven) VALUES ('f',5.0,(SELECT id_cit FROM cita WHERE codi_cit='20jela@efe05311900'),(SELECT id_ser FROM servicio WHERE nom_ser='Baño pequeño'),1);
+        try {
+            PreparedStatement ps = cn.prepareStatement("INSERT INTO descripcion (com_des, cal_des, id_cit, id_ser, id_ven) VALUES (NULL,NULL,(SELECT id_cit FROM cita WHERE codi_cit=?),(SELECT id_ser FROM servicio WHERE nom_ser=?),?)");
+            ps.setString(1, descripcionServicio.getCodigoCita());
+            ps.setString(2, descripcionServicio.getNombreServicio());
+            //ps.setInt(3, descripcionServicio.getIdVenta());
+            if(descripcionServicio.getIdVenta()==null){
+                ps.setNull(3, 0);
+            }else{
+                ps.setInt(3, descripcionServicio.getIdVenta());
+            }
+            int i = ps.executeUpdate();
+            System.out.println("se ejecuto");
+            System.out.println(i);
+            if (i == 1) {
+                resp = true;
+            }
+        } catch (Exception e) {
+            System.out.println("f al insertar");
+            System.out.println(e.toString());
+        }
+        return resp;
+    }
+
+    public static ArrayList<Servicio> consultarServicios() {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        ArrayList<Servicio> servicios = new ArrayList<Servicio>();
         try {
             PreparedStatement ps = cn.prepareStatement("SELECT nom_ser, des_ser, pre_ser FROM servicio");
             ResultSet rs = ps.executeQuery();
@@ -374,4 +397,3 @@ public class UsuarioBD {
         return servicios;
     }
 }
-

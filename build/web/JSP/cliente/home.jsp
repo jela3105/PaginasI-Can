@@ -3,13 +3,13 @@
     Created on : Mar 6, 2020, 12:05:39 PM
     Author     : jela3
 --%>
-
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %> 
 <%@page import="Clases.Servicio"%>
 <%@page import="Clases.Cita"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Clases.Perro"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page session="true" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -196,12 +196,13 @@
                                 } else {
                                     out.print("<td>No confirmada</td>");
                                 }
-                                out.println("<td><a href=\"home.jsp?id=" + citas.get(i).getMascota() + "#Editarcita\"><input type=\"button\" value=\"Editar cita\" class=\"btn-small yellow darken-2\"></a></td>");
+                                out.println("<td><a href=\"home.jsp?id=" + citas.get(i).getMascota() + "&codigo=" +citas.get(i).getCodigo() +  "#Infocita\"><img src=\"../../Img/informacioncita.jpg\" with=\"30\" height=\"30\" alt=\"Mas información\" /> </a></td>");
                                 out.println("</tr>");
                             }
                         } else {
                             out.print("<h3>No hay citas registradas</h3>");
                         }
+                        //<input type=\"button\" value=\"Editar cita\" class=\"btn-small yellow darken-2\">
                     %>
                 </tbody>
             </table>                
@@ -230,22 +231,22 @@
                 <form action="..\..\Cliente" method="post" enctype="multipart/form-data">
                     <%
                         //Buscamos el objeto del perro seleccionado en el array
-                        Perro datos = new Perro();
+                        Perro perroSelected = new Perro();
                         for (int i = 0; i < perro.size(); i++) {
                             if (perro.get(i).getNombre().equals(request.getParameter("id"))) {
-                                datos = perro.get(i);
+                                perroSelected = perro.get(i);
                             }
                         }
-                        out.println("<img src= ../../Img/" + request.getSession().getAttribute("correo") + "/" + datos.getNombre() + ".png width='200' height='100'>");
+                        out.println("<img src= ../../Img/" + request.getSession().getAttribute("correo") + "/" + perroSelected.getNombre() + ".png width='200' height='100'>");
                     %>
 
-                    <h3>Nombre</h3><input type=text name='nomp' value="<%out.println(datos.getNombre());%>"><br>
+                    <h3>Nombre</h3><input type=text name='nomp' value="<%out.println(perroSelected.getNombre());%>"><br>
                     <h3>Nacimiento (Una fecha aproximada)</h3>
-                    <input type="date"  name="fecha"  value="<%out.print(datos.getNac());%>">
-                    <%System.out.println(datos.getNac());%>
+                    <input type="date"  name="fecha"  value="<%out.print(perroSelected.getNac());%>">
+                    <%System.out.println(perroSelected.getNac());%>
                     <h3>Genero</h3>
                     <select name="generop">
-                        <%if (datos.getGenero()) {
+                        <%if (perroSelected.getGenero()) {
                                 out.print("<option selected>Macho</option>");
                                 out.print("<option>Hembra</option>");
                             } else {
@@ -255,8 +256,8 @@
                     </select>
                     <h3>talla</h3>
                     <select name="tallap">
-                        <%System.out.println("talla" + datos.getTalla());
-                            String talla = datos.getTalla();
+                        <%System.out.println("talla" + perroSelected.getTalla());
+                            String talla = perroSelected.getTalla();
                             if (talla != null) {
                                 if (talla.equals("Chico")) {
                                     out.print("<option selected>Chico</option>");
@@ -303,18 +304,18 @@
                             ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getSession().getAttribute("servicios");
                             for (int i = 0; i < perro.size(); i++) {
                                 if (perro.get(i).getNombre().equals(request.getParameter("id"))) {
-                                    datos = perro.get(i);
+                                    perroSelected = perro.get(i);
                                 }
                             }
 
                             String tallaservicio = "";
-                            if (datos.getTalla().equals("Pequeño")) {
+                            if (perroSelected.getTalla().equals("Pequeño")) {
                                 tallaservicio = "pequeño";
-                            } else if (datos.getTalla().equals("Mediano")) {
+                            } else if (perroSelected.getTalla().equals("Mediano")) {
                                 tallaservicio = "mediano";
-                            } else if (datos.getTalla().equals("Grande")) {
+                            } else if (perroSelected.getTalla().equals("Grande")) {
                                 tallaservicio = "grande";
-                            } else if (datos.getTalla().equals("Gigante")) {
+                            } else if (perroSelected.getTalla().equals("Gigante")) {
                                 tallaservicio = "gigante";
                             }
                             System.out.println(tallaservicio);
@@ -357,14 +358,31 @@
             </div>        
         </div>
     </div>        
-    <div id="Bienvenido" class="overlay">
+    <div id="Infocita" class="overlay">
         <div id="popupBody">
-            <h2>Bienvenido</h2>
+            <h2>Informacion cita: <%out.print(request.getParameter("codigo"));%></h2>
             <a id="cerrar" href="#">&times;</a>
             <div class="popupContent">
-                <a href="#"><input type="button" value="Aceptar"></a>
+                <%
+                    for(int i=0;i<citas.size();i++){
+                        
+                    }
+                %>
+                <form action="..\..\Cliente" method="post">
+                        
+                    <input type="date" name='fechacita' disabled value="<%%>">
+                    <input type="time" name="horacita">
+                    <input type="text" name="servicio" value="caca">
+                    <input type="hidden" value="editarC" name="accion">
+                    <input type="hidden" value="<%out.print(request.getParameter("id"));%>" name="mascota">
+                    <input type="hidden" value="pag" name="place">
+                    <br>
+                    <input type="submit" value="Agendar">
+                </form>
+                <a href="#"><input type="button" value="Cancelar"></a>
             </div>        
         </div>
-    </div>        
+    </div>
+                    
 </body>
 </html>
