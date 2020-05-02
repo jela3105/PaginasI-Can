@@ -69,8 +69,8 @@
                         </div>                             
                     </div>
                     <div>
-                        <input type="hidden" value="login" name="accion">
-                        <input type="hidden" value="pag" name="place">
+                        <input type="hidden" value="login" name="action">
+                        <input type="hidden" value="page" name="place">
                         <input type="submit" value="Acceder" class="btn">
                     </div>
                 </form>   

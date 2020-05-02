@@ -51,8 +51,8 @@ public class Cliente extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String ac = request.getParameter("accion");
-        if (ac.equals("alta")) {
+        String ac = request.getParameter("action");
+        if (ac.equals("altaCliente")) {
             altaCliente(request, response);
         } else if (ac.equals("login")) {
             login(request, response);
@@ -127,7 +127,6 @@ public class Cliente extends HttpServlet {
         String con2_clie = request.getParameter("con2_clie");
         String place = request.getParameter("place");
 
-        //Campos vacios
         if (nom_clie.equals("")
                 || ape_clie.equals("")
                 || dir_clie.equals("")
@@ -137,8 +136,7 @@ public class Cliente extends HttpServlet {
                 || con2_clie.equals("")) {
 
             System.out.println("Campos vacios");
-            //Respuesta en caso de que sea la pagina la que hizo la peticion
-            if (place.equals("pag")) {
+            if (place.equals("page")) {
                 System.out.println("Respuesta pagina");
 
                 String men = "Llena todos los campos";
@@ -169,7 +167,7 @@ public class Cliente extends HttpServlet {
                 //El numero de telefono es invalido
                 if (validarTel(tel_clie) == null) {
                     //Peticion hecha desde la pagina
-                    if (place.equals("pag")) {
+                    if (place.equals("page")) {
                         String men = "Numero de telefono invalido";
                         response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
 
@@ -216,7 +214,7 @@ public class Cliente extends HttpServlet {
                         if (registrado == true) {
 
                             //Peticion hecha desde la pagina
-                            if (place.equals("pag")) {
+                            if (place.equals("page")) {
                                 String men = "Registro correcto";
                                 response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
 
@@ -239,7 +237,7 @@ public class Cliente extends HttpServlet {
                             }
                             //En caso de que no se haya podido registrar    
                         } else {
-                            if (place.equals("pag")) {
+                            if (place.equals("page")) {
                                 String men = "Error al registrar, verifica que el usuario no sea repetido";
                                 response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
                             } else if (place.equals("app")) {
@@ -262,7 +260,7 @@ public class Cliente extends HttpServlet {
                         //El numero de telefono no es telefono
                     } catch (Exception efe) {
                         System.out.println(efe.toString());
-                        if (place.equals("pag")) {
+                        if (place.equals("page")) {
                             System.out.println("Respuesta pagina");
 
                             String men = "El numero de telefono no es telefono";
@@ -291,7 +289,7 @@ public class Cliente extends HttpServlet {
                 //Las contrase;as no coinciden    
             } else {
                 //Respuesta en caso de que la pagina haya echo la peticion
-                if (place.equals("pag")) {
+                if (place.equals("page")) {
                     System.out.println("Respuesta pagina ");
 
                     String men = "Contraseñas no coinciden";
@@ -326,7 +324,7 @@ public class Cliente extends HttpServlet {
         HttpSession misesion = request.getSession();
         if (correo.equals("") || contra.equals("")) {
             System.out.println("Campos vacios");
-            if (place.equals("pag")) {
+            if (place.equals("page")) {
                 System.out.println("Respuesta pagina");
                 String men = "Llena todos los campos";
                 response.sendRedirect("JSP/SesionUsuario.jsp?mens=" + men);
@@ -359,7 +357,7 @@ public class Cliente extends HttpServlet {
                         misesion.setAttribute("miniaturaperro", miniaturaMascota(usu.getCor()));
                         misesion.setAttribute("miniaturacitas", miniaturaCita(usu.getCor()));
                         misesion.setAttribute("servicios", servicios());
-                        if (place.equals("pag")) {
+                        if (place.equals("page")) {
                               response.sendRedirect("JSP/cliente/home.jsp?id="+miniaturaMascota(usu.getCor()).get(0).getNombre());
                         } else if (place.equals("app")) {
                             System.out.println("Contrase;a bien cliente");
@@ -377,7 +375,7 @@ public class Cliente extends HttpServlet {
                             }
                         }
                     } else if (usu.getTip() == 2) {
-                        if (place.equals("pag")) {
+                        if (place.equals("page")) {
                             response.sendRedirect("HTML/empleado/home.html");
                         } else if (place.equals("app")) {
                             System.out.println("Inicio Sesion Empleado");
@@ -395,7 +393,7 @@ public class Cliente extends HttpServlet {
                             }
                         }
                     } else if (usu.getTip() == 1) {
-                        if (place.equals("pag")) {
+                        if (place.equals("page")) {
                             response.sendRedirect("HTML/encargado/home.html");
                         } else if (place.equals("app")) {
                             System.out.println("Inicio Sesion Encargado");
@@ -414,7 +412,7 @@ public class Cliente extends HttpServlet {
                         }
                     }
                 } else {
-                    if (place.equals("pag")) {
+                    if (place.equals("page")) {
                         String error = "Contraseña incorrecta";
                         response.sendRedirect("JSP/SesionUsuario.jsp?mens=" + error);
                     } else if (place.equals("app")) {
@@ -435,7 +433,7 @@ public class Cliente extends HttpServlet {
                     }
                 }
             } else {
-                if (place.equals("pag")) {
+                if (place.equals("page")) {
                     String usua = "Usuario no encontrado";
                     response.sendRedirect("JSP/SesionUsuario.jsp?mens=" + usua);
 
@@ -467,7 +465,7 @@ public class Cliente extends HttpServlet {
         String place = request.getParameter("place");
         //En caso de no haber iniciado sesion
         if (correo == null) {
-            if (place.equals("pag")) {
+            if (place.equals("page")) {
                 response.sendRedirect("HTML/SesionUsuario.html");
             }
         } else {
@@ -513,7 +511,7 @@ public class Cliente extends HttpServlet {
                     || (talla.equals(""))
                     || (filecontent == null)) {
 
-                if (place.equals("pag")) {
+                if (place.equals("page")) {
                     System.out.println("Respuesta pagina");
                     System.out.println(nombre);
                     System.out.println(nacimiento);
@@ -545,7 +543,7 @@ public class Cliente extends HttpServlet {
                     misesion.removeAttribute("miniaturaperro");
                     misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
                     //Peticion hecha desde la pagina
-                    if (place.equals("pag")) {
+                    if (place.equals("page")) {
                         String men = "Registro correcto";
                         //misesion.setAttribute("miniaturaperro", miniaturaMascota(request, response));
                         response.sendRedirect("JSP/cliente/home.jsp" + men + "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
@@ -556,7 +554,7 @@ public class Cliente extends HttpServlet {
                     }
                     //En caso de que no se haya podido registrar    
                 } else {
-                    if (place.equals("pag")) {
+                    if (place.equals("page")) {
                         String men = "Error al registrar";
                         response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
                     } else if (place.equals("app")) {
@@ -616,7 +614,7 @@ public class Cliente extends HttpServlet {
                 File f = new File(context + "\\" + correo + "\\" + mascota + ".png");
                 System.out.println(context + "\\" + correo + "\\" + mascota + ".png");
                 f.delete();
-                if (request.getParameter("place").equals("pag")) {
+                if (request.getParameter("place").equals("page")) {
                     String men = "Se ha eliminado " + mascota;
                     response.sendRedirect("JSP/cliente/home.jsp?=" + men+ "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
 
@@ -637,7 +635,7 @@ public class Cliente extends HttpServlet {
         String place = request.getParameter("place");
         //En caso de no haber iniciado sesion
         if (correo == null) {
-            if (place.equals("pag")) {
+            if (place.equals("page")) {
                 response.sendRedirect("HTML/SesionUsuario.html");
             }
         } else {
@@ -683,7 +681,7 @@ public class Cliente extends HttpServlet {
                     || (genero.equals(""))
                     || (talla.equals(""))) {
 
-                if (place.equals("pag")) {
+                if (place.equals("page")) {
                     System.out.println("Respuesta pagina");
                     System.out.println(nombre);
                     System.out.println(nacimiento);
@@ -717,7 +715,7 @@ public class Cliente extends HttpServlet {
                         misesion.removeAttribute("miniaturaperro");
                         misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
                         //Peticion hecha desde la pagina
-                        if (place.equals("pag")) {
+                        if (place.equals("page")) {
                             String men = "Editado correcto";
                             //misesion.setAttribute("miniaturaperro", miniaturaMascota(request, response));
                             response.sendRedirect("JSP/cliente/home.jsp" + men + "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
@@ -728,7 +726,7 @@ public class Cliente extends HttpServlet {
                         }
                         //En caso de que no se haya podido registrar    
                     } else {
-                        if (place.equals("pag")) {
+                        if (place.equals("page")) {
                             String men = "Error al editar";
                             response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
                         } else if (place.equals("app")) {
@@ -757,7 +755,7 @@ public class Cliente extends HttpServlet {
                         misesion.removeAttribute("miniaturaperro");
                         misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
                         //Peticion hecha desde la pagina
-                        if (place.equals("pag")) {
+                        if (place.equals("page")) {
                             String men = "Registro correcto";
                             //misesion.setAttribute("miniaturaperro", miniaturaMascota(request, response));
                             response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
@@ -768,7 +766,7 @@ public class Cliente extends HttpServlet {
                         }
                         //En caso de que no se haya podido registrar    
                     } else {
-                        if (place.equals("pag")) {
+                        if (place.equals("page")) {
                             String men = "Error al registrar";
                             response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
                         } else if (place.equals("app")) {
@@ -791,7 +789,7 @@ public class Cliente extends HttpServlet {
 
         //validacion sesion iniciada
         if (correo == null) {
-            if (request.getParameter("place").equals("pag")) {
+            if (request.getParameter("place").equals("page")) {
                 response.sendRedirect("HTML/SesionUsuario.html");
             } else if (request.getParameter("app").equals("app")) {
 
@@ -799,7 +797,7 @@ public class Cliente extends HttpServlet {
 
         } else {
             if (fecha.equals("") || hora.equals("") || mascota.equals("") || servicio.equals("")) {
-                if (request.getParameter("place").equals("pag")) {
+                if (request.getParameter("place").equals("page")) {
                     response.sendRedirect("home.jsp" + "id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
                 } else if (request.getParameter("app").equals("app")) {
 
@@ -818,7 +816,7 @@ public class Cliente extends HttpServlet {
                 ds.setNombreServicio(servicio);
                 UsuarioBD usu = new UsuarioBD();
                 if (usu.altaCita(cita) && usu.altaServicio(ds)) {
-                    if (request.getParameter("place").equals("pag")) {
+                    if (request.getParameter("place").equals("page")) {
                         System.out.println("entro a la respuesta pagina");
                         misesion.removeAttribute("miniaturacitas");
                         misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));

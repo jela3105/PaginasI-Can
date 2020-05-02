@@ -63,7 +63,7 @@
         </header>
         <div class="container">
             <div class="row">
-                <h4>Llena los siguientes campos</h4>
+                <h4>Llena los siguientes campos para registrarte</h4>
                 <form action="..\Cliente" method="post" class="col s12 m7 l7">                                
                     <div class="row">
                         <div class="input-field col s12 m6">
@@ -106,8 +106,8 @@
                         </div> 
                     </div>
                     <div class="row">                        
-                        <input type="hidden" value="alta" name="accion">
-                        <input type="hidden" value="pag" name="place">
+                        <input type="hidden" value="altaCliente" name="action">
+                        <input type="hidden" value="page" name="place">
                         <input type=submit value="Aceptar" class="btn">
                     </div>
                 </form>

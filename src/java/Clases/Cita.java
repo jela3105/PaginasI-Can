@@ -1,21 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Clases;
 
 /**
  *
- * @author jela3
+ * @author Josue Lopez
+ * @version 28/04/2020
+ *
  */
 public class Cita {
+
+    //correo del cliente
     String cliente;
+    //fecha que se programo la cita
     String fecha;
+    //hora en que se programo la cita
     String hora;
+    //true: completada; false:pendiente
     boolean estado;
+    //codigo identificador de la cita
     String codigo;
+    //fecha en que se finalizo la cita
     String fincita;
+    //mascota que va a tener la cita
     String mascota;
 
     public String getCliente() {
@@ -73,7 +79,18 @@ public class Cita {
     public void setMascota(String mascota) {
         this.mascota = mascota;
     }
-    public String generarCodigo(){
-        return fecha.substring(2, 4) + cliente.substring(0, 5) + mascota.substring(0, 3) + fecha.substring(5,7)+ fecha.substring(8,10) + hora.substring(0, 2)+ hora.substring(3,5); 
+
+    /**
+     * Este metodo genera el codido de la cita que se esta programando
+     *
+     * @return: Codigo de identificacion de la cita 
+     */
+    public String generarCodigo() {
+        return fecha.substring(2, 4) + 
+                cliente.substring(0, 5) + 
+                mascota.substring(0, 3) + 
+                fecha.substring(5, 7) + 
+                fecha.substring(8, 10) + 
+                hora.substring(0, 2) + hora.substring(3, 5);
     }
 }
