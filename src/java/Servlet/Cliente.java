@@ -56,16 +56,16 @@ public class Cliente extends HttpServlet {
             altaCliente(request, response);
         } else if (ac.equals("login")) {
             login(request, response);
-        } else if (ac.equals("registrarM")) {
-            regisrarM(request, response);
-        } else if (ac.equals("obtenerP")) {
-            productosDisponibles(request, response);
-        } else if (ac.equals("eliminarM")) {
-            eliminarM(request, response);
-        } else if (ac.equals("editarM")) {
-            editarM(request, response);
-        } else if (ac.equals("agendarC")) {
-            agendarC(request, response);
+        } else if (ac.equals("registrarMascota")) {
+            regisrarMascota(request, response);
+        } else if (ac.equals("obtenerProductos")) {
+            obtenerProductos(request, response);
+        } else if (ac.equals("eliminarMascota")) {
+            eliminarMascota(request, response);
+        } else if (ac.equals("editarMascota")) {
+            editarMascota(request, response);
+        } else if (ac.equals("agendarCita")) {
+            agendarCita(request, response);
         }
 
         //
@@ -118,316 +118,232 @@ public class Cliente extends HttpServlet {
     private void altaCliente(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("llegaste al metodo altaCliente");
 
-        String nom_clie = request.getParameter("nom_clie");
-        String ape_clie = request.getParameter("ape_clie");
-        String dir_clie = request.getParameter("dir_clie");
-        String cor_clie = request.getParameter("cor_clie");
-        String tel_clie = request.getParameter("tel_clie");
-        String con_clie = request.getParameter("con_clie");
-        String con2_clie = request.getParameter("con2_clie");
+        String nombre = request.getParameter("nom_clie");
+        String apellido = request.getParameter("ape_clie");
+        String direccion = request.getParameter("dir_clie");
+        String correo = request.getParameter("cor_clie");
+        String telefono = request.getParameter("tel_clie");
+        String contraseña = request.getParameter("con_clie");
+        String contraseña2 = request.getParameter("con2_clie");
         String place = request.getParameter("place");
 
-        if (nom_clie.equals("")
-                || ape_clie.equals("")
-                || dir_clie.equals("")
-                || cor_clie.equals("")
-                || tel_clie.equals("")
-                || con_clie.equals("")
-                || con2_clie.equals("")) {
+        if (nombre.equals("")
+                || apellido.equals("")
+                || direccion.equals("")
+                || correo.equals("")
+                || telefono.equals("")
+                || contraseña.equals("")
+                || contraseña2.equals("")) {
 
             System.out.println("Campos vacios");
             if (place.equals("page")) {
-                System.out.println("Respuesta pagina");
-
                 String men = "Llena todos los campos";
                 response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
-
-                //Respuesta en caso de que la app haya hecho la peticion    
             } else if (place.equals("app")) {
-                System.out.println("Campos vacios app registro");
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("Registro", "FalloV");
+                    jsonObject.put("Registro", "camposVacios");
                     PrintWriter pw = response.getWriter();
                     pw.write(jsonObject.toString());
                     pw.print(jsonObject.toString());
-
-                    System.out.println("Registro vacio" + jsonObject.toString());
-
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-
             }
-            // Campos NO vacios
         } else {
-            //Las contraseñas coinciden
-            if (con_clie.equals(con2_clie)) {
-                //El numero de telefono es invalido
-                if (validarTel(tel_clie) == null) {
-                    //Peticion hecha desde la pagina
+            if (contraseña.equals(contraseña2)) {
+                if (validarTel(telefono) == null) {
                     if (place.equals("page")) {
                         String men = "Numero de telefono invalido";
                         response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
-
-                        //Peticion hecha desde la app    
                     } else if (place.equals("app")) {
-                        System.out.println("Registro incorreto app");
                         JSONObject jsonObject = new JSONObject();
                         try {
-                            jsonObject.put("Registro", "TelefonoIn");
+                            jsonObject.put("Registro", "telefonoIncorrecto");
                             PrintWriter pw = response.getWriter();
                             pw.write(jsonObject.toString());
                             pw.print(jsonObject.toString());
-
-                            System.out.println("Registro incorrecto" + jsonObject.toString());
-
                         } catch (JSONException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
-                    //El numero de telefono es valido
                 } else {
-                    //Intentamos dar de alta al usuario en la base de datos
                     try {
-                        Usuario usu = new Usuario();
-                        usu.setNom(nom_clie);
-                        usu.setApe(ape_clie);
-                        usu.setDir(dir_clie);
-                        usu.setCor(cor_clie);
-                        usu.setTel(tel_clie);
-                        usu.setCon(con_clie);
-                        usu.setTip(3);
+                        Usuario usuario = new Usuario();
+                        usuario.setNombre(nombre);
+                        usuario.setApellido(apellido);
+                        usuario.setDireccion(direccion);
+                        usuario.setCorreo(correo);
+                        usuario.setTelefono(telefono);
+                        usuario.setContraseña(contraseña);
+                        usuario.setTipoUsuario(3);
 
-                        UsuarioBD u = new UsuarioBD();
-                        boolean registrado = u.registrarUsuario(usu);
-
-                        //se crea carpeta de imagenes
-                        String context = request.getServletContext().getRealPath("/Img");
-                        System.out.println(context);
-                        File carpeta = new File(context + "\\" + cor_clie);
-                        carpeta.mkdirs();
-
-                        //En caso de que se haya podido registrar
-                        if (registrado == true) {
-
-                            //Peticion hecha desde la pagina
+                        UsuarioBD usuarioBD = new UsuarioBD();
+                        if (usuarioBD.registrarUsuario(usuario)) {
+                            String context = request.getServletContext().getRealPath("/Img");
+                            File carpeta = new File(context + "\\" + correo);
+                            carpeta.mkdirs();
                             if (place.equals("page")) {
                                 String men = "Registro correcto";
                                 response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
-
-                                //Peticion hecha desde la app    
                             } else if (place.equals("app")) {
-                                System.out.println("Registro correto app");
                                 JSONObject jsonObject = new JSONObject();
                                 try {
-                                    jsonObject.put("Registro", "Correcto");
+                                    jsonObject.put("Registro", "correcto");
                                     PrintWriter pw = response.getWriter();
                                     pw.write(jsonObject.toString());
                                     pw.print(jsonObject.toString());
-
-                                    System.out.println("Registro correcto" + jsonObject.toString());
-
                                 } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
                                     e.printStackTrace();
                                 }
                             }
-                            //En caso de que no se haya podido registrar    
                         } else {
                             if (place.equals("page")) {
-                                String men = "Error al registrar, verifica que el usuario no sea repetido";
+                                String men = "Error al registrar, intenta usando otro correo";
                                 response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
                             } else if (place.equals("app")) {
-                                System.out.println("Campos vacios app registro");
                                 JSONObject jsonObject = new JSONObject();
                                 try {
-                                    jsonObject.put("Registro", "Fallo");
+                                    jsonObject.put("Registro", "fallo");
                                     PrintWriter pw = response.getWriter();
                                     pw.write(jsonObject.toString());
                                     pw.print(jsonObject.toString());
-
-                                    System.out.println("Registro fallo" + jsonObject.toString());
-
                                 } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
                                     e.printStackTrace();
                                 }
                             }
                         }
-                        //El numero de telefono no es telefono
                     } catch (Exception efe) {
                         System.out.println(efe.toString());
                         if (place.equals("page")) {
                             System.out.println("Respuesta pagina");
-
                             String men = "El numero de telefono no es telefono";
                             response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
-
-                            //Respuesta en caso de que la app haya hecho la peticion    
                         } else if (place.equals("app")) {
-                            System.out.println("Campos vacios app registro");
                             JSONObject jsonObject = new JSONObject();
                             try {
                                 jsonObject.put("Registro", "FalloN");
                                 PrintWriter pw = response.getWriter();
                                 pw.write(jsonObject.toString());
                                 pw.print(jsonObject.toString());
-
                                 System.out.println("Registro fallo telefono no es numero" + jsonObject.toString());
-
                             } catch (JSONException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                         }
                     }
                 }
-
-                //Las contrase;as no coinciden    
             } else {
-                //Respuesta en caso de que la pagina haya echo la peticion
                 if (place.equals("page")) {
-                    System.out.println("Respuesta pagina ");
-
                     String men = "Contraseñas no coinciden";
                     response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
-                    //Respuesta en caso de que la app haya hecho la peticion    
                 } else if (place.equals("app")) {
-                    System.out.println("Contrase;as distintas app registro");
+                    System.out.println("contraseñasNoCoinciden");
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("Registro", "FalloC");
+                        jsonObject.put("Registro", "contraseñasNoCoinciden");
                         PrintWriter pw = response.getWriter();
                         pw.write(jsonObject.toString());
                         pw.print(jsonObject.toString());
-
-                        System.out.println("Registro contrase;as no coinciden" + jsonObject.toString());
-
                     } catch (JSONException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
 
                 }
             }
         }
-
     }//fin de metodo altaCliente
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String correo = request.getParameter("corr_compara");
-        String contra = request.getParameter("contra_compara");
+        String correo = request.getParameter("correo");
+        String contra = request.getParameter("contra");
         String place = request.getParameter("place");
         HttpSession misesion = request.getSession();
         if (correo.equals("") || contra.equals("")) {
-            System.out.println("Campos vacios");
             if (place.equals("page")) {
-                System.out.println("Respuesta pagina");
                 String men = "Llena todos los campos";
                 response.sendRedirect("JSP/SesionUsuario.jsp?mens=" + men);
             } else if (place.equals("app")) {
-                System.out.println("Campos vacios app login");
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("Login", "FalloV");
+                    jsonObject.put("Login", "camposVacios");
                     PrintWriter pw = response.getWriter();
                     pw.write(jsonObject.toString());
                     pw.print(jsonObject.toString());
-
-                    System.out.println("Registro vacio" + jsonObject.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         } else {
-            Usuario usu = UsuarioBD.VerificarUsuario(correo);
-            System.out.println("correo " + usu.getCor());
-            System.out.println("contrasena " + usu.getCon());
-            if (correo.equals(usu.getCor())) {
-                System.out.println("correo valido si entro");
-                if ((contra.equals(usu.getCon()))) {
-                    System.out.println("contrase;a valida si entro");
-                    if (usu.getTip() == 3) {
-                        System.out.println("contrase;a valida 3");
-                        misesion = request.getSession(true);
-                        misesion.setAttribute("correo", usu.getCor());
-                        misesion.setAttribute("miniaturaperro", miniaturaMascota(usu.getCor()));
-                        misesion.setAttribute("miniaturacitas", miniaturaCita(usu.getCor()));
-                        misesion.setAttribute("servicios", servicios());
-                        if (place.equals("page")) {
-                              response.sendRedirect("JSP/cliente/home.jsp?id="+miniaturaMascota(usu.getCor()).get(0).getNombre());
-                        } else if (place.equals("app")) {
-                            System.out.println("Contrase;a bien cliente");
-                            JSONObject jsonObject1 = new JSONObject();
-                            try {
-                                jsonObject1.put("Login", "Cliente");
-                                PrintWriter pw = response.getWriter();
-                                pw.write(jsonObject1.toString());
-                                pw.print(jsonObject1.toString());
-
-                                System.out.println("Cliente inicio sesion" + jsonObject1.toString());
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+            Usuario usuario = UsuarioBD.verificarUsuario(correo);
+            if (correo.equals(usuario.getCorreo())) {
+                if ((contra.equals(usuario.getContraseña()))) {
+                    switch (usuario.getTipoUsuario()) {
+                        case 3:
+                            misesion = request.getSession(true);
+                            misesion.setAttribute("correo", usuario.getCorreo());
+                            misesion.setAttribute("miniaturaperro", miniaturaMascota(usuario.getCorreo()));
+                            misesion.setAttribute("miniaturacitas", miniaturaCita(usuario.getCorreo()));
+                            misesion.setAttribute("servicios", servicios());
+                            if (place.equals("page")) {
+                                response.sendRedirect("JSP/cliente/home.jsp?id=" + miniaturaMascota(usuario.getCorreo()).get(0).getNombre());
+                            } else if (place.equals("app")) {
+                                JSONObject jsonObject1 = new JSONObject();
+                                try {
+                                    jsonObject1.put("Login", "cliente");
+                                    PrintWriter pw = response.getWriter();
+                                    pw.write(jsonObject1.toString());
+                                    pw.print(jsonObject1.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    } else if (usu.getTip() == 2) {
-                        if (place.equals("page")) {
-                            response.sendRedirect("HTML/empleado/home.html");
-                        } else if (place.equals("app")) {
-                            System.out.println("Inicio Sesion Empleado");
-                            JSONObject jsonObject = new JSONObject();
-                            try {
-                                jsonObject.put("Login", "Empleado");
-                                PrintWriter pw = response.getWriter();
-                                pw.write(jsonObject.toString());
-                                pw.print(jsonObject.toString());
-
-                                System.out.println("Login exitoso empleado" + jsonObject.toString());
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            break;
+                        case 2:
+                            if (place.equals("page")) {
+                                response.sendRedirect("HTML/empleado/home.html");
+                            } else if (place.equals("app")) {
+                                JSONObject jsonObject = new JSONObject();
+                                try {
+                                    jsonObject.put("Login", "empleado");
+                                    PrintWriter pw = response.getWriter();
+                                    pw.write(jsonObject.toString());
+                                    pw.print(jsonObject.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    } else if (usu.getTip() == 1) {
-                        if (place.equals("page")) {
-                            response.sendRedirect("HTML/encargado/home.html");
-                        } else if (place.equals("app")) {
-                            System.out.println("Inicio Sesion Encargado");
-                            JSONObject jsonObject = new JSONObject();
-                            try {
-                                jsonObject.put("Login", "Encargado");
-                                PrintWriter pw = response.getWriter();
-                                pw.write(jsonObject.toString());
-                                pw.print(jsonObject.toString());
-
-                                System.out.println("Login exitoso Encargado" + jsonObject.toString());
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            break;
+                        case 1:
+                            if (place.equals("page")) {
+                                response.sendRedirect("HTML/encargado/home.html");
+                            } else if (place.equals("app")) {
+                                JSONObject jsonObject = new JSONObject();
+                                try {
+                                    jsonObject.put("Login", "Encargado");
+                                    PrintWriter pw = response.getWriter();
+                                    pw.write(jsonObject.toString());
+                                    pw.print(jsonObject.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
+                            break;
+                        default:
+                            break;
                     }
                 } else {
                     if (place.equals("page")) {
                         String error = "Contraseña incorrecta";
                         response.sendRedirect("JSP/SesionUsuario.jsp?mens=" + error);
                     } else if (place.equals("app")) {
-                        System.out.println("Inicio Sesion contrase;a fail");
                         JSONObject jsonObject = new JSONObject();
                         try {
-                            jsonObject.put("Login", "Contra");
+                            jsonObject.put("Login", "contraseñaIncorrecta");
                             PrintWriter pw = response.getWriter();
                             pw.write(jsonObject.toString());
                             pw.print(jsonObject.toString());
-
-                            System.out.println("Login fail, contra;a incorrecta" + jsonObject.toString());
-
                         } catch (JSONException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
@@ -436,18 +352,13 @@ public class Cliente extends HttpServlet {
                 if (place.equals("page")) {
                     String usua = "Usuario no encontrado";
                     response.sendRedirect("JSP/SesionUsuario.jsp?mens=" + usua);
-
                 } else if (place.equals("app")) {
-                    System.out.println("Inicio Sesion usuario fail");
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("Login", "Usuario");
+                        jsonObject.put("Login", "usuarioNoEncontrado");
                         PrintWriter pw = response.getWriter();
                         pw.write(jsonObject.toString());
                         pw.print(jsonObject.toString());
-
-                        System.out.println("Login fail usuario" + jsonObject.toString());
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -457,19 +368,15 @@ public class Cliente extends HttpServlet {
         }
     }
 
-    private void regisrarM(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void regisrarMascota(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession misesion = (HttpSession) request.getSession();
         String correo = (String) misesion.getAttribute("correo");
-
-        System.out.println("correo sesion mascota " + correo);
         String place = request.getParameter("place");
-        //En caso de no haber iniciado sesion
         if (correo == null) {
             if (place.equals("page")) {
                 response.sendRedirect("HTML/SesionUsuario.html");
             }
         } else {
-            //Verificamos que se hayan llenado todos los campos
             String nombre = request.getParameter("nomp");
             String nacimiento = request.getParameter("fecha");//aaaa-mm-dd
             String genero = request.getParameter("generop");
@@ -479,16 +386,14 @@ public class Cliente extends HttpServlet {
             try {
                 Part filePart = request.getPart("imagenp");
                 if (filePart.getSize() > 0) {
-                    System.out.println("la imagen se llama "+filePart.getName());
-                    System.out.println("la imagen se midio "+filePart.getSize());
-                    System.out.println("el content type "+filePart.getContentType());
+                    System.out.println("la imagen se llama " + filePart.getName());
+                    System.out.println("la imagen se midio " + filePart.getSize());
+                    System.out.println("el content type " + filePart.getContentType());
                     System.out.println(context + "\\" + correo + "\\" + nombre + ".png");
                     filecontent = filePart.getInputStream();
 
                     OutputStream os = new FileOutputStream(context + "\\" + correo + "\\" + nombre + ".png");
                     System.out.println(context + "\\" + correo + "\\" + nombre + ".png");
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
                     int read = 0;
                     final byte[] bytes = new byte[1024];
 
@@ -496,15 +401,12 @@ public class Cliente extends HttpServlet {
                         os.write(bytes, 0, read);
                     }
                     filecontent.close();
-                    //flush OutputStream to write any buffered data to file
                     os.flush();
                     os.close();
-
                 }
             } catch (Exception ex) {
                 System.out.println("fichero: " + ex.getMessage());
             }
-
             if (nombre.equals("")
                     || (nacimiento.equals(""))
                     || (genero.equals(""))
@@ -518,14 +420,14 @@ public class Cliente extends HttpServlet {
                     System.out.println(genero);
                     System.out.println(talla);
                     String men = "Llena todos los campos";
-                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
+                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
                 } else if (place.equals("app")) {
 
                 }
             } else {
                 Perro pe = new Perro();
                 pe.setNombre(nombre);
-                pe.setNac(nacimiento);
+                pe.setNacimiento(nacimiento);
                 if (genero.equals("Macho")) {
                     pe.setGenero(true);//true macho
                 } else {
@@ -536,43 +438,31 @@ public class Cliente extends HttpServlet {
                 pe.setDueno(correo);
                 pe.setArchivoimg(context + "\\" + correo + "\\" + nombre + ".png");
 
-                UsuarioBD u = new UsuarioBD();
-                boolean registrado = u.registrarMascota(pe);
-                //En caso de que se haya podido registrar
-                if (registrado == true) {
+                UsuarioBD usuarioBD = new UsuarioBD();
+                boolean registrado = usuarioBD.registrarMascota(pe);
+                if (registrado) {
                     misesion.removeAttribute("miniaturaperro");
                     misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
-                    //Peticion hecha desde la pagina
                     if (place.equals("page")) {
                         String men = "Registro correcto";
-                        //misesion.setAttribute("miniaturaperro", miniaturaMascota(request, response));
-                        response.sendRedirect("JSP/cliente/home.jsp" + men + "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
-
-                        //Peticion hecha desde la app    
+                        response.sendRedirect("JSP/cliente/home.jsp" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());  
                     } else if (place.equals("app")) {
-                        //Codigo xdxd
-                    }
-                    //En caso de que no se haya podido registrar    
+                        
+                    }    
                 } else {
                     if (place.equals("page")) {
                         String men = "Error al registrar";
                         response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
                     } else if (place.equals("app")) {
-                        //Codigo de la app
+                        
                     }
                 }
             }
         }
     }
 
-    private void productosDisponibles(HttpServletRequest request, HttpServletResponse response) {
-        //UsuarioBD u = new UsuarioBD();
-        ArrayList<Producto> pros = UsuarioBD.obtenerProductos();
-
-        //Respuesta por la peticion de la app, 
-        if (request.getParameter("place") == "app") {
-            //Enviar arraylist obtenida como json 
-        }
+    private void obtenerProductos(HttpServletRequest request, HttpServletResponse response) {
+       
     }
 
     private String validarTel(String tel_clie) {
@@ -580,13 +470,11 @@ public class Cliente extends HttpServlet {
         String comparar = "0123456789";
         for (int i = 0; i < tel_clie.length(); i++) {
             for (int j = 0; j < comparar.length(); j++) {
-                System.out.println("sf " + j);
                 if (tel_clie.charAt(i) == comparar.charAt(j)) {
                     contador++;
                 }
             }
         }
-        System.out.println(contador + " contador");
         if (contador == 8 || contador == 10) {
             return tel_clie;
         } else {
@@ -601,7 +489,7 @@ public class Cliente extends HttpServlet {
 
     }
 
-    private void eliminarM(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void eliminarMascota(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String correo = (String) request.getSession().getAttribute("correo");
         String mascota = request.getParameter("mascota");
         if (mascota != null) {
@@ -616,7 +504,7 @@ public class Cliente extends HttpServlet {
                 f.delete();
                 if (request.getParameter("place").equals("page")) {
                     String men = "Se ha eliminado " + mascota;
-                    response.sendRedirect("JSP/cliente/home.jsp?=" + men+ "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
+                    response.sendRedirect("JSP/cliente/home.jsp?=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
 
                 } else if (request.getParameter("place").equals("app")) {
 
@@ -627,19 +515,15 @@ public class Cliente extends HttpServlet {
         }
     }
 
-    private void editarM(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void editarMascota(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession misesion = (HttpSession) request.getSession();
         String correo = (String) misesion.getAttribute("correo");
-
-        System.out.println("correo sesion mascota " + correo);
         String place = request.getParameter("place");
-        //En caso de no haber iniciado sesion
         if (correo == null) {
             if (place.equals("page")) {
                 response.sendRedirect("HTML/SesionUsuario.html");
             }
         } else {
-            //Verificamos que se hayan llenado todos los campos
             String nombre = request.getParameter("nomp");
             String nacimiento = request.getParameter("fecha");//aaaa-mm-dd
             String genero = request.getParameter("generop");
@@ -654,19 +538,14 @@ public class Cliente extends HttpServlet {
                     System.out.println(filePart.getContentType());
                     System.out.println(context + "\\" + correo + "\\" + nombre + ".png");
                     filecontent = filePart.getInputStream();
-
                     OutputStream os = new FileOutputStream(context + "\\" + correo + "\\" + nombre + ".png");
                     System.out.println(context + "\\" + correo + "\\" + nombre + ".png");
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
                     int read = 0;
                     final byte[] bytes = new byte[1024];
-
                     while ((read = filecontent.read(bytes)) != -1) {
                         os.write(bytes, 0, read);
                     }
                     filecontent.close();
-                    //flush OutputStream to write any buffered data to file
                     os.flush();
                     os.close();
 
@@ -688,56 +567,49 @@ public class Cliente extends HttpServlet {
                     System.out.println(genero);
                     System.out.println(talla);
                     String men = "Llena todos los campos";
-                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
+                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
                 } else if (place.equals("app")) {
 
                 }
             } else {
                 if (filecontent != null) {
-                    Perro pe = new Perro();
-                    pe.setNombre(nombre);
-                    pe.setNac(nacimiento);
+                    Perro perro = new Perro();
+                    perro.setNombre(nombre);
+                    perro.setNacimiento(nacimiento);
                     if (genero.equals("Macho")) {
-                        pe.setGenero(true);//true macho
+                        perro.setGenero(true);//true macho
                     } else {
-                        pe.setGenero(false);//false hembra
+                        perro.setGenero(false);//false hembra
                     }
-                    pe.setTalla(talla);
-                    pe.setDueno(correo);
-                    pe.setArchivoimg(context + "\\" + correo + "\\" + nombre + ".png");
+                    perro.setTalla(talla);
+                    perro.setDueno(correo);
+                    perro.setArchivoimg(context + "\\" + correo + "\\" + nombre + ".png");
                     File imgcambiar = new File(context + "\\" + correo + "\\" + request.getParameter("mascota") + ".png");
                     imgcambiar.renameTo(new File(context + "\\" + correo + "\\" + nombre + ".png"));
 
-                    UsuarioBD u = new UsuarioBD();
-                    boolean editado = u.editarMascota(pe, request.getParameter("mascota"));
-                    //En caso de que se haya podido registrar
+                    UsuarioBD usuarioBD = new UsuarioBD();
+                    boolean editado = usuarioBD.editarMascota(perro, request.getParameter("mascota"));
                     if (editado == true) {
                         misesion.removeAttribute("miniaturaperro");
                         misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
-                        //Peticion hecha desde la pagina
                         if (place.equals("page")) {
                             String men = "Editado correcto";
-                            //misesion.setAttribute("miniaturaperro", miniaturaMascota(request, response));
-                            response.sendRedirect("JSP/cliente/home.jsp" + men + "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
-
-                            //Peticion hecha desde la app    
+                            response.sendRedirect("JSP/cliente/home.jsp" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
                         } else if (place.equals("app")) {
-                            //Codigo xdxd
-                        }
-                        //En caso de que no se haya podido registrar    
+
+                        }  
                     } else {
                         if (place.equals("page")) {
                             String men = "Error al editar";
                             response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
                         } else if (place.equals("app")) {
-                            //Codigo de la app
                         }
                     }
                 } else {
                     //no hay imagen
                     Perro pe = new Perro();
                     pe.setNombre(nombre);
-                    pe.setNac(nacimiento);
+                    pe.setNacimiento(nacimiento);
                     if (genero.equals("Macho")) {
                         pe.setGenero(true);//true macho
                     } else {
@@ -748,21 +620,13 @@ public class Cliente extends HttpServlet {
                     File imgcambiar = new File(context + "\\" + correo + "\\" + request.getParameter("mascota") + ".png");
                     imgcambiar.renameTo(new File(context + "\\" + correo + "\\" + nombre + ".png"));
                     UsuarioBD u = new UsuarioBD();
-                    boolean editado = u.editarMascota(pe, request.getParameter("mascota"));
-
-                    //En caso de que se haya podido registrar
-                    if (editado == true) {
+                    if (u.editarMascota(pe, request.getParameter("mascota"))) {
                         misesion.removeAttribute("miniaturaperro");
                         misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
-                        //Peticion hecha desde la pagina
                         if (place.equals("page")) {
                             String men = "Registro correcto";
-                            //misesion.setAttribute("miniaturaperro", miniaturaMascota(request, response));
-                            response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
-
-                            //Peticion hecha desde la app    
+                            response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());    
                         } else if (place.equals("app")) {
-                            //Codigo app xdxd
                         }
                         //En caso de que no se haya podido registrar    
                     } else {
@@ -770,7 +634,6 @@ public class Cliente extends HttpServlet {
                             String men = "Error al registrar";
                             response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
                         } else if (place.equals("app")) {
-                            //Codigo de la app
                         }
                     }
                 }
@@ -778,7 +641,7 @@ public class Cliente extends HttpServlet {
         }
     }
 
-    private void agendarC(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void agendarCita(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //vaciar variables
         HttpSession misesion = (HttpSession) request.getSession();
         String correo = (String) misesion.getAttribute("correo");
@@ -798,7 +661,7 @@ public class Cliente extends HttpServlet {
         } else {
             if (fecha.equals("") || hora.equals("") || mascota.equals("") || servicio.equals("")) {
                 if (request.getParameter("place").equals("page")) {
-                    response.sendRedirect("home.jsp" + "id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
+                    response.sendRedirect("home.jsp" + "id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
                 } else if (request.getParameter("app").equals("app")) {
 
                 }
@@ -820,8 +683,8 @@ public class Cliente extends HttpServlet {
                         System.out.println("entro a la respuesta pagina");
                         misesion.removeAttribute("miniaturacitas");
                         misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));
-                        String men="Cita enviada, espera la respuesta de confirmacion";
-                        response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String)request.getSession().getAttribute("correo")).get(0).getMascota());
+                        String men = "Cita enviada, espera la respuesta de confirmacion";
+                        response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
                     } else if (request.getParameter("app").equals("app")) {
 
                     }
@@ -830,16 +693,17 @@ public class Cliente extends HttpServlet {
             }
         }
     }
+
     public ArrayList<Cita> miniaturaCita(String correo) throws IOException {
         UsuarioBD usu = new UsuarioBD();
         ArrayList<Cita> citas = usu.consutarMiniaturaCita(correo);
         return citas;
     }
-    
-    public ArrayList<Servicio> servicios(){
+
+    public ArrayList<Servicio> servicios() {
         UsuarioBD usu = new UsuarioBD();
-        ArrayList<Servicio> servicios= usu.consultarServicios();
+        ArrayList<Servicio> servicios = usu.consultarServicios();
         return servicios;
     }
-    
+
 }

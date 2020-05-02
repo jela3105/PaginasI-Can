@@ -31,19 +31,19 @@ public class UsuarioBD {
 
         try {
             PreparedStatement ps = cn.prepareStatement("INSERT INTO usuario VALUES (?,?,?)");
-            ps.setString(1, usu.getCor());
-            ps.setString(2, usu.getCon());
-            ps.setInt(3, usu.getTip());
+            ps.setString(1, usu.getCorreo());
+            ps.setString(2, usu.getContraseña());
+            ps.setInt(3, usu.getTipoUsuario());
             int i = ps.executeUpdate();
 
             //En caso de que se haya podido agregar el usuario correctamente
             if (i == 1) {
 
                 PreparedStatement ps1 = cn.prepareStatement("INSERT INTO persona (nom_pers,tel_pers,dir_pers,cor_usu) VALUES (?,?,?,?)");
-                ps1.setString(1, usu.getNom());
-                ps1.setString(2, usu.getTel());
-                ps1.setString(3, usu.getDir());
-                ps1.setString(4, usu.getCor());
+                ps1.setString(1, usu.getNombre());
+                ps1.setString(2, usu.getTelefono());
+                ps1.setString(3, usu.getDireccion());
+                ps1.setString(4, usu.getCorreo());
                 int j = ps1.executeUpdate();
                 if (j == 1) {
                     resp = true;
@@ -57,7 +57,7 @@ public class UsuarioBD {
         return resp;
     }
 
-    public static Usuario VerificarUsuario(String correo) {
+    public static Usuario verificarUsuario(String correo) {
         Usuario usu = new Usuario();
 
         Connection cn;
@@ -70,9 +70,9 @@ public class UsuarioBD {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                usu.setCor(rs.getString("cor_usu"));
-                usu.setCon(rs.getString("con_usu"));
-                usu.setTip(Integer.parseInt(rs.getString("id_tip")));
+                usu.setCorreo(rs.getString("cor_usu"));
+                usu.setContraseña(rs.getString("con_usu"));
+                usu.setTipoUsuario(Integer.parseInt(rs.getString("id_tip")));
             }
 
         } catch (Exception e) {

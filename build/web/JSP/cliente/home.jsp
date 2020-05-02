@@ -138,8 +138,8 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12 m12">
-                                <input type="hidden" name="place" value="pag">
-                                <input type="hidden" name="accion" value="registrarM">
+                                <input type="hidden" name="place" value="page">
+                                <input type="hidden" name="action" value="registrarMascota">
                                 <input type=submit value='Aceptar' class="btn">
                             </div>
                         </div>
@@ -207,7 +207,38 @@
                 </tbody>
             </table>                
         </section>   
-       
+       <div id="Infocita" class="overlay">
+        <div id="popupBody">
+
+            <h2>Informacion cita: <%out.print(request.getParameter("codigo"));%></h2>
+            <a id="cerrar" href="#">&times;</a>
+            <div class="popupContent">
+
+                <%
+                    Cita cita = new Cita();
+                    out.print(request.getParameter("codigo"));
+                    for(int i=0;i<citas.size();i++){
+                        if(citas.get(i).getCodigo().equals(request.getParameter("codigo"))){
+                            cita = citas.get(i);
+                            System.out.println("coincidio");
+                        }else{
+                            System.out.println("nohay");
+                        }
+                    }
+                %>
+                <form action="..\..\Cliente" method="post">
+
+                    <input type="date" name='fechacita' disabled value="<%out.print(cita.getFecha().substring(0,10).replace('/','-'));%>">
+                    <input type="time" name="horacita" disable value="<%out.print(cita.getHora());%>">
+                    <input type="hidden" value="editarC" name="accion">
+                    <input type="hidden" value="<%out.print(request.getParameter("id"));%>" name="mascota">
+                    <input type="hidden" value="pag" name="place">
+                    <br>
+                    <input type="submit" value="Agendar">
+                </form>
+                <a href="#"><input type="button" value="Cancelar"></a>
+            </div>        
+        </div>
                     
 </body>
 </html>

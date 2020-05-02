@@ -26,7 +26,7 @@ public class Perro {
         this.id = id;
     }
     String nombre;
-    String nac;
+    String nacimiento;
     boolean genero;
     String talla;
     int codigos;
@@ -50,12 +50,12 @@ public class Perro {
         this.nombre = nombre;
     }
 
-    public String getNac() {
-        return nac;
+    public String getNacimiento() {
+        return nacimiento;
     }
 
-    public void setNac(String nac) {
-        this.nac = nac;
+    public void setNacimiento(String nac) {
+        this.nacimiento = nac;
     }
 
     public boolean getGenero() {

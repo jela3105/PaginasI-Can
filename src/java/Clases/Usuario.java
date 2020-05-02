@@ -11,71 +11,69 @@ package Clases;
  */
 public class Usuario {
     
-    String nom;
-    String ape;
-    String dir;
-    String cor;
-    String tel;
-    String con;
-    int tip;
+    private String nombre;
+    private String apellido;
+    private String direccion;
+    private String correo;
+    private String telefono;
+    private String contraseña;
+    private int tipoUsuario;
 
-    public int getTip() {
-        return tip;
-    }
-
-    public void setTip(int tip) {
-        this.tip = tip;
-    }
-    public Usuario(){
-    
-}
-    public String getNom() {
-        return nom;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getApe() {
-        return ape;
+    public String getApellido() {
+        return apellido;
     }
 
-    public void setApe(String ape) {
-        this.ape = ape;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
-    public String getDir() {
-        return dir;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setDir(String dir) {
-        this.dir = dir;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
-    public String getCor() {
-        return cor;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setCor(String cor) {
-        this.cor = cor;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
-    public String getTel() {
-        return tel;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setTel(String tel) {
-        this.tel = tel;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    public String getCon() {
-        return con;
+    public String getContraseña() {
+        return contraseña;
     }
 
-    public void setCon(String con) {
-        this.con = con;
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
- 
+
+    public int getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(int tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
     
 }
