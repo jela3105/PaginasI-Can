@@ -1,4 +1,3 @@
-
 package Clases;
 
 /**
@@ -10,19 +9,19 @@ package Clases;
 public class Cita {
 
     //correo del cliente
-    String cliente;
+    private String cliente;
     //fecha que se programo la cita
-    String fecha;
+    private String fecha;
     //hora en que se programo la cita
-    String hora;
+    private String hora;
     //true: completada; false:pendiente
-    boolean estado;
+    private boolean estado;
     //codigo identificador de la cita
-    String codigo;
+    private String codigo;
     //fecha en que se finalizo la cita
-    String fincita;
+    private String fincita;
     //mascota que va a tener la cita
-    String mascota;
+    private String mascota;
 
     public String getCliente() {
         return cliente;
@@ -83,14 +82,14 @@ public class Cita {
     /**
      * Este metodo genera el codido de la cita que se esta programando
      *
-     * @return: Codigo de identificacion de la cita 
+     * @return: Codigo de identificacion de la cita
      */
     public String generarCodigo() {
-        return fecha.substring(2, 4) + 
-                cliente.substring(0, 5) + 
-                mascota.substring(0, 3) + 
-                fecha.substring(5, 7) + 
-                fecha.substring(8, 10) + 
-                hora.substring(0, 2) + hora.substring(3, 5);
+        return fecha.substring(2, 4)
+                + cliente.substring(0, 5)
+                + mascota.substring(0, 3)
+                + fecha.substring(5, 7)
+                + fecha.substring(8, 10)
+                + hora.substring(0, 2) + hora.substring(3, 5);
     }
 }

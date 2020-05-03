@@ -58,14 +58,14 @@
                 <form action="..\Cliente" method="post" class="col s12 m7 l7">
                     <div class="row">
                         <div class="input-field col s12 m12">
-                            <input id="corr_compara" name="corr_compara" type="text" >
-                            <label for="corr_compara">Ingresa tu correo electrónico</label>
+                            <input id="correo" name="corr_compara" type="text" >
+                            <label for="correo">Ingresa tu correo electrónico</label>
                         </div>                                                                                                               
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="contra_compara" name="contra_compara" type="password" >
-                            <label for="contra_compara">Ingresa tu contraseña</label>
+                            <input id="contra" name="contra_compara" type="password" >
+                            <label for="contra">Ingresa tu contraseña</label>
                         </div>                             
                     </div>
                     <div>

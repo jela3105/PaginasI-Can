@@ -92,7 +92,7 @@ public class UsuarioBD {
             PreparedStatement ps = cn.prepareStatement("INSERT INTO perro(nom_per,fot_per,nac_per,gen_per,tall_per,cod_per,cor_usu) VALUES (?,?,?,?,?,?,?)");
             ps.setString(1, per.getNombre());
             ps.setString(2, per.getArchivoimg());
-            ps.setString(3, per.getNac());
+            ps.setString(3, per.getNacimiento());
             if (genero == true) {
                 //Macho
                 ps.setInt(4, 1);
@@ -154,7 +154,7 @@ public class UsuarioBD {
                 perro.setNombre(rs.getString("nom_per"));
                 perro.setArchivoimg(rs.getString("fot_per"));
                 perro.setGenero(rs.getBoolean("gen_per"));
-                perro.setNac(rs.getString("nac_per"));
+                perro.setNacimiento(rs.getString("nac_per"));
                 perro.setTalla(rs.getString("tall_per"));
                 //perro.setCodigos(rs.getInt("cod_per"));
                 obtenido.add(perro);
@@ -204,7 +204,7 @@ public class UsuarioBD {
                 PreparedStatement ps = cn.prepareStatement(" UPDATE perro SET nom_per=?, fot_per=?, nac_per=?, gen_per=?, tall_per=? WHERE nom_per=? AND cor_usu=?;");
                 ps.setString(1, pe.getNombre());
                 ps.setString(2, pe.getArchivoimg());
-                ps.setString(3, pe.getNac());
+                ps.setString(3, pe.getNacimiento());
                 if (genero == true) {
                     //Macho
                     ps.setInt(4, 1);
@@ -228,7 +228,7 @@ public class UsuarioBD {
                 boolean genero = pe.getGenero();
                 PreparedStatement ps = cn.prepareStatement(" UPDATE perro SET nom_per=?, nac_per=?, gen_per=?, tall_per=? WHERE nom_per=? AND cor_usu=?;");
                 ps.setString(1, pe.getNombre());
-                ps.setString(2, pe.getNac());
+                ps.setString(2, pe.getNacimiento());
                 if (genero == true) {
                     //Macho
                     ps.setInt(3, 1);

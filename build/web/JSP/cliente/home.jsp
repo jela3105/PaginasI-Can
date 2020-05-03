@@ -21,43 +21,7 @@
         <!-- Compiled and minified JavaScript -->
         <script src="../../JS/materialize.min.js"></script>  
         <script src="../../JS/Efectos.js"></script>
-        <style>
-            .overlay {
-                position: fixed;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: rgba(0, 0, 0, 0.7);
-                transition: opacity 500ms;
-                visibility: hidden;
-                opacity: 0;
-            }
-            .overlay:target {
-                visibility: visible;
-                opacity: 1;
-            }
-            #popupBody{
-                width: 46%;
-                padding: 2%;
-                border-radius: 15px;
-                box-shadow: 0 0 5px #CCC;
-                background: #FFF;
-                position: relative;
-                transition: all 5s ease-in-out;
-                margin: 4% auto;    
-            }
-            #cerrar{
-                position: absolute;
-                top: 20px;
-                right: 30px;
-                transition: all 200ms;
-                font-size: 30px;
-                font-weight: bold;
-                text-decoration: none;
-                color: #F00;
-            }
-        </style>
+       
     </head>
     <body>
         <script type="text/javascript">
@@ -225,11 +189,12 @@
                             System.out.println("nohay");
                         }
                     }
+                    String fecha = cita.getFecha().substring(6,10) + "-" +cita.getFecha().substring(0,2) + "-" + cita.getFecha().substring(3,5);
+                    String hora = cita.getHora().substring(0,5);
                 %>
                 <form action="..\..\Cliente" method="post">
-
-                    <input type="date" name='fechacita' disabled value="<%out.print(cita.getFecha().substring(0,10).replace('/','-'));%>">
-                    <input type="time" name="horacita" disable value="<%out.print(cita.getHora());%>">
+                    <input type="date" name='fechacita' disabled value="<%out.print(fecha);%>">
+                    <input type="time" name="horacita" disable value="<%out.print(hora);%>">
                     <input type="hidden" value="editarC" name="accion">
                     <input type="hidden" value="<%out.print(request.getParameter("id"));%>" name="mascota">
                     <input type="hidden" value="pag" name="place">
