@@ -445,7 +445,7 @@ public class Cliente extends HttpServlet {
                     misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
                     if (place.equals("page")) {
                         String men = "Registro correcto";
-                        response.sendRedirect("JSP/cliente/home.jsp" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());  
+                        response.sendRedirect("JSP/cliente/home.jsp?mans=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());  
                     } else if (place.equals("app")) {
                         
                     }    
