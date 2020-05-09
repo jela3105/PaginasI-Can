@@ -15,13 +15,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var instances = M.FormSelect.init(elems);
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
-});
+function abrirModal(modal) {
+                const elem = document.getElementById(modal);
+                const instance = M.Modal.init(elem);
+                instance.open();
+            }
 
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
-  });
-  
+
+

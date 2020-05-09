@@ -26,16 +26,10 @@
         </style>
     </head>
 
-    <body>
+    <body onload="javascript:abrirModal('<%= request.getParameter("modal") %>')">
         <script type="text/javascript">
-            $(document).ready(function () {
-                setTimeout(function () {
-                    $(".mensaje").fadeOut(3000);
-                }, 3000);
-            });
-
+               
         </script>
-
         <header>
             <nav class="responsive-table red">
                 <div class="nav-wrapper">
@@ -74,7 +68,7 @@
                         Citas finalizadas <%=perro.get(i).getCodigos()%>
                         <img src="../../Img/<%=request.getSession().getAttribute("correo") + "/" + perro.get(i).getNombre() + terminacion%>" width='300' height='150'>
                         <a class="modal-trigger" href="#Editar"><input type="button" value="Editar" class="btn-small yellow darken-2"></a>
-                        <a href="home.jsp?id=<%=perro.get(i).getNombre()%>#Agendarcita"><input type="button" value="Agendar cita" class="btn-small"></a>
+                        <a href="home.jsp?id=<%=perro.get(i).getNombre()%>#Infocita"><input type="button" value="Agendar cita" class="btn-small"></a>
                     </article>
                     <%
                         }
@@ -119,17 +113,17 @@
                                     }
                                 %>
 
-                                <td><a href="#Infocita" class="modal-trigger" onclick="" ><img src="../../Img/informacioncita.jpg" with="30" height="30" alt="Mas información"/></a></td>
-                            </tr>
-                            <%
-                                }
-                            } else {
-                            %>
-                        <h3>No hay citas registradas</h3>
-                        <%
-                            }
-                            //<input type=\"button\" value=\"Editar cita\" class=\"btn-small yellow darken-2\">
-                        %>
+                                <td><a href="home.jsp?id=<%=citas.get(i).getMascota()%>&codigo=<%=citas.get(i).getCodigo()%>&modal=Infocita"><img src="../../Img/informacioncita.jpg" with="30" height="30" alt="Mas información" ></td>
+                                        </tr>
+                                        <%
+                                            }
+                                        } else {
+                                        %>
+                                        <h3>No hay citas registradas</h3>
+                                        <%
+                                            }
+                                            //<input type=\"button\" value=\"Editar cita\" class=\"btn-small yellow darken-2\">
+                                        %>
                         </tbody>
                     </table>  
                 </div>
@@ -162,7 +156,7 @@
                         <div class="input-field col s12 m12">
                             <select name="tallap">
                                 <option disabled selected>Selecciona</option>
-                                <option >Pequeño</option>
+                                <option >Chico</option>
                                 <option >Mediano</option>
                                 <option >Grande</option>
                                 <option >Gigante</option>
@@ -288,11 +282,12 @@
                             if (citas.get(i).getCodigo().equals(request.getParameter("codigo"))) {
                                 cita = citas.get(i);
                             } else {
-                                
+
                             }
                         }
                         fecha = cita.getFecha().substring(6, 10) + "-" + cita.getFecha().substring(0, 2) + "-" + cita.getFecha().substring(3, 5);
                         hora = cita.getHora().substring(0, 5);
+
                     }
                 %>
                 <div class="modal-content">
@@ -338,5 +333,14 @@
                 </div>
             </div>
         </footer>
+        <script>
+            
+            function abrirModal(modal) {
+                const elem = document.getElementById(modal);
+                const instance = M.Modal.init(elem);
+                instance.open();
+            }
+            
+        </script>
     </body>
 </html>

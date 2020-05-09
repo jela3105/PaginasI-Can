@@ -29,6 +29,7 @@
                     $(".mensaje").fadeOut(3000);
                 }, 3000);
             });
+            
         </script>
         <p class="mensaje">
             <%
