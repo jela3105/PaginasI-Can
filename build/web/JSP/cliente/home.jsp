@@ -35,15 +35,7 @@
             });
 
         </script>
-        <p class="mensaje">
-            <%
-                String fecha = "0";
-                String hora = "0";
-                if (request.getParameter("mens") != null) {
-                    out.println(request.getParameter("mens"));
-                }
-            %>
-        </p>        
+
         <header>
             <nav class="responsive-table red">
                 <div class="nav-wrapper">
@@ -76,23 +68,25 @@
                             for (int i = 0; i < perro.size(); i++) {
                                 String archivo = perro.get(i).getArchivoimg().toString();
                                 String terminacion = archivo.substring(archivo.length() - 4, archivo.length());
-                                out.println("<article " + "id=\"" + perro.get(i).getNombre() + "\"" + ">");
-                                out.println("<h5>" + perro.get(i).getNombre() + "</h5>");
-                                out.println("Citas realizadas " + perro.get(i).getCodigos());
-                                out.println("<img src= ../../Img/" + request.getSession().getAttribute("correo") + "/" + perro.get(i).getNombre() + terminacion + " width='300' height='150'>");
-                                out.println(" <a class=\"modal-trigger\" href=\"#Editar\"><input type=\"button\" value=\"Editar\" class=\"btn-small yellow darken-2\"></a>");
-                                out.println("<a href=\"home.jsp?id=" + perro.get(i).getNombre() + "#Agendarcita\"><input type=\"button\" value=\"Agendar cita\" class=\"btn-small\"></a>");
-                                out.println("</article>");
-                            }
-                        } else {
-                            out.print("No hay mascotas");
+                    %>
+                    <article id="<%=perro.get(i).getNombre()%>">
+                        <h5><%=perro.get(i).getNombre()%></h5>
+                        Citas finalizadas <%=perro.get(i).getCodigos()%>
+                        <img src="../../Img/<%=request.getSession().getAttribute("correo") + "/" + perro.get(i).getNombre() + terminacion%>" width='300' height='150'>
+                        <a class="modal-trigger" href="#Editar"><input type="button" value="Editar" class="btn-small yellow darken-2"></a>
+                        <a href="home.jsp?id=<%=perro.get(i).getNombre()%>#Agendarcita"><input type="button" value="Agendar cita" class="btn-small"></a>
+                    </article>
+                    <%
                         }
-
+                    } else {
+                    %>
+                    No hay mascotas
+                    <%
+                        }
                     %>
                 </div>     
                 <div class="col s12 m8 l7 ">
                     <h4>MIS CITAS</h4>
-                    ffff
                     <table>
                         <thead>
                             <tr>                        
@@ -122,16 +116,20 @@
                                 %>
                                 <td>No confirmada</td>
                                 <%
-                                }
-
-                                            out.println("<td><a href=\"#Infocita\" class=\"modal-trigger\" onclick=\"\" ><img src=\"../../Img/informacioncita.jpg\" with=\"30\" height=\"30\" alt=\"Mas información\" /></a></td>");
-                                            out.println("</tr>");
-                                        }
-                                    } else {
-                                        out.print("<h3>No hay citas registradas</h3>");
                                     }
-                                    //<input type=\"button\" value=\"Editar cita\" class=\"btn-small yellow darken-2\">
                                 %>
+
+                                <td><a href="#Infocita" class="modal-trigger" onclick="" ><img src="../../Img/informacioncita.jpg" with="30" height="30" alt="Mas información"/></a></td>
+                            </tr>
+                            <%
+                                }
+                            } else {
+                            %>
+                        <h3>No hay citas registradas</h3>
+                        <%
+                            }
+                            //<input type=\"button\" value=\"Editar cita\" class=\"btn-small yellow darken-2\">
+                        %>
                         </tbody>
                     </table>  
                 </div>
@@ -150,7 +148,7 @@
                         </div>                                                                                                               
                     </div>     
                     <div class="row">
-                        <div class="input-field col s12 m6">
+                        <div class="input-field col s12 m12">
                             <select name="generop">
                                 <option disabled selected>Selecciona</option>
                                 <option>Macho</option>
@@ -161,7 +159,7 @@
 
                     </div>  
                     <div class="row">
-                        <div class="input-field col s12 m6">
+                        <div class="input-field col s12 m12">
                             <select name="tallap">
                                 <option disabled selected>Selecciona</option>
                                 <option >Pequeño</option>
@@ -282,15 +280,15 @@
 
             <div id="Infocita" class="modal">
 
-                <%
+                <%  String fecha = "0";
+                    String hora = "0";
                     if (request.getParameter("codigo") != null) {
                         Cita cita = new Cita();
                         for (int i = 0; i < citas.size(); i++) {
                             if (citas.get(i).getCodigo().equals(request.getParameter("codigo"))) {
                                 cita = citas.get(i);
-                                System.out.println("coincidio");
                             } else {
-                                System.out.println("nohay");
+                                
                             }
                         }
                         fecha = cita.getFecha().substring(6, 10) + "-" + cita.getFecha().substring(0, 2) + "-" + cita.getFecha().substring(3, 5);
