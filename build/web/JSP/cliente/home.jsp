@@ -33,9 +33,19 @@
                     $(".mensaje").fadeOut(3000);
                 }, 3000);
             });
+            document.addEventListener('DOMContentLoaded', function () {
+                var elems = document.querySelectorAll('.modal');
+                var instances = M.Modal.init(elems)
+            });
+            function abrirModal() {
+
+                instance.open();
+            }
         </script>
         <p class="mensaje">
             <%
+                String fecha="0";
+                String hora="0";
                 if (request.getParameter("mens") != null) {
                     out.println(request.getParameter("mens"));
                 }
@@ -113,6 +123,7 @@
                                         } else {
                                             out.print("<td>No confirmada</td>");
                                         }
+
                                         out.println("<td><a href=\"#Infocita\" class=\"modal-trigger\" onclick=\"\" ><img src=\"../../Img/informacioncita.jpg\" with=\"30\" height=\"30\" alt=\"Mas información\" /></a></td>");
                                         out.println("</tr>");
                                     }
@@ -259,7 +270,7 @@
                         </select>
                         <h3>Foto</h3>
                         <input type="file" name="imagenp" accept="image/x-png,image/gif,image/jpeg" >
-                        <input type="hidden" value="editarM" name="accion">
+                        <input type="hidden" value="editarMascota" name="action">
                         <input type="hidden" value="<%out.print(request.getParameter("id"));%>" name="mascota">
                         <input type="hidden" value="pag" name="place">
                         <br>
@@ -268,26 +279,30 @@
                     <a href="#"><input type="button" value="Cancelar"></a>
                 </div> 
             </div>
+
             <div id="Infocita" class="modal">
-                <h2>Informacion cita: <%out.print(request.getParameter("codigo"));%></h2>
-                <div class="modal-content">
-                    <%  Cita cita = new Cita();
-                        out.print(request.getParameter("codigo"));
-                        for (int i = 0; i < citas.size(); i++) {
-                            if (citas.get(i).getCodigo().equals(request.getParameter("codigo"))) {
-                                cita = citas.get(i);
-                                System.out.println("coincidio");
-                            } else {
-                                System.out.println("nohay");
-                            }
+                
+                <% 
+                    if(request.getParameter("codigo")!=null){
+                    Cita cita = new Cita();
+                    for (int i = 0; i < citas.size(); i++) {
+                        if (citas.get(i).getCodigo().equals(request.getParameter("codigo"))) {
+                            cita = citas.get(i);
+                            System.out.println("coincidio");
+                        } else {
+                            System.out.println("nohay");
                         }
-                        %>
-                        <%
-                           
-                        %>
+                    }
+                    fecha=cita.getFecha().substring(6, 10) + "-" + cita.getFecha().substring(0, 2) + "-" + cita.getFecha().substring(3, 5);
+                    hora = cita.getHora().substring(0, 5);
+                    }
+                    %>
+                <div class="modal-content">
+                    <h2>Informacion cita: <%out.print(request.getParameter("codigo"));%></h2>
+
                     <form action="..\..\Cliente" method="post">
-                        <input type="date" name='fechacita' disabled value="<%out.print("");%>">
-                        <input type="time" name="horacita" disable value="<%out.print("");%>">
+                        <input type="date" name='fechacita' disabled value="<%out.print(fecha);%>">
+                        <input type="time" name="horacita" disable value="<%out.print(hora);%>">
                         <input type="hidden" value="editarC" name="accion">
                         <input type="hidden" value="<%out.print(request.getParameter("id"));%>" name="mascota">
                         <input type="hidden" value="pag" name="place">

@@ -92,4 +92,7 @@ public class Cita {
                 + fecha.substring(8, 10)
                 + hora.substring(0, 2) + hora.substring(3, 5);
     }
+    public void formatoFechaPagina(){
+        System.out.println(getFecha().substring(6, 10) + "-" + getFecha().substring(0, 2) + "-" + getFecha().substring(3, 5));
+    }
 }
