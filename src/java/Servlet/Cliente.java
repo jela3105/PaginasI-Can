@@ -116,8 +116,6 @@ public class Cliente extends HttpServlet {
     }// </editor-fold>
 
     private void altaCliente(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("llegaste al metodo altaCliente");
-
         String nombre = request.getParameter("nom_clie");
         String apellido = request.getParameter("ape_clie");
         String direccion = request.getParameter("dir_clie");
@@ -524,10 +522,10 @@ public class Cliente extends HttpServlet {
                 response.sendRedirect("HTML/SesionUsuario.html");
             }
         } else {
-            String nombre = request.getParameter("nomp");
-            String nacimiento = request.getParameter("fecha");//aaaa-mm-dd
-            String genero = request.getParameter("generop");
-            String talla = request.getParameter("tallap");
+            String nombre = request.getParameter("nombreperro");
+            String nacimiento = request.getParameter("fechanacimiento");//aaaa-mm-dd
+            String genero = request.getParameter("generoperro");
+            String talla = request.getParameter("tallaperro");
             InputStream filecontent = null;
             String context = request.getServletContext().getRealPath("/Img");
             try {
@@ -685,7 +683,7 @@ public class Cliente extends HttpServlet {
                         misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));
                         String men = "Cita enviada, espera la respuesta de confirmacion";
                         response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
-                    } else if (request.getParameter("app").equals("app")) {
+                    } else if (request.getParameter("place").equals("app")) {
 
                     }
                 }

@@ -21,26 +21,21 @@
         <!-- Compiled and minified JavaScript -->
         <script src="../../JS/materialize.min.js"></script>  
         <script src="../../JS/Efectos.js"></script>
-        <style>
 
-        </style>
     </head>
 
-    <body onload="javascript:abrirModal('<%= request.getParameter("modal") %>')">
-        <script type="text/javascript">
-               
-        </script>
+    <body onload="javascript:abrirModal('<%= request.getParameter("modal")%>')">
         <header>
             <nav class="responsive-table red">
                 <div class="nav-wrapper">
-                    <a href="" class="brand-logo">Can-Contento</a>
+                    <a href="home.jsp" class="brand-logo">Can-Contento</a>
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li class="active"><a  href="home.jsp">Home</a></li>
-                        <li class="menu__item"><a href="Servicios.jsp">Servicios</a></li>
-                        <li class="menu__item"><a href="Perfil.jsp">Mi perfil</a></li>
-                        <li class="menu__item"><a href="Notificaciones.jsp">Notificaciones</a></li>
+                        <li class=""><a href="Servicios.jsp">Servicios</a></li>
+                        <li class=""><a href="Perfil.jsp">Mi perfil</a></li>
+                        <li class=""><a href="Notificaciones.jsp">Notificaciones</a></li>
                     </ul>
                 </div>
 
@@ -52,7 +47,7 @@
                 <li class="menu__item"><a href="Notificaciones.jsp">Notificaciones</a></li>
             </ul>
         </header>        
-        <section id="agregarM">                
+        <section>                
             <div class="row" sty>                                
                 <div class="col s12 m8 l3" >
                     <h4>MIS MASCOTAS</h4>
@@ -67,8 +62,8 @@
                         <h5><%=perro.get(i).getNombre()%></h5>
                         Citas finalizadas <%=perro.get(i).getCodigos()%>
                         <img src="../../Img/<%=request.getSession().getAttribute("correo") + "/" + perro.get(i).getNombre() + terminacion%>" width='300' height='150'>
-                        <a class="modal-trigger" href="#Editar"><input type="button" value="Editar" class="btn-small yellow darken-2"></a>
-                        <a href="home.jsp?id=<%=perro.get(i).getNombre()%>#Infocita"><input type="button" value="Agendar cita" class="btn-small"></a>
+                        <a class="modal-trigger" href="home.jsp?id=<%=perro.get(i).getNombre()%>&modal=Editar"><input type="button" value="Editar" class="btn-small yellow darken-2"></a>
+                        <a href="home.jsp?id=<%=perro.get(i).getNombre()%>&modal=Agendarcita"><input type="button" value="Agendar cita" class="btn-small"></a>
                     </article>
                     <%
                         }
@@ -189,28 +184,9 @@
             </div>               
         </section>
         <section>
-            <button class="btn modal-trigger blue" data-target="idModal2">Botondemodalalv</button>
-            <a href="#Modalxd" class="btn modal-trigger red">AnclaModalalv</a>
-            <div id="Modalxd" class="modal">
-                <div class="modal-content">
-                    <p>Este es el modal jajjas</p>    
-                </div>
-                <div class="modal-footer">
-                    <p>que el footer</p>
-                    <a href="" class="btn modal-close">pacerrar</a>
-                </div>
-            </div>
-            <div id="idModal2" class="modal">
-                <div class="modal-content">
-                    <p>Este es el modal 2 jajjas</p>   
-                    <p>Este es el modal 2 jajjas</p> 
-                    <p>Este es el modal 2 jajjas</p> 
-                    <p>Este es el modal 2 jajjas</p> 
-                    <p>Este es el modal 2 jajjas</p> 
-                </div>
-            </div>
+
             <div id="Editar" class="modal">
-                <h2>Editar a <%out.print(request.getParameter("id"));%></h2>
+                <h2>Editar a <%=request.getParameter("id")%></h2>
                 <div class="modal-content">
                     <form action="..\..\Cliente" method="post" enctype="multipart/form-data">
                         <%
@@ -224,12 +200,11 @@
                             out.println("<img src= ../../Img/" + request.getSession().getAttribute("correo") + "/" + perroSelected.getNombre() + ".png width='200' height='100'>");
                         %>
 
-                        <h3>Nombre</h3><input type=text name='nomp' value="<%out.println(perroSelected.getNombre());%>"><br>
+                        <h3>Nombre</h3><input type=text name='nombreperro' value="<%=perroSelected.getNombre() %>"><br>
                         <h3>Nacimiento (Una fecha aproximada)</h3>
-                        <input type="date"  name="fecha"  value="<%out.print(perroSelected.getNacimiento());%>">
-                        <%System.out.println(perroSelected.getNacimiento());%>
+                        <input type="date"  name="fechanacimiento"  value="<%=perroSelected.getNacimiento() %>">
                         <h3>Genero</h3>
-                        <select name="generop">
+                        <select name="generoperro">
                             <%if (perroSelected.getGenero()) {
                                     out.print("<option selected>Macho</option>");
                                     out.print("<option>Hembra</option>");
@@ -239,7 +214,7 @@
                                 }%>
                         </select>
                         <h3>talla</h3>
-                        <select name="tallap">
+                        <select name="tallaperro">
                             <%System.out.println("talla" + perroSelected.getTalla());
                                 String talla = perroSelected.getTalla();
                                 if (talla != null) {
@@ -263,15 +238,14 @@
                         <h3>Foto</h3>
                         <input type="file" name="imagenp" accept="image/x-png,image/gif,image/jpeg" >
                         <input type="hidden" value="editarMascota" name="action">
-                        <input type="hidden" value="<%out.print(request.getParameter("id"));%>" name="mascota">
-                        <input type="hidden" value="pag" name="place">
+                        <input type="hidden" value="<%= request.getParameter("id") %>" name="mascota">
+                        <input type="hidden" value="page" name="place">
                         <br>
                         <input type="submit" value="Editar">
                     </form>
                     <a href="#"><input type="button" value="Cancelar"></a>
                 </div> 
             </div>
-
             <div id="Infocita" class="modal">
 
                 <%  String fecha = "0";
@@ -291,7 +265,7 @@
                     }
                 %>
                 <div class="modal-content">
-                    <h2>Informacion cita: <%out.print(request.getParameter("codigo"));%></h2>
+                    <h2>Informacion cita: <%if (request.getParameter("codigo")!=null)out.print(request.getParameter("codigo"));%></h2>
 
                     <form action="..\..\Cliente" method="post">
                         <input type="date" name='fechacita' disabled value="<%out.print(fecha);%>">
@@ -299,6 +273,39 @@
                         <input type="hidden" value="editarC" name="accion">
                         <input type="hidden" value="<%out.print(request.getParameter("id"));%>" name="mascota">
                         <input type="hidden" value="pag" name="place">
+                        <br>
+                        <input type="submit" value="Agendar">
+                    </form>
+                </div>
+            </div>
+            <div id="Agendarcita" class="modal">
+                <div class="modal-content">
+                    <h2> Agendar cita para <%=request.getParameter("id") %></h2>
+ 
+                    <form action="..\..\Cliente" method="post">
+
+                        <input type="date" name='fechacita'>
+                        <input type="time" name="horacita">
+                        <select name="servicio">
+                            <option disabled selected>Selecciona el servicio</option>
+                            <%  Perro datos = new Perro();
+                                
+                                ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getSession().getAttribute("servicios");
+                             
+                                for (int i = 0; i < perro.size(); i++) {
+                                    if (perro.get(i).getNombre().equals(request.getParameter("id"))) {
+                                        datos = perro.get(i);
+                                    }
+                                }                               
+                                for (int i = 0; i < servicios.size(); i++) {
+                                        out.print("<option>" + servicios.get(i).getNombreservicio() + "</option>");
+                                }
+                            %>
+                        </select>
+                        <label>Tipo de servicio: </label>
+                        <input type="hidden" value="agendarCita" name="action">
+                        <input type="hidden" value="<%if(request.getParameter("id")!=null) out.print(request.getParameter("id")); %>" name="mascota">
+                        <input type="hidden" value="page" name="place">
                         <br>
                         <input type="submit" value="Agendar">
                     </form>
@@ -333,14 +340,6 @@
                 </div>
             </div>
         </footer>
-        <script>
-            
-            function abrirModal(modal) {
-                const elem = document.getElementById(modal);
-                const instance = M.Modal.init(elem);
-                instance.open();
-            }
-            
-        </script>
+
     </body>
 </html>

@@ -51,12 +51,12 @@
         </p>
         <header>
             <nav>
-                <div class="nav-wrapper">
+                <div class="nav-wrapper red">
                     <a href="" class="brand-logo">Can-Contento</a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li class="menu__item"><a class="menu__link" href="../index.html">Inicio</a></li>
-                        <li class="menu_item"><a class="menu__link" href="../HTML/SesionUsuario.html">Iniciar Sesion</a></li>
-                        <li class="menu__item"><a class="menu__link select" href="RegistroUsuario.html">Registrarse</a></li>
+                        <li class=""><a class="menu__link" href="../index.html">Inicio</a></li>
+                        <li class=""><a class="menu__link" href="../HTML/SesionUsuario.html">Iniciar Sesion</a></li>
+                        <li class=active><a class="menu__link select" href="RegistroUsuario.html">Registrarse</a></li>
                     </ul>
                 </div>
             </nav>

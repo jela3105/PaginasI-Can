@@ -15,11 +15,15 @@ document.addEventListener('DOMContentLoaded', function () {
     var instances = M.FormSelect.init(elems);
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, options);
+  });
 function abrirModal(modal) {
-                const elem = document.getElementById(modal);
-                const instance = M.Modal.init(elem);
-                instance.open();
-            }
+    const elem = document.getElementById(modal);
+    const instance = M.Modal.init(elem);
+    instance.open();
+}
 
 
 
