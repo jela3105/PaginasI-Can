@@ -5,6 +5,10 @@ a, h1, h2, h3, h4, h5, h6{
     font-family: 'ZCOOL QingKe HuangYou', cursive;
     letter-spacing: 2.5px
 }
+.altura{
+    height: 700px;
+    overflow-y:auto; 
+}
 
 body{
     font-family: 'PT Sans Narrow', sans-serif;

@@ -48,79 +48,84 @@
             </ul>
         </header>        
         <section>                
-            <div class="row" sty>                                
-                <div class="col s12 m8 l3" >
-                    <h4>MIS MASCOTAS</h4>
-                    <%
-                        ArrayList<Perro> perro = (ArrayList<Perro>) request.getSession().getAttribute("miniaturaperro");
-                        if (perro != null) {
-                            for (int i = 0; i < perro.size(); i++) {
-                                String archivo = perro.get(i).getArchivoimg().toString();
-                                String terminacion = archivo.substring(archivo.length() - 4, archivo.length());
-                    %>
-                    <article id="<%=perro.get(i).getNombre()%>">
-                        <h5><%=perro.get(i).getNombre()%></h5>
-                        Citas finalizadas <%=perro.get(i).getCodigos()%>
-                        <img src="../../Img/<%=request.getSession().getAttribute("correo") + "/" + perro.get(i).getNombre() + terminacion%>" width='300' height='150'>
-                        <a class="modal-trigger" href="home.jsp?id=<%=perro.get(i).getNombre()%>&modal=Editar"><input type="button" value="Editar" class="btn-small yellow darken-2"></a>
-                        <a href="home.jsp?id=<%=perro.get(i).getNombre()%>&modal=Agendarcita"><input type="button" value="Agendar cita" class="btn-small"></a>
-                    </article>
-                    <%
-                        }
-                    } else {
-                    %>
-                    No hay mascotas
-                    <%
-                        }
-                    %>
+            <div class="row" sty>   
+                
+                    <div class="col s12 m8 l3" >
+                        <div class="altura">
+                        <h4>MIS MASCOTAS</h4>
+                        <%
+                            ArrayList<Perro> perro = (ArrayList<Perro>) request.getSession().getAttribute("miniaturaperro");
+                            if (perro != null) {
+                                for (int i = 0; i < perro.size(); i++) {
+                                    String archivo = perro.get(i).getArchivoimg().toString();
+                                    String terminacion = archivo.substring(archivo.length() - 4, archivo.length());
+                        %>
+                        <article id="<%=perro.get(i).getNombre()%>">
+                            <h5><%=perro.get(i).getNombre()%></h5>
+                            Citas finalizadas <%=perro.get(i).getCodigos()%>
+                            <img src="../../Img/<%=request.getSession().getAttribute("correo") + "/" + perro.get(i).getNombre() + terminacion%>" width='300' height='150'>
+                            <a class="modal-trigger" href="home.jsp?id=<%=perro.get(i).getNombre()%>&modal=Editar"><input type="button" value="Editar" class="btn-small yellow darken-2"></a>
+                            <a href="home.jsp?id=<%=perro.get(i).getNombre()%>&modal=Agendarcita"><input type="button" value="Agendar cita" class="btn-small"></a>
+                        </article>
+                        <%
+                            }
+                        } else {
+                        %>
+                        No hay mascotas
+                        <%
+                            }
+                        %>
+                    </div>
                 </div>     
                 <div class="col s12 m8 l7 ">
-                    <h4>MIS CITAS</h4>
-                    <table>
-                        <thead>
-                            <tr>                        
-                                <th>Perro</th>
-                                <th>Fecha</th>
-                                <th>Hora</th>
-                                <th>Codigo</th>
-                                <th>Estado</th>
-                            </tr>                
-                        </thead>
-                        <tbody>
-                            <%                        ArrayList<Cita> citas = (ArrayList<Cita>) request.getSession().getAttribute("miniaturacitas");
-                                if (citas != null) {
-                                    for (int i = 0; i < citas.size(); i++) {
-                            %>
-                            <tr id="<%=citas.get(i).getMascota()%>">
-                                <td><%=citas.get(i).getMascota()%></td>
-                                <td><%=citas.get(i).getFecha().substring(0, 10)%></td>
-                                <td><%=citas.get(i).getHora().substring(0, 5)%></td>
-                                <td><%=citas.get(i).getCodigo()%></td>
-                                <%
-                                    if (citas.get(i).isEstado()) {
-                                %>
-                                <td>Confirmada</td>
-                                <%
-                                } else {
-                                %>
-                                <td>No confirmada</td>
-                                <%
-                                    }
-                                %>
 
-                                <td><a href="home.jsp?id=<%=citas.get(i).getMascota()%>&codigo=<%=citas.get(i).getCodigo()%>&modal=Infocita"><img src="../../Img/informacioncita.jpg" with="30" height="30" alt="Mas información" ></td>
-                                        </tr>
-                                        <%
-                                            }
-                                        } else {
-                                        %>
-                                        <h3>No hay citas registradas</h3>
-                                        <%
-                                            }
-                                            //<input type=\"button\" value=\"Editar cita\" class=\"btn-small yellow darken-2\">
-                                        %>
-                        </tbody>
-                    </table>  
+                    <h4>MIS CITAS</h4>
+                    <div class="altura">
+                        <table>
+                            <thead>
+                                <tr>                        
+                                    <th>Perro</th>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Codigo</th>
+                                    <th>Estado</th>
+                                </tr>                
+                            </thead>
+                            <tbody>
+                                <%                        ArrayList<Cita> citas = (ArrayList<Cita>) request.getSession().getAttribute("miniaturacitas");
+                                    if (citas != null) {
+                                        for (int i = 0; i < citas.size(); i++) {
+                                %>
+                                <tr id="<%=citas.get(i).getMascota()%>">
+                                    <td><%=citas.get(i).getMascota()%></td>
+                                    <td><%=citas.get(i).getFecha().substring(0, 10)%></td>
+                                    <td><%=citas.get(i).getHora().substring(0, 5)%></td>
+                                    <td><%=citas.get(i).getCodigo()%></td>
+                                    <%
+                                        if (citas.get(i).isEstado()) {
+                                    %>
+                                    <td>Confirmada</td>
+                                    <%
+                                    } else {
+                                    %>
+                                    <td>No confirmada</td>
+                                    <%
+                                        }
+                                    %>
+
+                                    <td><a href="home.jsp?id=<%=citas.get(i).getMascota()%>&codigo=<%=citas.get(i).getCodigo()%>&modal=Infocita"><img src="../../Img/informacioncita.png" with="30" height="30" alt="Mas información" ></td>
+                                            </tr>
+                                            <%
+                                                }
+                                            } else {
+                                            %>
+                                            <h3>No hay citas registradas</h3>
+                                            <%
+                                                }
+                                            %>
+                            </tbody> 
+                        </table>                         
+                    </div>
                 </div>
                 <form action='..\..\Cliente' method="post" enctype="multipart/form-data" class="col s12 m4 l2 z-depth-1-half">
                     <h4>REGISTRAR MASCOTA</h4>
@@ -180,7 +185,6 @@
                         </div>
                     </div>
                 </form>     
-
             </div>               
         </section>
         <section>
@@ -200,9 +204,9 @@
                             out.println("<img src= ../../Img/" + request.getSession().getAttribute("correo") + "/" + perroSelected.getNombre() + ".png width='200' height='100'>");
                         %>
 
-                        <h3>Nombre</h3><input type=text name='nombreperro' value="<%=perroSelected.getNombre() %>"><br>
+                        <h3>Nombre</h3><input type=text name='nombreperro' value="<%=perroSelected.getNombre()%>"><br>
                         <h3>Nacimiento (Una fecha aproximada)</h3>
-                        <input type="date"  name="fechanacimiento"  value="<%=perroSelected.getNacimiento() %>">
+                        <input type="date"  name="fechanacimiento"  value="<%=perroSelected.getNacimiento()%>">
                         <h3>Genero</h3>
                         <select name="generoperro">
                             <%if (perroSelected.getGenero()) {
@@ -238,7 +242,7 @@
                         <h3>Foto</h3>
                         <input type="file" name="imagenp" accept="image/x-png,image/gif,image/jpeg" >
                         <input type="hidden" value="editarMascota" name="action">
-                        <input type="hidden" value="<%= request.getParameter("id") %>" name="mascota">
+                        <input type="hidden" value="<%= request.getParameter("id")%>" name="mascota">
                         <input type="hidden" value="page" name="place">
                         <br>
                         <input type="submit" value="Editar">
@@ -265,7 +269,8 @@
                     }
                 %>
                 <div class="modal-content">
-                    <h2>Informacion cita: <%if (request.getParameter("codigo")!=null)out.print(request.getParameter("codigo"));%></h2>
+                        <h2>Informacion cita: <%
+                            out.print(request.getParameter("codigo"));%></h2>
 
                     <form action="..\..\Cliente" method="post">
                         <input type="date" name='fechacita' disabled value="<%out.print(fecha);%>">
@@ -280,8 +285,8 @@
             </div>
             <div id="Agendarcita" class="modal">
                 <div class="modal-content">
-                    <h2> Agendar cita para <%=request.getParameter("id") %></h2>
- 
+                    <h2> Agendar cita para <%=request.getParameter("id")%></h2>
+
                     <form action="..\..\Cliente" method="post">
 
                         <input type="date" name='fechacita'>
@@ -289,22 +294,24 @@
                         <select name="servicio">
                             <option disabled selected>Selecciona el servicio</option>
                             <%  Perro datos = new Perro();
-                                
+
                                 ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getSession().getAttribute("servicios");
-                             
+
                                 for (int i = 0; i < perro.size(); i++) {
                                     if (perro.get(i).getNombre().equals(request.getParameter("id"))) {
                                         datos = perro.get(i);
                                     }
-                                }                               
+                                }
                                 for (int i = 0; i < servicios.size(); i++) {
-                                        out.print("<option>" + servicios.get(i).getNombreservicio() + "</option>");
+                                    out.print("<option>" + servicios.get(i).getNombreservicio() + "</option>");
                                 }
                             %>
                         </select>
                         <label>Tipo de servicio: </label>
                         <input type="hidden" value="agendarCita" name="action">
-                        <input type="hidden" value="<%if(request.getParameter("id")!=null) out.print(request.getParameter("id")); %>" name="mascota">
+                        <input type="hidden" value="<%if (request.getParameter("id") != null) {
+                                out.print(request.getParameter("id"));
+                            }%>" name="mascota">
                         <input type="hidden" value="page" name="place">
                         <br>
                         <input type="submit" value="Agendar">
