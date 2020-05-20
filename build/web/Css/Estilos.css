@@ -6,10 +6,17 @@ a, h1, h2, h3, h4, h5, h6{
     letter-spacing: 2.5px
 }
 .altura{
-    height: 700px;
+    height: 790px;
     overflow-y:auto; 
 }
-
+.horizontal{
+    overflow-y: hidden; 
+    overflow-x: auto;
+    width: auto;
+    height: 900px;
+    padding: 10px;
+    white-space: nowrap;
+}
 body{
     font-family: 'PT Sans Narrow', sans-serif;
     margin: 0;
@@ -21,7 +28,7 @@ body{
     padding: 0;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    
+
 }
 
 img{
@@ -56,13 +63,13 @@ h1, h2, h3, h4, h5, h6{
 /*---------------------ESTILOS RESPONSIVE---------------------*/
 
 @media(min-width:480px){
-        
+
     .info{
         display: flex;
         justify-content: space-between;
         margin-top: -230px;
     }
-    
+
 }
 
 @media(min-width:768px){
@@ -75,7 +82,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 @media(min-width:1024px){
-    
+
     .info__titulo{
         text-align: center;
     }

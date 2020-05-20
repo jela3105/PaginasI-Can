@@ -10,10 +10,10 @@ package Clases;
  * @author jela3
  */
 public class Servicio {
+
     String tallaperro;
     String nombreservicio;
     String descripcion;
-    float precio;
 
     public String getTallaperro() {
         return tallaperro;
@@ -39,13 +39,4 @@ public class Servicio {
         this.descripcion = descripcion;
     }
 
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
-    }
-    
-    
 }

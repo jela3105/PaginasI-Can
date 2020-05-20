@@ -18,6 +18,7 @@
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="../../Css/materialize.min.css">
         <link rel="stylesheet" href="../../Css/Estilos.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Compiled and minified JavaScript -->
         <script src="../../JS/materialize.min.js"></script>  
         <script src="../../JS/Efectos.js"></script>
@@ -49,10 +50,11 @@
         </header>        
         <section>                
             <div class="row" sty>   
-                
-                    <div class="col s12 m8 l3" >
-                        <div class="altura">
-                        <h4>MIS MASCOTAS</h4>
+
+                <div class="col s12 m8 l3" >
+
+                    <h4>MIS MASCOTAS</h4>
+                    <div class="altura">
                         <%
                             ArrayList<Perro> perro = (ArrayList<Perro>) request.getSession().getAttribute("miniaturaperro");
                             if (perro != null) {
@@ -78,7 +80,6 @@
                     </div>
                 </div>     
                 <div class="col s12 m8 l7 ">
-
                     <h4>MIS CITAS</h4>
                     <div class="altura">
                         <table>
@@ -168,7 +169,7 @@
                         <div class="input-field col s12 m12">
                             <div class="file-field input-field">
                                 <div class="btn">
-                                    <span>File</span>
+                                    <span>Foto</span>
                                     <input type="file" name="imagenp" accept="image/x-png,image/gif,image/jpeg">
                                 </div>
                                 <div class="file-path-wrapper">
@@ -269,7 +270,7 @@
                     }
                 %>
                 <div class="modal-content">
-                        <h2>Informacion cita: <%
+                    <h2>Informacion cita: <%
                             out.print(request.getParameter("codigo"));%></h2>
 
                     <form action="..\..\Cliente" method="post">

@@ -381,19 +381,19 @@ public class UsuarioBD {
         cn = con.conectar();
         ArrayList<Servicio> servicios = new ArrayList<Servicio>();
         try {
-            PreparedStatement ps = cn.prepareStatement("SELECT nom_ser, des_ser, pre_ser FROM servicio");
+            PreparedStatement ps = cn.prepareStatement("SELECT nom_ser, des_ser FROM servicio");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Servicio ser = new Servicio();
                 ser.setNombreservicio(rs.getString("nom_ser"));
                 ser.setDescripcion(rs.getString("des_ser"));
-                ser.setPrecio(rs.getFloat("pre_ser"));
                 servicios.add(ser);
             }
 
         } catch (Exception e) {
             System.out.println(e);
         }
+        System.out.println("servicios consultados");
         return servicios;
     }
 }

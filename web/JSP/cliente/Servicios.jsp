@@ -4,6 +4,8 @@
     Author     : jela3
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="Clases.Servicio"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,26 +16,27 @@
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="../../Css/materialize.min.css">
         <link rel="stylesheet" href="../../Css/Estilos.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Compiled and minified JavaScript -->
         <script src="../../JS/materialize.min.js"></script>  
         <script src="../../JS/Efectos.js"></script>        
     </head>
-    <body>
+    <body onload="javascript:abrirModal('<%= request.getParameter("modal")%>')">
         <header>
             <nav>
-                <div class="nav-wrapper">
+                <div class="nav-wrapper red">
                     <a href="" class="brand-logo">Can-Contento</a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li class="menu__item"><a class="menu__link select" href="home.jsp">Home</a></li>
-                        <li class="menu__item"><a class="menu__link" href="../../JSP/cliente/Servicios.jsp">Servicios</a></li>
-                        <li class="menu__item"><a class="menu__link" href="Perfil.jsp">Mi perfil</a></li>
+                        <li class="active"><a class="menu__link" href="../../JSP/cliente/Servicios.jsp">Servicios</a></li>
+                        <li class=""><a class="menu__link" href="Perfil.jsp">Mi perfil</a></li>
                         <li class="menu__item"><a class="menu__link" href="Notificaciones.jsp">Notificaciones</a></li>
                     </ul>
                 </div>
             </nav>
         </header> 
 
-        <%@page import="java.sql.*,java.io.*"%>
+
         <% /*
             Connection c = null;
             Statement stm = null;
@@ -141,8 +144,63 @@
                 }
                 out.print("<form>");
             }
-*/
-            
+             */
+
         %>
+        <section>
+            <div class="container">
+                <div class="row z-depth-5">
+                    <h4>SERVICIOS</h4>
+
+                    <%
+                        ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getSession().getAttribute("servicios");
+                        if (servicios != null) {
+                            for (int i = 0; i < servicios.size(); i++) {
+
+                    %>
+                    <div class="col s6 m6 l3 ">
+                        <div class="card small hoverable">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activator" src="../../Img/servicios/<%=servicios.get(i).getNombreservicio().replace(" ", "")%>.jpg" >
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4"><%=servicios.get(i).getNombreservicio()%><i class="material-icons right">more_vert</i></span>
+                                <p><a href="Servicios.jsp?modal=Agendarcita">Agendar Cita</a></p>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4"><%=servicios.get(i).getNombreservicio()%><i class="material-icons right">close</i></span>
+                                <p>Infor de los preciso que existen en el este jeje</p>
+                            </div>
+                        </div>
+                    </div>
+                    <%                    }
+                        }
+                    %>
+                </div>
+            </div> 
+        </section>
+        <section>
+            <div id="Agendarcita" class="modal">
+                <div class="modal-content">
+                    <h2> Agendar cita</h2>
+
+                    <form action="..\..\Cliente" method="post">
+
+                        <input type="date" name='fechacita'>
+                        <input type="time" name="horacita">
+                        <select name="servicio">
+                            <option disabled selected>Selecciona el servicio</option>
+                            
+                        </select>
+                        <label>Tipo de servicio: </label>
+                        <input type="hidden" value="agendarCita" name="action">
+                        <input type="hidden" value="" name="mascota">
+                        <input type="hidden" value="page" name="place">
+                        <br>
+                        <input type="submit" value="Agendar">
+                    </form>
+                </div>
+            </div>
+        </section>
     </body>
 </html>
