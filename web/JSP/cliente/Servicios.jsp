@@ -169,7 +169,19 @@
                             </div>
                             <div class="card-reveal">
                                 <span class="card-title grey-text text-darken-4"><%=servicios.get(i).getNombreservicio()%><i class="material-icons right">close</i></span>
-                                <p>Infor de los preciso que existen en el este jeje</p>
+                                <p><%= servicios.get(i).getDescripcion()%></p>
+                                <hr>
+                                
+                                <%String[] arrayPrecios = servicios.get(i).getPrecio().split(";");
+                                    for (int f = 0; f < arrayPrecios.length; f++) {
+                                        
+                                %>   
+                                
+                                <p><%= arrayPrecios[f]%></p>
+                                <Br>
+                                <%
+                                    }
+                                %>
                             </div>
                         </div>
                     </div>
@@ -182,7 +194,7 @@
         <section>
             <div id="Agendarcita" class="modal">
                 <div class="modal-content">
-                    <h2> Agendar cita</h2>
+                    <h2> Agendar cita </h2>
 
                     <form action="..\..\Cliente" method="post">
 
@@ -190,7 +202,7 @@
                         <input type="time" name="horacita">
                         <select name="servicio">
                             <option disabled selected>Selecciona el servicio</option>
-                            
+
                         </select>
                         <label>Tipo de servicio: </label>
                         <input type="hidden" value="agendarCita" name="action">

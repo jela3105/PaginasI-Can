@@ -14,6 +14,15 @@ public class Servicio {
     String tallaperro;
     String nombreservicio;
     String descripcion;
+    String precio;
+
+    public String getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
+    }
 
     public String getTallaperro() {
         return tallaperro;

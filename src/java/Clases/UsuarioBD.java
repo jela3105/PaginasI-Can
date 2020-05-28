@@ -350,16 +350,16 @@ public class UsuarioBD {
         Connection cn;
         Conexion con = new Conexion();
         cn = con.conectar();
-        boolean resp= false;
+        boolean resp = false;
         //INSERT INTO descripcion (com_des, cal_des, id_cit, id_ser, id_ven) VALUES ('f',5.0,(SELECT id_cit FROM cita WHERE codi_cit='20jela@efe05311900'),(SELECT id_ser FROM servicio WHERE nom_ser='Baño pequeño'),1);
         try {
             PreparedStatement ps = cn.prepareStatement("INSERT INTO descripcion (com_des, cal_des, id_cit, id_ser, id_ven) VALUES (NULL,NULL,(SELECT id_cit FROM cita WHERE codi_cit=?),(SELECT id_ser FROM servicio WHERE nom_ser=?),?)");
             ps.setString(1, descripcionServicio.getCodigoCita());
             ps.setString(2, descripcionServicio.getNombreServicio());
             //ps.setInt(3, descripcionServicio.getIdVenta());
-            if(descripcionServicio.getIdVenta()==null){
+            if (descripcionServicio.getIdVenta() == null) {
                 ps.setNull(3, 0);
-            }else{
+            } else {
                 ps.setInt(3, descripcionServicio.getIdVenta());
             }
             int i = ps.executeUpdate();
@@ -387,6 +387,19 @@ public class UsuarioBD {
                 Servicio ser = new Servicio();
                 ser.setNombreservicio(rs.getString("nom_ser"));
                 ser.setDescripcion(rs.getString("des_ser"));
+                String precio="";
+                try {
+                    PreparedStatement ps2 = cn.prepareStatement("SELECT tam_ser , pre_pre FROM precio NATURAL JOIN servicio WHERE nom_ser=?");
+                    ps2.setString(1, ser.getNombreservicio());
+                    ResultSet rs2 = ps2.executeQuery();
+                    while (rs2.next()) {
+                        precio = precio + rs2.getString("tam_ser") + ": $" +String.valueOf(rs2.getFloat("pre_pre") + ";");
+                        System.out.println(precio);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.toString());
+                }
+                ser.setPrecio(precio);
                 servicios.add(ser);
             }
 
