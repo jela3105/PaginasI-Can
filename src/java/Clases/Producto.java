@@ -13,8 +13,8 @@ import java.io.InputStream;
  */
 public class Producto {
     String nombre;
-    String des;
-    InputStream foto;
+    String descripcion;
+    String foto;
     float precio;
     int existencia;
 
@@ -26,19 +26,19 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public String getDes() {
-        return des;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDes(String des) {
-        this.des = des;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public InputStream getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(InputStream foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 
@@ -57,6 +57,7 @@ public class Producto {
     public void setExistencia(int existencia) {
         this.existencia = existencia;
     }
-    
+
+   
     
 }

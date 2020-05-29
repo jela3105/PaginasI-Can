@@ -113,29 +113,28 @@ public class UsuarioBD {
         return resp;
     }
 
-    public static ArrayList<Producto> obtenerProductos() {
+    public static ArrayList<Producto> consultarProductos() {
         Connection cn;
         Conexion con = new Conexion();
         cn = con.conectar();
-        ArrayList<Producto> obtenido = new ArrayList();
+        ArrayList<Producto> productos = new ArrayList();
         try {
-            PreparedStatement ps = cn.prepareStatement("SELECT (nom_art,des_art,fot_art,pre_art,exi_art) FROM usuario WHERE (exi_art > 0)");
+            PreparedStatement ps = cn.prepareStatement("SELECT nom_art,des_art,fot_art,pre_art,exi_art FROM articulo WHERE (exi_art > 0)");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 Producto pro = new Producto();
                 pro.setNombre(rs.getString("nom_art"));
-                pro.setDes(rs.getString("des_art"));
-                //convertir blob a inputStream
-                //pro.setFoto(rs.getBlob("fot_art"));
+                pro.setDescripcion(rs.getString("des_art"));
+                pro.setFoto(rs.getString("fot_art"));
                 pro.setPrecio(rs.getFloat("pre_art"));
-                obtenido.add(pro);
+                productos.add(pro);
             }
 
         } catch (Exception e) {
             System.out.println(e);
         }
-        return obtenido;
+        return productos;
     }
 
     public static ArrayList<Perro> consutarMiniaturaPerro(String correo) {
@@ -394,7 +393,7 @@ public class UsuarioBD {
                     ResultSet rs2 = ps2.executeQuery();
                     while (rs2.next()) {
                         precio = precio + rs2.getString("tam_ser") + ": $" +String.valueOf(rs2.getFloat("pre_pre") + ";");
-                        System.out.println(precio);
+                        
                     }
                 } catch (Exception e) {
                     System.out.println(e.toString());

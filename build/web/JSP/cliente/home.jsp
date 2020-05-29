@@ -139,7 +139,7 @@
                     <div class="row">
                         <div class="input-field col s12 m12">
                             <input id="fecha" name="fecha" type="text" class="datepicker">
-                            <label for="fecha">Fecha de nacimiento(aproximada)</label>
+                            <label for="fecha">Fecha de nacimiento</label>
                         </div>                                                                                                               
                     </div>     
                     <div class="row">
@@ -270,13 +270,13 @@
                     }
                 %>
                 <div class="modal-content">
-                    <h2>Informacion cita: <%
+                        <h2>Informacion cita: <%
                             out.print(request.getParameter("codigo"));%></h2>
 
                     <form action="..\..\Cliente" method="post">
                         <input type="date" name='fechacita' disabled value="<%out.print(fecha);%>">
                         <input type="time" name="horacita" disable value="<%out.print(hora);%>">
-                        <input type="hidden" value="editarC" name="accion">
+                        <input type="hidden" value="editarCita" name="action">
                         <input type="hidden" value="<%out.print(request.getParameter("id"));%>" name="mascota">
                         <input type="hidden" value="pag" name="place">
                         <br>
@@ -290,9 +290,14 @@
 
                     <form action="..\..\Cliente" method="post">
 
-                        <input type="date" name='fechacita'>
+                        <label>Fecha: </label>
+                        <input type="date" name='fechacita' class="date-text">
+
+                        <label>Hora: </label>
                         <input type="time" name="horacita">
-                        <select name="servicio">
+                        
+                        <label for="tiposervicio">Tipo de servicio: </label>
+                        <select id='tiposervicio' name="servicio">
                             <option disabled selected>Selecciona el servicio</option>
                             <%  Perro datos = new Perro();
 
@@ -308,7 +313,7 @@
                                 }
                             %>
                         </select>
-                        <label>Tipo de servicio: </label>
+                        
                         <input type="hidden" value="agendarCita" name="action">
                         <input type="hidden" value="<%if (request.getParameter("id") != null) {
                                 out.print(request.getParameter("id"));

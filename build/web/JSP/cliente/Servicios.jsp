@@ -4,6 +4,7 @@
     Author     : jela3
 --%>
 
+<%@page import="Clases.Producto"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Clases.Servicio"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -171,17 +172,49 @@
                                 <span class="card-title grey-text text-darken-4"><%=servicios.get(i).getNombreservicio()%><i class="material-icons right">close</i></span>
                                 <p><%= servicios.get(i).getDescripcion()%></p>
                                 <hr>
-                                
+
                                 <%String[] arrayPrecios = servicios.get(i).getPrecio().split(";");
                                     for (int f = 0; f < arrayPrecios.length; f++) {
-                                        
+
                                 %>   
-                                
+
                                 <p><%= arrayPrecios[f]%></p>
                                 <Br>
                                 <%
                                     }
                                 %>
+                            </div>
+                        </div>
+                    </div>
+                    <%                    }
+                        }
+                    %>
+                </div>
+                <div class="row z-depth-5">
+                    <h4>PRODUCTOS</h4>
+                    <%
+                        ArrayList<Producto> productos = (ArrayList<Producto>) request.getSession().getAttribute("productos");
+                        if (productos != null) {
+                            for (int i = 0; i < productos.size(); i++) {
+
+                    %>
+                    <div class="col s6 m6 l3 ">
+                        <div class="card small hoverable">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activator" src="../../Img/productos/<%=productos.get(i).getNombre().replace(" ", "")%>.jpg" >
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4"><%=productos.get(i).getNombre()%><i class="material-icons right">more_vert</i></span>
+                                <p><a href="Servicios.jsp?modal=AgregarProducto">Hacer pedido</a></p>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4"><%=productos.get(i).getNombre()%><i class="material-icons right">close</i></span>
+                                <p><%= productos.get(i).getDescripcion()%></p>
+                                <hr>  
+                                <Br>
+                                <p>$ <%= productos.get(i).getPrecio()%></p>
+
+
                             </div>
                         </div>
                     </div>
@@ -198,7 +231,7 @@
 
                     <form action="..\..\Cliente" method="post">
 
-                        <input type="date" name='fechacita'>
+                        <input type="date" name='fechacita' class="datepicker-calendar-container">
                         <input type="time" name="horacita">
                         <select name="servicio">
                             <option disabled selected>Selecciona el servicio</option>

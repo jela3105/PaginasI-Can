@@ -283,6 +283,7 @@ public class Cliente extends HttpServlet {
                             misesion.setAttribute("miniaturaperro", miniaturaMascota(usuario.getCorreo()));
                             misesion.setAttribute("miniaturacitas", miniaturaCita(usuario.getCorreo()));
                             misesion.setAttribute("servicios", servicios());
+                            misesion.setAttribute("productos", productos());
                             if (place.equals("page")) {
                                 response.sendRedirect("JSP/cliente/home.jsp?id=" + miniaturaMascota(usuario.getCorreo()).get(0).getNombre());
                             } else if (place.equals("app")) {
@@ -703,5 +704,9 @@ public class Cliente extends HttpServlet {
         ArrayList<Servicio> servicios = usu.consultarServicios();
         return servicios;
     }
-
+    public ArrayList<Producto> productos(){
+        UsuarioBD usu = new UsuarioBD();
+        ArrayList<Producto> productos = usu.consultarProductos();
+        return productos;
+    }
 }
