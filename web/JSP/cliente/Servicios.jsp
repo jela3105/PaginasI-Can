@@ -4,6 +4,7 @@
     Author     : jela3
 --%>
 
+<%@page import="Clases.Perro"%>
 <%@page import="Clases.Producto"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Clases.Servicio"%>
@@ -166,7 +167,7 @@
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4"><%=servicios.get(i).getNombreservicio()%><i class="material-icons right">more_vert</i></span>
-                                <p><a href="Servicios.jsp?modal=Agendarcita">Agendar Cita</a></p>
+                                <p><a href="Servicios.jsp?modal=Agendarcita&servicio=<%=servicios.get(i).getNombreservicio()%>">Agendar cita</a></p>
                             </div>
                             <div class="card-reveal">
                                 <span class="card-title grey-text text-darken-4"><%=servicios.get(i).getNombreservicio()%><i class="material-icons right">close</i></span>
@@ -227,19 +228,28 @@
         <section>
             <div id="Agendarcita" class="modal">
                 <div class="modal-content">
-                    <h2> Agendar cita </h2>
+                    <h2> Agendar <%=request.getParameter("servicio")%> </h2>
 
                     <form action="..\..\Cliente" method="post">
-
+                        <label>Fecha:</label>
                         <input type="date" name='fechacita' class="datepicker-calendar-container">
+                        <label>Hora: </label>
                         <input type="time" name="horacita">
-                        <select name="servicio">
-                            <option disabled selected>Selecciona el servicio</option>
-
+                        <label>Servicio para: </label>
+                        <select name="mascota">
+                            <option disabled selected>Selecciona la mascota</option>
+                            <%  ArrayList<Perro> perros = (ArrayList<Perro>) request.getSession().getAttribute("miniaturaperro");
+                               
+                                for (int i = 0; i < perros.size(); i++) {
+                                    out.print("<option>" + perros.get(i).getNombre() + "</option>");
+                                }
+                            %>
+                            
+                           
                         </select>
                         <label>Tipo de servicio: </label>
                         <input type="hidden" value="agendarCita" name="action">
-                        <input type="hidden" value="" name="mascota">
+                        <input type="hidden" value="<%=request.getParameter("servicio")%>" name="servicio">
                         <input type="hidden" value="page" name="place">
                         <br>
                         <input type="submit" value="Agendar">

@@ -299,15 +299,8 @@
                         <label for="tiposervicio">Tipo de servicio: </label>
                         <select id='tiposervicio' name="servicio">
                             <option disabled selected>Selecciona el servicio</option>
-                            <%  Perro datos = new Perro();
-
-                                ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getSession().getAttribute("servicios");
-
-                                for (int i = 0; i < perro.size(); i++) {
-                                    if (perro.get(i).getNombre().equals(request.getParameter("id"))) {
-                                        datos = perro.get(i);
-                                    }
-                                }
+                            <%  ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getSession().getAttribute("servicios");
+                               
                                 for (int i = 0; i < servicios.size(); i++) {
                                     out.print("<option>" + servicios.get(i).getNombreservicio() + "</option>");
                                 }
