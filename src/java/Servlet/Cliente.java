@@ -660,7 +660,8 @@ public class Cliente extends HttpServlet {
         } else {
             if (fecha.equals("") || hora.equals("") || mascota.equals("") || servicio.equals("")) {
                 if (request.getParameter("place").equals("page")) {
-                    response.sendRedirect("home.jsp" + "id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                    String mens = "llene todos los campos";
+                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + mens);
                 } else if (request.getParameter("app").equals("app")) {
 
                 }

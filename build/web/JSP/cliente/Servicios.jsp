@@ -188,6 +188,8 @@
                         </div>
                     </div>
                     <%                    }
+                        } else {
+                            out.print("<p class=\"red background white-text\">No hay servicios</p>");
                         }
                     %>
                 </div>
@@ -220,6 +222,8 @@
                         </div>
                     </div>
                     <%                    }
+                        } else {
+                            out.print("<p class=\"red background white-text\">No hay productos</p>");
                         }
                     %>
                 </div>
@@ -239,20 +243,22 @@
                         <select name="mascota">
                             <option disabled selected>Selecciona la mascota</option>
                             <%  ArrayList<Perro> perros = (ArrayList<Perro>) request.getSession().getAttribute("miniaturaperro");
-                               
-                                for (int i = 0; i < perros.size(); i++) {
-                                    out.print("<option>" + perros.get(i).getNombre() + "</option>");
+                                if (perros != null) {
+                                    for (int i = 0; i < perros.size(); i++) {
+                                        out.print("<option>" + perros.get(i).getNombre() + "</option>");
+                                    }
                                 }
+
                             %>
-                            
-                           
+
+
                         </select>
                         <label>Tipo de servicio: </label>
                         <input type="hidden" value="agendarCita" name="action">
                         <input type="hidden" value="<%=request.getParameter("servicio")%>" name="servicio">
                         <input type="hidden" value="page" name="place">
                         <br>
-                        <input type="submit" value="Agendar">
+                        <input type="submit" value="Agendar" class="btn small">
                     </form>
                 </div>
             </div>

@@ -73,7 +73,7 @@
                             }
                         } else {
                         %>
-                        No hay mascotas
+                        <p class="red background white-text">No hay mascotas</p>
                         <%
                             }
                         %>
@@ -83,6 +83,11 @@
                     <h4>MIS CITAS</h4>
                     <div class="altura">
                         <table>
+
+                            <%                        ArrayList<Cita> citas = (ArrayList<Cita>) request.getSession().getAttribute("miniaturacitas");
+                                if (citas != null) {
+
+                            %>
                             <thead>
                                 <tr>                        
                                     <th>Perro</th>
@@ -92,11 +97,10 @@
                                     <th>Estado</th>
                                 </tr>                
                             </thead>
+                            <%                                for (int i = 0; i < citas.size(); i++) {
+                            %>
+
                             <tbody>
-                                <%                        ArrayList<Cita> citas = (ArrayList<Cita>) request.getSession().getAttribute("miniaturacitas");
-                                    if (citas != null) {
-                                        for (int i = 0; i < citas.size(); i++) {
-                                %>
                                 <tr id="<%=citas.get(i).getMascota()%>">
                                     <td><%=citas.get(i).getMascota()%></td>
                                     <td><%=citas.get(i).getFecha().substring(0, 10)%></td>
@@ -105,11 +109,11 @@
                                     <%
                                         if (citas.get(i).isEstado()) {
                                     %>
-                                    <td>Confirmada</td>
+                                    <td class="green-text">Confirmada</td>
                                     <%
                                     } else {
                                     %>
-                                    <td>No confirmada</td>
+                                    <td class="red-text">No confirmada</td>
                                     <%
                                         }
                                     %>
@@ -120,7 +124,7 @@
                                                 }
                                             } else {
                                             %>
-                                            <h3>No hay citas registradas</h3>
+                                            <p class="red background white-text">No hay citas registradas</p>
                                             <%
                                                 }
                                             %>
@@ -194,16 +198,29 @@
                 <h2>Editar a <%=request.getParameter("id")%></h2>
                 <div class="modal-content">
                     <form action="..\..\Cliente" method="post" enctype="multipart/form-data">
+                        <h3>Foto</h3>
+
                         <%
-                            //Buscamos el objeto del perro seleccionado en el array
-                            Perro perroSelected = new Perro();
-                            for (int i = 0; i < perro.size(); i++) {
-                                if (perro.get(i).getNombre().equals(request.getParameter("id"))) {
-                                    perroSelected = perro.get(i);
+                            if (perro != null) {
+                                Perro perroSelected = new Perro();
+                                //Buscamos el objeto del perro seleccionado en el array
+                                for (int i = 0; i < perro.size(); i++) {
+                                    if (perro.get(i).getNombre().equals(request.getParameter("id"))) {
+                                        perroSelected = perro.get(i);
+                                    }
                                 }
-                            }
-                            out.println("<img src= ../../Img/" + request.getSession().getAttribute("correo") + "/" + perroSelected.getNombre() + ".png width='200' height='100'>");
+                                out.println("<img src= ../../Img/" + request.getSession().getAttribute("correo") + "/" + perroSelected.getNombre() + ".png width='200' height='100'>");
+
                         %>
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>Cambiar foto</span>
+                                <input type="file" name="imagenp" accept="image/x-png,image/gif,image/jpeg">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div> 
 
                         <h3>Nombre</h3><input type=text name='nombreperro' value="<%=perroSelected.getNombre()%>"><br>
                         <h3>Nacimiento (Una fecha aproximada)</h3>
@@ -221,35 +238,36 @@
                         <h3>talla</h3>
                         <select name="tallaperro">
                             <%System.out.println("talla" + perroSelected.getTalla());
-                                String talla = perroSelected.getTalla();
-                                if (talla != null) {
-                                    if (talla.equals("Chico")) {
-                                        out.print("<option selected>Chico</option>");
-                                        out.print("<option>Mediano</option>");
-                                        out.print("<option>Grande</option>");
-                                    } else if (talla.equals("Mediano")) {
-                                        out.print("<option>Chico</option>");
-                                        out.print("<option selected>Mediano</option>");
-                                        out.print("<option>Grande</option>");
-                                    } else if (talla.equals("Grande")) {
-                                        out.print("<option>Chico</option>");
-                                        out.print("<option>Mediano</option>");
-                                        out.print("<option selected>Grande</option>");
+                                    String talla = perroSelected.getTalla();
+                                    if (talla != null) {
+                                        if (talla.equals("Chico")) {
+                                            out.print("<option selected>Chico</option>");
+                                            out.print("<option>Mediano</option>");
+                                            out.print("<option>Grande</option>");
+                                        } else if (talla.equals("Mediano")) {
+                                            out.print("<option>Chico</option>");
+                                            out.print("<option selected>Mediano</option>");
+                                            out.print("<option>Grande</option>");
+                                        } else if (talla.equals("Grande")) {
+                                            out.print("<option>Chico</option>");
+                                            out.print("<option>Mediano</option>");
+                                            out.print("<option selected>Grande</option>");
+                                        }
                                     }
                                 }
                             %>
 
                         </select>
-                        <h3>Foto</h3>
-                        <input type="file" name="imagenp" accept="image/x-png,image/gif,image/jpeg" >
+
                         <input type="hidden" value="editarMascota" name="action">
                         <input type="hidden" value="<%= request.getParameter("id")%>" name="mascota">
                         <input type="hidden" value="page" name="place">
                         <br>
-                        <input type="submit" value="Editar">
+                        <input type="submit" value="Editar" class="btn-small yellow darken-2">
                     </form>
-                    <a href="#"><input type="button" value="Cancelar"></a>
-                </div> 
+                    <a href="home.jsp"><input type="button" value="Cancelar" class="btn-small red darken-2"></a>
+                </div>
+
             </div>
             <div id="Infocita" class="modal">
 
@@ -270,7 +288,7 @@
                     }
                 %>
                 <div class="modal-content">
-                        <h2>Informacion cita: <%
+                    <h2>Informacion cita: <%
                             out.print(request.getParameter("codigo"));%></h2>
 
                     <form action="..\..\Cliente" method="post">
@@ -295,25 +313,25 @@
 
                         <label>Hora: </label>
                         <input type="time" name="horacita">
-                        
+
                         <label for="tiposervicio">Tipo de servicio: </label>
                         <select id='tiposervicio' name="servicio">
                             <option disabled selected>Selecciona el servicio</option>
                             <%  ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getSession().getAttribute("servicios");
-                               
+
                                 for (int i = 0; i < servicios.size(); i++) {
                                     out.print("<option>" + servicios.get(i).getNombreservicio() + "</option>");
                                 }
                             %>
                         </select>
-                        
+
                         <input type="hidden" value="agendarCita" name="action">
                         <input type="hidden" value="<%if (request.getParameter("id") != null) {
                                 out.print(request.getParameter("id"));
                             }%>" name="mascota">
                         <input type="hidden" value="page" name="place">
                         <br>
-                        <input type="submit" value="Agendar">
+                        <input type="submit" value="Agendar" class="btn small">
                     </form>
                 </div>
             </div>

@@ -286,7 +286,7 @@ public class UsuarioBD {
         cn = con.conectar();
         ArrayList<Cita> obtenido = new ArrayList();
         try {
-            PreparedStatement ps = cn.prepareStatement("SELECT fec_cit, hor_cit, codi_cit, est_cit, nom_per  FROM cita NATURAL JOIN perro WHERE cor_usu= ? AND fin_cit=0");
+            PreparedStatement ps = cn.prepareStatement("SELECT fec_cit, hor_cit, codi_cit, est_cit, nom_per  FROM cita NATURAL JOIN perro WHERE cor_usu= ? AND fin_cit=0 ORDER BY est_cit DESC, fec_cit ASC, hor_cit ASC");
             ps.setString(1, correo);
             ResultSet rs = ps.executeQuery();
 
