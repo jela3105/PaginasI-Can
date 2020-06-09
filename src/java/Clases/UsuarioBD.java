@@ -453,17 +453,17 @@ public class UsuarioBD {
                 try {
                     PreparedStatement ps2 = cn.prepareStatement("SELECT nom_art FROM ticket NATURAL JOIN descripcion NATURAL JOIN cita NATURAL JOIN articulo WHERE codi_cit=? AND cor_usu=?");
                     ps2.setString(1, encargo.getCita());
-                    System.out.println("La cita "+encargo.getCita());
+                    System.out.println("La cita " + encargo.getCita());
                     ps2.setString(2, encargo.getCorreo());
-                    System.out.println("El correo "+encargo.getCorreo());
-                    System.out.println("El articulo "+encargo.getArticulo());
+                    System.out.println("El correo " + encargo.getCorreo());
+                    System.out.println("El articulo " + encargo.getArticulo());
                     ResultSet rs2 = ps2.executeQuery();
                     boolean productoEncargado = false;
-                    while(rs2.next()){
+                    while (rs2.next()) {
                         System.out.println("El que pidio" + encargo.getArticulo());
                         System.out.println("lo que hay " + rs2.getString("nom_art"));
-                        if(encargo.getArticulo().equals(rs2.getString("nom_art"))){
-                            productoEncargado=true;
+                        if (encargo.getArticulo().equals(rs2.getString("nom_art"))) {
+                            productoEncargado = true;
                             break;
                         }
                     }
@@ -535,6 +535,28 @@ public class UsuarioBD {
 
         } catch (Exception e) {
             System.out.println("f al insertar");
+            System.out.println(e.toString());
+            resp = false;
+        }
+        return resp;
+    }
+
+    public boolean borrarEncargo(Encargo encargo) {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        boolean resp = true;
+        try {
+            PreparedStatement ps = cn.prepareStatement("DELETE ticket FROM ticket NATURAL JOIN descripcion NATURAL JOIN cita NATURAL JOIN articulo WHERE nom_art=? AND codi_cit=? AND cor_usu=?");
+
+            ps.setString(1, encargo.getArticulo());            
+            ps.setString(2, encargo.getCita());
+            ps.setString(3, encargo.getCorreo());
+            ps.executeUpdate();
+            resp = true;
+
+        } catch (Exception e) {
+            System.out.println("f al borrar");
             System.out.println(e.toString());
             resp = false;
         }

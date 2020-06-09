@@ -732,27 +732,44 @@ public class Cliente extends HttpServlet {
 
                 }
             } else {
+                if (request.getParameter("boton").equals("Borrar")) {
+                    Encargo encargo = new Encargo();
+                    encargo.setArticulo(producto);
+                    encargo.setCorreo(correo);
+                    encargo.setCita(cita);
+                    UsuarioBD usu = new UsuarioBD();
+                    if(usu.borrarEncargo(encargo)){
+                        if (place.equals("page")) {
+                            String men = "Se ha borrado el encargo exitosamente";
+                            misesion.removeAttribute("encargos");
+                            misesion.setAttribute("encargos", encargos(correo));
+                            response.sendRedirect("JSP/cliente/Servicios.jsp?mens=" + men);
+                        } else if (place.equals("app")) {
 
-                Encargo encargo = new Encargo();
-                encargo.setArticulo(producto);
-                encargo.setCantidad(Integer.parseInt(cantidad));
-                encargo.setCorreo(correo);
-                encargo.setCita(cita);
-                UsuarioBD usu = new UsuarioBD();
-                if (usu.encargarProducto(encargo)) {
-                    if (place.equals("page")) {
-                        String men = "Se ha realizado en encargo exitosamente";
-                        misesion.removeAttribute("encargos");
-                        misesion.setAttribute("encargos", encargos(correo));
-                        response.sendRedirect("JSP/cliente/Servicios.jsp?mens=" + men);
-                    } else if (place.equals("app")) {
-
+                        }
                     }
-                }else{
-                    String men = "Algo salio mal";
+                } else {
+                    Encargo encargo = new Encargo();
+                    encargo.setArticulo(producto);
+                    encargo.setCantidad(Integer.parseInt(cantidad));
+                    encargo.setCorreo(correo);
+                    encargo.setCita(cita);
+                    UsuarioBD usu = new UsuarioBD();
+                    if (usu.encargarProducto(encargo)) {
+                        if (place.equals("page")) {
+                            String men = "Se ha realizado en encargo exitosamente";
+                            misesion.removeAttribute("encargos");
+                            misesion.setAttribute("encargos", encargos(correo));
+                            response.sendRedirect("JSP/cliente/Servicios.jsp?mens=" + men);
+                        } else if (place.equals("app")) {
+
+                        }
+                    } else {
+                        String men = "Algo salio mal";
                         misesion.removeAttribute("encargos");
                         misesion.setAttribute("encargos", encargos(correo));
                         response.sendRedirect("JSP/cliente/Servicios.jsp?mens=" + men);
+                    }
                 }
             }
         } else {

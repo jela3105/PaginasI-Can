@@ -427,7 +427,8 @@
                         <input type="hidden" value="<%=request.getParameter("codigo")%>" name="codigo">
                         <input type="hidden" value="page" name="place">
                         <br>
-                        <input type="submit" value="Editar" class="btn-small yellow darken-2">
+                        <input type="submit" value="Editar" class="btn-small yellow darken-2" name="cambiar">
+                        <input type="submit" value="Borrar" class="btn-small red" name="borrar">
                     </form>
                     <%
 
@@ -462,7 +463,8 @@
                                                 <input type="hidden" value="<%=request.getParameter("codigo")%>" name="cita">
                                                 <input type="hidden" value="page" name="place">
                                                 <br>
-                                                <input type="submit" value="Encargar" class="btn-small yellow darken-2">
+                                                <input type="submit" value="Encargar" class="btn-small yellow darken-2" name="boton">
+                                                <input type="submit" value="Borrar" class="btn-small red" name="boton">
                                             </form>
                                         </p>
                                         <div class="secondary-content col s8 m8">
