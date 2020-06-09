@@ -4,6 +4,7 @@
     Author     : jela3
 --%>
 
+<%@page import="Clases.Cita"%>
 <%@page import="Clases.Perro"%>
 <%@page import="Clases.Producto"%>
 <%@page import="java.util.ArrayList"%>
@@ -208,7 +209,7 @@
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4"><%=productos.get(i).getNombre()%><i class="material-icons right">more_vert</i></span>
-                                <p><a href="Servicios.jsp?modal=AgregarProducto">Hacer pedido</a></p>
+                                <p><a href="Servicios.jsp?modal=AgregarProducto&Producto=<%=productos.get(i).getNombre()%>">Hacer pedido</a></p>
                             </div>
                             <div class="card-reveal">
                                 <span class="card-title grey-text text-darken-4"><%=productos.get(i).getNombre()%><i class="material-icons right">close</i></span>
@@ -262,6 +263,66 @@
                     </form>
                 </div>
             </div>
+            <div id="AgregarProducto" class="modal">
+                <div class="modal-content">
+                    <h2> Hacer pedido de <%=request.getParameter("Producto")%> </h2>
+
+                    <form action="..\..\Cliente" method="post">
+
+                        <label>Cita para recoger pedido: </label>
+                        <select name="cita">
+                            <option disabled selected>Selecciona la cita</option>
+                            <%                        ArrayList<Cita> citas = (ArrayList<Cita>) request.getSession().getAttribute("miniaturacitas");
+                                if (citas != null) {
+                                    for (int i = 0; i < citas.size(); i++) {
+                                        if (!citas.get(i).isEstado()) {
+                                            out.print("<option>" + citas.get(i).getCodigo() + "</option>");
+                                        }
+                                    }
+                                }
+                            %>
+                        </select>
+                       
+                        <div class="input-field">
+                            <input id="cantidad" name="cantidad" type="number" min="1" max="5">
+                            <label for="cantidad">Cantidad:</label>
+                        </div> 
+                        <input type="hidden" value="encargarProducto" name="action">
+                        <input type="hidden" value="<%=request.getParameter("Producto")%>" name="producto">
+                        <input type="hidden" value="page" name="place">
+                        <br>
+                        <input type="submit" value="Encargar" class="btn small">
+                    </form>
+                </div>
+            </div>
         </section>
+        <footer class="page-footer grey darken-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col l6 s12">
+                        <h5 class="white-text">Dirección</h5>
+                        <p class="grey-text text-lighten-4">Golfo de Campeche # 51, Col. Tacuba 11410 Ciudad de México</p>
+                        <h5 class="white-text">Número de contacto</h5>
+                        <p class="grey-text text-lighten-4">Teléfono: 55 1295 6883</p>
+                    </div>
+                    <div class="col l4 offset-l2 s12">
+                        <h5 class="white-text">Links</h5>
+                        <ul>
+                            <li><a class="grey-text text-lighten-3" href="https://www.facebook.com/CanContentoMascotas/"><img src="../../Img/facebook.png" style="width: 50px"></a></li>
+                            <li class="grey-text text-lighten-3">Facebook</li>
+                            <li><a class="grey-text text-lighten-3" href="#!"><img src="../../Img/youtube.png" style="width: 50px"></a></li>
+                            <li class="grey-text text-lighten-3">Youtube</li>
+                            <li><a class="grey-text text-lighten-3" href="#!"><img src="../../Img/twitter.png" style="width: 50px"></a></li>        
+                            <li class="grey-text text-lighten-3">Twitter</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    <p class="copy">&copy; Techno-Bit</p>                   
+                </div>
+            </div>
+        </footer>
     </body>
 </html>

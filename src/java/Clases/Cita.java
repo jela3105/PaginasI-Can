@@ -22,7 +22,15 @@ public class Cita {
     private String fincita;
     //mascota que va a tener la cita
     private String mascota;
+    private String servicio;
 
+    public String getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(String servicio) {
+        this.servicio = servicio;
+    }
     public String getCliente() {
         return cliente;
     }

@@ -33,7 +33,22 @@
                 </div>
             </nav>
         </header>
-        
+        <div class="container">
+            <%if (request.getSession().getAttribute("correo") != null) {%>
+            <div class="">
+                
+            </div>
+                <%
+                } else {
+                %>
+                <div class="altura">
+                    <h3> NO HAY SESION INICIADA</h3>
+                    <p class="red-text">Inicia sesión nuevamente para poder acceder a todos nuestros servicios</p>
+                </div>
+                <%
+                    }
+                %>
+            </div>
     </body>
     <footer class="page-footer grey darken-3">
         <div class="container">

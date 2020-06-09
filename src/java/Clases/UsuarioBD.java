@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -286,7 +287,7 @@ public class UsuarioBD {
         cn = con.conectar();
         ArrayList<Cita> obtenido = new ArrayList();
         try {
-            PreparedStatement ps = cn.prepareStatement("SELECT fec_cit, hor_cit, codi_cit, est_cit, nom_per  FROM cita NATURAL JOIN perro WHERE cor_usu= ? AND fin_cit=0 ORDER BY est_cit DESC, fec_cit ASC, hor_cit ASC");
+            PreparedStatement ps = cn.prepareStatement("SELECT fec_cit, hor_cit, codi_cit, est_cit, nom_per, nom_ser  FROM cita NATURAL JOIN perro NATURAL JOIN servicio NATURAL JOIN descripcion WHERE cor_usu= ? AND fin_cit=0 ORDER BY est_cit DESC, fec_cit ASC, hor_cit ASC");
             ps.setString(1, correo);
             ResultSet rs = ps.executeQuery();
 
@@ -298,6 +299,7 @@ public class UsuarioBD {
                 cita.setCodigo(rs.getString("codi_cit"));
                 cita.setMascota(rs.getString("nom_per"));
                 cita.setEstado(rs.getBoolean("est_cit"));
+                cita.setServicio(rs.getString("nom_ser"));
                 obtenido.add(cita);
 
                 System.out.println(cita.getMascota());
@@ -318,29 +320,26 @@ public class UsuarioBD {
 
         try {
 
-            PreparedStatement ps2 = cn.prepareStatement("SELECT id_per FROM perro WHERE nom_per=? and cor_usu=?");
-            ps2.setString(1, cita.getMascota());
-            ps2.setString(2, cita.getCliente());
-            ResultSet rs = ps2.executeQuery();
-            while (rs.next()) {
-                PreparedStatement ps = cn.prepareStatement("UPDATE cita SET fec_cit=?, hor_cit=?, est_cit=?, codi_cit=?, cor_usu=?, fin_cit=? WHERE cod_cit=?");
-                ps.setDate(1, java.sql.Date.valueOf(cita.getFecha()));
-                ps.setTime(2, java.sql.Time.valueOf(cita.getHora() + ":00"));
-                ps.setInt(3, 0);
-                ps.setString(4, cita.getCodigo());
-                ps.setString(5, String.valueOf(rs.getInt("id_per")));
-                ps.setString(6, cita.getCliente());
-                ps.setInt(7, 0);
-                int i = ps.executeUpdate();
-                System.out.println("se ejecuto");
-                System.out.println(i);
-                if (i == 1) {
-                    resp = true;
-                }
-            }
+            PreparedStatement ps = cn.prepareStatement("UPDATE cita SET fec_cit=? , hor_cit=? , est_cit=? , id_per=(SELECT id_per FROM perro WHERE nom_per=? and cor_usu=?) WHERE codi_cit=?");
+            ps.setDate(1, java.sql.Date.valueOf(cita.getFecha()));
+            System.out.println(java.sql.Date.valueOf(cita.getFecha()));
+            ps.setTime(2, java.sql.Time.valueOf(cita.getHora() + ":00"));
+            System.out.println(java.sql.Time.valueOf(cita.getHora() + ":00"));
+            ps.setInt(3, 0);
+            ps.setString(4, cita.getMascota());
+            System.out.println(cita.getMascota());
+            ps.setString(5, cita.getCliente());
+            System.out.println(cita.getCliente());
+
+            ps.setString(6, cita.getCodigo());
+            System.out.println(cita.getCodigo());
+            int i = ps.executeUpdate();
+            resp = true;
+            System.out.println("se ejecuto");
+            System.out.println(i);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            e.toString();
         }
         return resp;
     }
@@ -386,14 +385,14 @@ public class UsuarioBD {
                 Servicio ser = new Servicio();
                 ser.setNombreservicio(rs.getString("nom_ser"));
                 ser.setDescripcion(rs.getString("des_ser"));
-                String precio="";
+                String precio = "";
                 try {
                     PreparedStatement ps2 = cn.prepareStatement("SELECT tam_ser , pre_pre FROM precio NATURAL JOIN servicio WHERE nom_ser=?");
                     ps2.setString(1, ser.getNombreservicio());
                     ResultSet rs2 = ps2.executeQuery();
                     while (rs2.next()) {
-                        precio = precio + rs2.getString("tam_ser") + ": $" +String.valueOf(rs2.getFloat("pre_pre") + ";");
-                        
+                        precio = precio + rs2.getString("tam_ser") + ": $" + String.valueOf(rs2.getFloat("pre_pre") + ";");
+
                     }
                 } catch (Exception e) {
                     System.out.println(e.toString());
@@ -407,5 +406,138 @@ public class UsuarioBD {
         }
         System.out.println("servicios consultados");
         return servicios;
+    }
+
+    public static boolean encargarProducto(Encargo encargo) {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        boolean resp = false;
+        try {
+            PreparedStatement ps = cn.prepareStatement("SELECT id_ven FROM descripcion NATURAL JOIN cita WHERE codi_cit=? AND cor_usu=?");
+            ps.setString(1, encargo.getCita());
+            ps.setString(2, encargo.getCorreo());
+
+            ResultSet rs = ps.executeQuery();
+            int id = 0;
+            while (rs.next()) {
+                id = rs.getInt("id_ven");
+            }
+            if (id == 0) {
+                PreparedStatement ps1 = cn.prepareStatement("INSERT INTO venta (fin_ven, cor_usu) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
+                ps1.setInt(1, 0);
+                ps1.setString(2, encargo.getCorreo());
+                ps1.executeUpdate();
+
+                int idGenerado;
+                ResultSet generatedKey = ps1.getGeneratedKeys();
+                if (generatedKey.next()) {
+                    idGenerado = generatedKey.getInt(1);
+                    PreparedStatement ps2 = cn.prepareStatement("INSERT INTO ticket (can_tic, id_ven, id_art) VALUES (?,?,(SELECT id_art FROM articulo WHERE nom_art =?))");
+                    ps2.setInt(1, encargo.getCantidad());
+                    ps2.setInt(2, idGenerado);
+                    ps2.setString(3, encargo.getArticulo());
+                    int j = ps2.executeUpdate();
+                    if (j == 1) {
+                        PreparedStatement ps3 = cn.prepareStatement("UPDATE descripcion NATURAL JOIN cita SET id_ven=? WHERE codi_cit= ? ");
+                        ps3.setInt(1, idGenerado);
+                        ps3.setString(2, encargo.getCita());
+                        int k = ps3.executeUpdate();
+                        if (k == 1) {
+                            resp = true;
+                        }
+                    }
+                }
+
+            } else {
+                try {
+                    PreparedStatement ps2 = cn.prepareStatement("SELECT nom_art FROM ticket NATURAL JOIN descripcion NATURAL JOIN cita NATURAL JOIN articulo WHERE codi_cit=? AND cor_usu=?");
+                    ps2.setString(1, encargo.getCita());
+                    System.out.println("La cita "+encargo.getCita());
+                    ps2.setString(2, encargo.getCorreo());
+                    System.out.println("El correo "+encargo.getCorreo());
+                    System.out.println("El articulo "+encargo.getArticulo());
+                    ResultSet rs2 = ps2.executeQuery();
+                    boolean productoEncargado = false;
+                    while(rs2.next()){
+                        System.out.println("El que pidio" + encargo.getArticulo());
+                        System.out.println("lo que hay " + rs2.getString("nom_art"));
+                        if(encargo.getArticulo().equals(rs2.getString("nom_art"))){
+                            productoEncargado=true;
+                            break;
+                        }
+                    }
+                    if (productoEncargado) {
+                        PreparedStatement ps4 = cn.prepareStatement("UPDATE ticket NATURAL JOIN articulo NAUTRAL JOIN descripcion NATURAL JOIN cita SET can_tic=? WHERE nom_art =? AND codi_cit=?");
+                        ps4.setInt(1, encargo.getCantidad());
+                        ps4.setString(2, encargo.getArticulo());
+                        ps4.setString(3, encargo.getCita());
+                        ps4.executeUpdate();
+                        resp = true;
+                    } else {
+                        System.out.println("entro aqui");
+                        PreparedStatement ps3 = cn.prepareStatement("INSERT INTO ticket (can_tic, id_ven, id_art) VALUES (?,?,(SELECT id_art FROM articulo WHERE nom_art =?))");
+                        ps3.setInt(1, encargo.getCantidad());
+                        ps3.setInt(2, id);
+                        ps3.setString(3, encargo.getArticulo());
+                        ps3.executeUpdate();
+                        resp = true;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    resp = false;
+                }
+
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return resp;
+    }
+
+    public static ArrayList<Encargo> consultarEncargos(String correo) {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        ArrayList<Encargo> encargos = new ArrayList<Encargo>();
+        try {
+            PreparedStatement ps = cn.prepareStatement("select codi_cit, nom_art, can_tic from descripcion natural join cita natural join venta natural join ticket NATURAL JOIN articulo where id_ven IS NOT NULL AND cor_usu=? AND fin_cit=?");
+            ps.setString(1, correo);
+            ps.setInt(2, 0);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Encargo encargo = new Encargo();
+                encargo.setCita(rs.getString("codi_cit"));
+                encargo.setArticulo(rs.getString("nom_art"));
+                encargo.setCantidad(rs.getInt("can_tic"));
+                encargos.add(encargo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return encargos;
+    }
+
+    public boolean editarServicio(DescripcionServicio descripcionServicio) {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        boolean resp = true;
+        //INSERT INTO descripcion (com_des, cal_des, id_cit, id_ser, id_ven) VALUES ('f',5.0,(SELECT id_cit FROM cita WHERE codi_cit='20jela@efe05311900'),(SELECT id_ser FROM servicio WHERE nom_ser='Baño pequeño'),1);
+        try {
+            PreparedStatement ps = cn.prepareStatement("UPDATE descripcion NATURAL JOIN cita NATURAL JOIN servicio SET id_ser= ( SELECT id_ser FROM servicio WHERE nom_ser=? ) WHERE codi_cit=?");
+
+            ps.setString(1, descripcionServicio.getNombreServicio());
+            ps.setString(2, descripcionServicio.getCodigoCita());
+            ps.executeUpdate();
+            resp = true;
+
+        } catch (Exception e) {
+            System.out.println("f al insertar");
+            System.out.println(e.toString());
+            resp = false;
+        }
+        return resp;
     }
 }

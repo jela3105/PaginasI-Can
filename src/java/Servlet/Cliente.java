@@ -7,6 +7,7 @@ package Servlet;
  */
 import Clases.Cita;
 import Clases.DescripcionServicio;
+import Clases.Encargo;
 import Clases.Perro;
 import Clases.Producto;
 import Clases.Servicio;
@@ -31,6 +32,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 /**
  *
@@ -66,6 +68,10 @@ public class Cliente extends HttpServlet {
             editarMascota(request, response);
         } else if (ac.equals("agendarCita")) {
             agendarCita(request, response);
+        } else if (ac.equals("encargarProducto")) {
+            encargarProducto(request, response);
+        } else if (ac.equals("editarCita")) {
+            editarCita(request, response);
         }
 
         //
@@ -284,15 +290,17 @@ public class Cliente extends HttpServlet {
                             misesion.setAttribute("miniaturacitas", miniaturaCita(usuario.getCorreo()));
                             misesion.setAttribute("servicios", servicios());
                             misesion.setAttribute("productos", productos());
+                            misesion.setAttribute("encargos", encargos(usuario.getCorreo()));
                             if (place.equals("page")) {
                                 response.sendRedirect("JSP/cliente/home.jsp?id=" + miniaturaMascota(usuario.getCorreo()).get(0).getNombre());
                             } else if (place.equals("app")) {
                                 JSONObject jsonObject1 = new JSONObject();
+                                JSONArray jsArray = new JSONArray(productos());
                                 try {
-                                    jsonObject1.put("Login", "cliente");
+                                    jsonObject1.put("Login", "Cliente");
                                     PrintWriter pw = response.getWriter();
                                     pw.write(jsonObject1.toString());
-                                    pw.print(jsonObject1.toString());
+                                    pw.write(jsArray.toString());
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -444,16 +452,16 @@ public class Cliente extends HttpServlet {
                     misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
                     if (place.equals("page")) {
                         String men = "Registro correcto";
-                        response.sendRedirect("JSP/cliente/home.jsp?mans=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());  
+                        response.sendRedirect("JSP/cliente/home.jsp?mans=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
                     } else if (place.equals("app")) {
-                        
-                    }    
+
+                    }
                 } else {
                     if (place.equals("page")) {
                         String men = "Error al registrar";
                         response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
                     } else if (place.equals("app")) {
-                        
+
                     }
                 }
             }
@@ -461,7 +469,7 @@ public class Cliente extends HttpServlet {
     }
 
     private void obtenerProductos(HttpServletRequest request, HttpServletResponse response) {
-       
+
     }
 
     private String validarTel(String tel_clie) {
@@ -486,6 +494,12 @@ public class Cliente extends HttpServlet {
         ArrayList<Perro> perro = usu.consutarMiniaturaPerro(correo);
         return perro;
 
+    }
+
+    public ArrayList<Encargo> encargos(String correo) throws IOException {
+        UsuarioBD usu = new UsuarioBD();
+        ArrayList<Encargo> encargos = usu.consultarEncargos(correo);
+        return encargos;
     }
 
     private void eliminarMascota(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -532,9 +546,6 @@ public class Cliente extends HttpServlet {
             try {
                 Part filePart = request.getPart("imagenp");
                 if (filePart.getSize() > 0) {
-                    System.out.println(filePart.getName());
-                    System.out.println(filePart.getSize());
-                    System.out.println(filePart.getContentType());
                     System.out.println(context + "\\" + correo + "\\" + nombre + ".png");
                     filecontent = filePart.getInputStream();
                     OutputStream os = new FileOutputStream(context + "\\" + correo + "\\" + nombre + ".png");
@@ -560,11 +571,6 @@ public class Cliente extends HttpServlet {
                     || (talla.equals(""))) {
 
                 if (place.equals("page")) {
-                    System.out.println("Respuesta pagina");
-                    System.out.println(nombre);
-                    System.out.println(nacimiento);
-                    System.out.println(genero);
-                    System.out.println(talla);
                     String men = "Llena todos los campos";
                     response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
                 } else if (place.equals("app")) {
@@ -596,7 +602,7 @@ public class Cliente extends HttpServlet {
                             response.sendRedirect("JSP/cliente/home.jsp" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
                         } else if (place.equals("app")) {
 
-                        }  
+                        }
                     } else {
                         if (place.equals("page")) {
                             String men = "Error al editar";
@@ -624,7 +630,7 @@ public class Cliente extends HttpServlet {
                         misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
                         if (place.equals("page")) {
                             String men = "Registro correcto";
-                            response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());    
+                            response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
                         } else if (place.equals("app")) {
                         }
                         //En caso de que no se haya podido registrar    
@@ -666,7 +672,6 @@ public class Cliente extends HttpServlet {
 
                 }
             } else {
-                System.out.println("datos completos");
                 Cita cita = new Cita();
                 cita.setCliente(correo);
                 cita.setEstado(false);
@@ -680,7 +685,6 @@ public class Cliente extends HttpServlet {
                 UsuarioBD usu = new UsuarioBD();
                 if (usu.altaCita(cita) && usu.altaServicio(ds)) {
                     if (request.getParameter("place").equals("page")) {
-                        System.out.println("entro a la respuesta pagina");
                         misesion.removeAttribute("miniaturacitas");
                         misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));
                         String men = "Cita enviada, espera la respuesta de confirmacion";
@@ -705,9 +709,103 @@ public class Cliente extends HttpServlet {
         ArrayList<Servicio> servicios = usu.consultarServicios();
         return servicios;
     }
-    public ArrayList<Producto> productos(){
+
+    public ArrayList<Producto> productos() {
         UsuarioBD usu = new UsuarioBD();
         ArrayList<Producto> productos = usu.consultarProductos();
         return productos;
+    }
+
+    private void encargarProducto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession misesion = (HttpSession) request.getSession();
+        String correo = (String) request.getSession().getAttribute("correo");
+        String producto = request.getParameter("producto");
+        String cantidad = request.getParameter("cantidad");
+        String cita = request.getParameter("cita");
+        String place = request.getParameter("place");
+        if (correo != null) {
+            if (producto.equals("") || cantidad.equals("") || cita.equals("")) {
+                if (place.equals("page")) {
+                    String men = "Llena todos los campos por favor";
+                    response.sendRedirect("JSP/cliente/Servicios.jsp?mens=" + men);
+                } else if (place.equals("app")) {
+
+                }
+            } else {
+
+                Encargo encargo = new Encargo();
+                encargo.setArticulo(producto);
+                encargo.setCantidad(Integer.parseInt(cantidad));
+                encargo.setCorreo(correo);
+                encargo.setCita(cita);
+                UsuarioBD usu = new UsuarioBD();
+                if (usu.encargarProducto(encargo)) {
+                    if (place.equals("page")) {
+                        String men = "Se ha realizado en encargo exitosamente";
+                        misesion.removeAttribute("encargos");
+                        misesion.setAttribute("encargos", encargos(correo));
+                        response.sendRedirect("JSP/cliente/Servicios.jsp?mens=" + men);
+                    } else if (place.equals("app")) {
+
+                    }
+                }else{
+                    String men = "Algo salio mal";
+                        misesion.removeAttribute("encargos");
+                        misesion.setAttribute("encargos", encargos(correo));
+                        response.sendRedirect("JSP/cliente/Servicios.jsp?mens=" + men);
+                }
+            }
+        } else {
+            if (place.equals("page")) {
+                response.sendRedirect("HTML/SesionUsuario.html");
+            }
+        }
+    }
+
+    private void editarCita(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession misesion = (HttpSession) request.getSession();
+        String correo = (String) misesion.getAttribute("correo");
+        String place = request.getParameter("place");
+        if (correo == null) {
+            if (place.equals("page")) {
+                response.sendRedirect("HTML/SesionUsuario.html");
+            }
+        } else {
+            String codigo = request.getParameter("codigo");
+            String fecha = request.getParameter("fechacita");
+            String hora = request.getParameter("horacita");
+            String mascota = request.getParameter("mascota");
+            String servicio = request.getParameter("servicio");
+            if (fecha.equals("") || hora.equals("") || mascota.equals("") || servicio.equals("")) {
+                if (request.getParameter("place").equals("page")) {
+                    String mens = "llene todos los campos";
+                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + mens);
+                } else if (request.getParameter("app").equals("app")) {
+
+                }
+            } else {
+                Cita cita = new Cita();
+                cita.setCliente(correo);
+                cita.setEstado(false);
+                cita.setFecha(fecha);
+                cita.setHora(hora);
+                cita.setMascota(mascota);
+                cita.setCodigo(codigo);
+                DescripcionServicio ds = new DescripcionServicio();
+                ds.setCodigoCita(codigo);
+                ds.setNombreServicio(servicio);
+                UsuarioBD usu = new UsuarioBD();
+                usu.editarCita(cita);
+                usu.editarServicio(ds);
+                if (request.getParameter("place").equals("page")) {
+                    misesion.removeAttribute("miniaturacitas");
+                    misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));
+                    String men = "Edicion enviada, espera la respuesta de confirmacion";
+                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                } else if (request.getParameter("place").equals("app")) {
+
+                }
+            }
+        }
     }
 }

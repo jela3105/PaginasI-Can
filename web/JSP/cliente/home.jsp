@@ -3,6 +3,7 @@
     Created on : Mar 6, 2020, 12:05:39 PM
     Author     : jela3
 --%>
+<%@page import="Clases.Encargo"%>
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %> 
 <%@page import="Clases.Servicio"%>
 <%@page import="Clases.Cita"%>
@@ -117,17 +118,17 @@
                                     <%
                                         }
                                     %>
-
-                                    <td><a href="home.jsp?id=<%=citas.get(i).getMascota()%>&codigo=<%=citas.get(i).getCodigo()%>&modal=Infocita"><img src="../../Img/informacioncita.png" with="30" height="30" alt="Mas información" ></td>
-                                            </tr>
-                                            <%
-                                                }
-                                            } else {
-                                            %>
-                                            <p class="red background white-text">No hay citas registradas</p>
-                                            <%
-                                                }
-                                            %>
+                                    <td><a href="home.jsp?id=<%=citas.get(i).getMascota()%>&codigo=<%=citas.get(i).getCodigo()%>&modal=Editarcita"><i class="material-icons black-text">edit</i></td>
+                                    <td><a href="home.jsp?id=<%=citas.get(i).getMascota()%>&codigo=<%=citas.get(i).getCodigo()%>&modal=Infocita"><i class="material-icons black-text">info</i></td>
+                                </tr>
+                                <%
+                                    }
+                                } else {
+                                %>
+                            <p class="red background white-text">No hay citas registradas</p>
+                            <%
+                                }
+                            %>
                             </tbody> 
                         </table>                         
                     </div>
@@ -237,7 +238,7 @@
                         </select>
                         <h3>talla</h3>
                         <select name="tallaperro">
-                            <%System.out.println("talla" + perroSelected.getTalla());
+                            <%
                                     String talla = perroSelected.getTalla();
                                     if (talla != null) {
                                         if (talla.equals("Chico")) {
@@ -273,6 +274,7 @@
 
                 <%  String fecha = "0";
                     String hora = "0";
+                    String servicio = "";
                     if (request.getParameter("codigo") != null) {
                         Cita cita = new Cita();
                         for (int i = 0; i < citas.size(); i++) {
@@ -284,24 +286,69 @@
                         }
                         fecha = cita.getFecha().substring(6, 10) + "-" + cita.getFecha().substring(0, 2) + "-" + cita.getFecha().substring(3, 5);
                         hora = cita.getHora().substring(0, 5);
+                        servicio = cita.getServicio();
 
                     }
                 %>
                 <div class="modal-content">
-                    <h2>Informacion cita: <%
+                        <h2>Informacion cita: <%
                             out.print(request.getParameter("codigo"));%></h2>
 
-                    <form action="..\..\Cliente" method="post">
-                        <input type="date" name='fechacita' disabled value="<%out.print(fecha);%>">
-                        <input type="time" name="horacita" disable value="<%out.print(hora);%>">
-                        <input type="hidden" value="editarCita" name="action">
-                        <input type="hidden" value="<%out.print(request.getParameter("id"));%>" name="mascota">
-                        <input type="hidden" value="pag" name="place">
+                    <form >
+                        <label>Fecha de la cita: </label>
+                        <input type="date" disabled value="<%out.print(fecha);%>">
+                        <label>Hora de la cita: </label>
+                        <input type="time" disabled value="<%out.print(hora);%>">
+                        <label>Servicio</label>
+                        <input type="text" disabled value="<%out.print(servicio);%>">
                         <br>
-                        <input type="submit" value="Agendar">
+
                     </form>
+                    <%
+                        ArrayList<Encargo> encargos = (ArrayList<Encargo>) request.getSession().getAttribute("encargos");
+                        if (encargos != null) {
+                    %>
+                    <ul class="collapsible">
+                        <li>
+                            <div class="collapsible-header">
+                                <i class="material-icons">shopping_cart</i>
+                                Pedido:
+                                <span class="badge"></span>
+                            </div>
+                            <div class="collapsible-body">
+                                <ul class="collection">
+                                    <%int contar = 0;
+                                        for (int i = 0; i < encargos.size(); i++) {
+                                            if (encargos.get(i).getCita().equals(request.getParameter("codigo"))) {
+                                                contar++;
+
+                                    %>
+                                    <li class="collection-item avatar">
+                                        <img src="../../Img/productos/<%=encargos.get(i).getArticulo().replace(" ", "")%>.jpg" alt="" class="circle">
+                                        <span class="title"><%=encargos.get(i).getArticulo()%></span>
+                                        <div class="secondary-content"><%= encargos.get(i).getCantidad()%>
+                                        </div>
+                                    </li>
+                                    <%
+                                            }
+                                        }
+                                        if (contar == 0) {
+                                    %>
+                                    <h5>NO HAY ENCARGOS</h5>
+                                    <p>Para realizar un pedido ve a la sección de servicios y elige alguno de nuestros productos</p>
+                                    <%
+                                        }
+                                    %>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                    <%
+                        }%>
+
                 </div>
             </div>
+
             <div id="Agendarcita" class="modal">
                 <div class="modal-content">
                     <h2> Agendar cita para <%=request.getParameter("id")%></h2>
@@ -333,6 +380,112 @@
                         <br>
                         <input type="submit" value="Agendar" class="btn small">
                     </form>
+                </div>
+            </div>
+            <div id="Editarcita" class="modal">
+
+                <%
+                    if (request.getParameter("codigo") != null) {
+                        Cita cita = new Cita();
+                        for (int i = 0; i < citas.size(); i++) {
+                            if (citas.get(i).getCodigo().equals(request.getParameter("codigo"))) {
+                                cita = citas.get(i);
+                            } else {
+
+                            }
+                        }
+                        fecha = cita.getFecha().substring(6, 10) + "-" + cita.getFecha().substring(0, 2) + "-" + cita.getFecha().substring(3, 5);
+                        hora = cita.getHora().substring(0, 5);
+                        servicio = cita.getServicio();
+                    }
+                %>
+                <div class="modal-content">
+                        <h2>Editar cita: <%
+                            out.print(request.getParameter("codigo"));%></h2>
+
+                    <form action="..\..\Cliente" method="post">
+                        <label>Fecha de la cita: </label>
+                        <input type="date" name='fechacita' value="<%out.print(fecha);%>">
+                        <label>Hora de la cita: </label>
+                        <input type="time" name="horacita" value="<%out.print(hora);%>">
+                        <label for="tiposervicio">Tipo de servicio: </label>
+                        <select id='tiposervicio' name="servicio">
+                            <option disabled selected>Selecciona el servicio</option>
+                            <%
+                                for (int i = 0; i < servicios.size(); i++) {
+                                    if (servicio.equals(servicios.get(i).getNombreservicio())) {
+                                        out.print("<option selected>" + servicios.get(i).getNombreservicio() + "</option>");
+                                    } else {
+                                        out.print("<option>" + servicios.get(i).getNombreservicio() + "</option>");
+                                    }
+
+                                }
+                            %>
+                        </select>
+                        <input type="hidden" value="editarCita" name="action">
+                        <input type="hidden" value="<%out.print(request.getParameter("id"));%>" name="mascota">
+                        <input type="hidden" value="<%=request.getParameter("codigo")%>" name="codigo">
+                        <input type="hidden" value="page" name="place">
+                        <br>
+                        <input type="submit" value="Editar" class="btn-small yellow darken-2">
+                    </form>
+                    <%
+
+                        if (encargos != null) {
+                    %>
+                    <ul class="collapsible">
+                        <li>
+                            <div class="collapsible-header">
+                                <i class="material-icons">shopping_cart</i>
+                                Pedido:
+                                <span class="badge"></span>
+                            </div>
+                            <div class="collapsible-body">
+                                <ul class="collection">
+                                    <%int contar = 0;
+                                        for (int i = 0; i < encargos.size(); i++) {
+                                            if (encargos.get(i).getCita().equals(request.getParameter("codigo"))) {
+                                                contar++;
+
+                                    %>
+                                    <li class="collection-item avatar">
+                                        <img src="../../Img/productos/<%=encargos.get(i).getArticulo().replace(" ", "")%>.jpg" alt="" class="circle">
+                                        <span class="title"><%=encargos.get(i).getArticulo()%></span>
+                                        <p>
+                                             <form action="..\..\Cliente" method="post">
+                                                <div class="input-field">
+                                                    <input id="cantidad" name="cantidad" type="number" min="1" max="5" value="<%= encargos.get(i).getCantidad()%>">
+                                                    <label for="cantidad">Cantidad:</label>
+                                                </div> 
+                                                <input type="hidden" value="encargarProducto" name="action">
+                                                <input type="hidden" value="<%=encargos.get(i).getArticulo()%>" name="producto">
+                                                <input type="hidden" value="<%=request.getParameter("codigo")%>" name="cita">
+                                                <input type="hidden" value="page" name="place">
+                                                <br>
+                                                <input type="submit" value="Encargar" class="btn-small yellow darken-2">
+                                            </form>
+                                        </p>
+                                        <div class="secondary-content col s8 m8">
+                                           
+                                        </div>
+                                    </li>
+                                    <%
+                                            }
+                                        }
+                                        if (contar == 0) {
+                                    %>
+                                    <h5>NO HAY ENCARGOS</h5>
+                                    <p>Para realizar un pedido ve a la sección de servicios y elige alguno de nuestros productos</p>
+                                    <%
+                                        }
+                                    %>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                    <%
+                        }%>
+
                 </div>
             </div>
         </section>
