@@ -291,7 +291,7 @@
                         <input type="hidden" value="<%=request.getParameter("Producto")%>" name="producto">
                         <input type="hidden" value="page" name="place">
                         <br>
-                        <input type="submit" value="Encargar" class="btn small">
+                        <input type="submit" value="Encargar" class="btn small" name="boton">
                     </form>
                 </div>
             </div>

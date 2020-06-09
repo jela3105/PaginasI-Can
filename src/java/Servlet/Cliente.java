@@ -72,6 +72,8 @@ public class Cliente extends HttpServlet {
             encargarProducto(request, response);
         } else if (ac.equals("editarCita")) {
             editarCita(request, response);
+        } else if (ac.equals("editarDatos")) {
+            editarDatos(request, response);
         }
 
         //
@@ -291,6 +293,7 @@ public class Cliente extends HttpServlet {
                             misesion.setAttribute("servicios", servicios());
                             misesion.setAttribute("productos", productos());
                             misesion.setAttribute("encargos", encargos(usuario.getCorreo()));
+                            misesion.setAttribute("datoscliente", datosCliente(usuario.getCorreo()));
                             if (place.equals("page")) {
                                 response.sendRedirect("JSP/cliente/home.jsp?id=" + miniaturaMascota(usuario.getCorreo()).get(0).getNombre());
                             } else if (place.equals("app")) {
@@ -323,7 +326,7 @@ public class Cliente extends HttpServlet {
                             break;
                         case 1:
                             if (place.equals("page")) {
-                                response.sendRedirect("HTML/encargado/home.html");
+                                response.sendRedirect("JSP/encargado/home.jsp");
                             } else if (place.equals("app")) {
                                 JSONObject jsonObject = new JSONObject();
                                 try {
@@ -738,7 +741,7 @@ public class Cliente extends HttpServlet {
                     encargo.setCorreo(correo);
                     encargo.setCita(cita);
                     UsuarioBD usu = new UsuarioBD();
-                    if(usu.borrarEncargo(encargo)){
+                    if (usu.borrarEncargo(encargo)) {
                         if (place.equals("page")) {
                             String men = "Se ha borrado el encargo exitosamente";
                             misesion.removeAttribute("encargos");
@@ -788,40 +791,116 @@ public class Cliente extends HttpServlet {
                 response.sendRedirect("HTML/SesionUsuario.html");
             }
         } else {
-            String codigo = request.getParameter("codigo");
-            String fecha = request.getParameter("fechacita");
-            String hora = request.getParameter("horacita");
-            String mascota = request.getParameter("mascota");
-            String servicio = request.getParameter("servicio");
-            if (fecha.equals("") || hora.equals("") || mascota.equals("") || servicio.equals("")) {
-                if (request.getParameter("place").equals("page")) {
-                    String mens = "llene todos los campos";
-                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + mens);
-                } else if (request.getParameter("app").equals("app")) {
+            if (request.getParameter("boton").equals("Editar")) {
+                String codigo = request.getParameter("codigo");
+                String fecha = request.getParameter("fechacita");
+                String hora = request.getParameter("horacita");
+                String mascota = request.getParameter("mascota");
+                String servicio = request.getParameter("servicio");
+                if (fecha.equals("") || hora.equals("") || mascota.equals("") || servicio.equals("")) {
+                    if (request.getParameter("place").equals("page")) {
+                        String mens = "llene todos los campos";
+                        response.sendRedirect("JSP/cliente/home.jsp?mens=" + mens);
+                    } else if (request.getParameter("app").equals("app")) {
 
-                }
-            } else {
-                Cita cita = new Cita();
-                cita.setCliente(correo);
-                cita.setEstado(false);
-                cita.setFecha(fecha);
-                cita.setHora(hora);
-                cita.setMascota(mascota);
-                cita.setCodigo(codigo);
-                DescripcionServicio ds = new DescripcionServicio();
-                ds.setCodigoCita(codigo);
-                ds.setNombreServicio(servicio);
-                UsuarioBD usu = new UsuarioBD();
-                usu.editarCita(cita);
-                usu.editarServicio(ds);
-                if (request.getParameter("place").equals("page")) {
-                    misesion.removeAttribute("miniaturacitas");
-                    misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));
-                    String men = "Edicion enviada, espera la respuesta de confirmacion";
-                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
-                } else if (request.getParameter("place").equals("app")) {
+                    }
+                } else {
+                    Cita cita = new Cita();
+                    cita.setCliente(correo);
+                    cita.setEstado(false);
+                    cita.setFecha(fecha);
+                    cita.setHora(hora);
+                    cita.setMascota(mascota);
+                    cita.setCodigo(codigo);
+                    DescripcionServicio ds = new DescripcionServicio();
+                    ds.setCodigoCita(codigo);
+                    ds.setNombreServicio(servicio);
+                    UsuarioBD usu = new UsuarioBD();
+                    usu.editarCita(cita);
+                    usu.editarServicio(ds);
+                    if (request.getParameter("place").equals("page")) {
+                        misesion.removeAttribute("miniaturacitas");
+                        misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));
+                        String men = "Edicion enviada, espera la respuesta de confirmacion";
+                        response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                    } else if (request.getParameter("place").equals("app")) {
 
+                    }
                 }
+            } else if (request.getParameter("boton").equals("Borrar")) {
+                String codigo = request.getParameter("codigo");
+                String fecha = request.getParameter("fechacita");
+                String hora = request.getParameter("horacita");
+                String mascota = request.getParameter("mascota");
+                String servicio = request.getParameter("servicio");
+                if (fecha.equals("") || hora.equals("") || mascota.equals("") || servicio.equals("")) {
+                    if (request.getParameter("place").equals("page")) {
+                        String mens = "llene todos los campos";
+                        response.sendRedirect("JSP/cliente/home.jsp?mens=" + mens);
+                    } else if (request.getParameter("app").equals("app")) {
+
+                    }
+                } else {
+                    Cita cita = new Cita();
+                    cita.setCliente(correo);
+                    cita.setEstado(false);
+                    cita.setFecha(fecha);
+                    cita.setHora(hora);
+                    cita.setMascota(mascota);
+                    System.out.println(codigo);
+                    cita.setCodigo(codigo);
+                    DescripcionServicio ds = new DescripcionServicio();
+                    ds.setCodigoCita(codigo);
+                    ds.setNombreServicio(servicio);
+                    UsuarioBD usu = new UsuarioBD();
+                    usu.cancelarCita(cita, ds);
+                    if (request.getParameter("place").equals("page")) {
+                        misesion.removeAttribute("miniaturacitas");
+                        misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));
+                        misesion.removeAttribute("encargos");
+                        misesion.setAttribute("encargos", encargos((String) misesion.getAttribute("correo")));
+                        String men = "Se ha cancelado la cita";
+                        response.sendRedirect("JSP/cliente/home.jsp?mens=" + men);
+                    } else if (request.getParameter("place").equals("app")) {
+
+                    }
+                }
+            }
+        }
+    }
+
+    private Usuario datosCliente(String correo) {
+        UsuarioBD usu = new UsuarioBD();
+        return usu.consultarDatos(correo);
+
+    }
+
+    private void editarDatos(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession misesion = (HttpSession) request.getSession();
+        if(misesion!=null){
+            String nombre = request.getParameter("nombre");
+            String apellido = request.getParameter("apellido");
+            String telefono = request.getParameter("telefono");
+            String direccion = request.getParameter("direccion");
+            if(telefono.length()==8 || telefono.length()== 10){
+                Usuario usuario = new Usuario();
+                usuario.setNombre(nombre);
+                usuario.setApellido(apellido);
+                usuario.setTelefono(telefono);
+                usuario.setDireccion(direccion);
+                UsuarioBD usuBD = new UsuarioBD();
+                if(usuBD.editarDatosUsuario(usuario, (String) misesion.getAttribute("correo"))){
+                    if (request.getParameter("place").equals("page")) {
+                        misesion.removeAttribute("datoscliente");
+                        misesion.setAttribute("datoscliente", datosCliente((String) misesion.getAttribute("correo")));
+                        String men = "Se ha modificado exitosamente";
+                        response.sendRedirect("JSP/cliente/Perfil.jsp?mens=" + men);
+                    } else if (request.getParameter("place").equals("app")) {
+
+                    }
+                }
+            }else{
+                
             }
         }
     }

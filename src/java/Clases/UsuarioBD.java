@@ -40,11 +40,12 @@ public class UsuarioBD {
             //En caso de que se haya podido agregar el usuario correctamente
             if (i == 1) {
 
-                PreparedStatement ps1 = cn.prepareStatement("INSERT INTO persona (nom_pers,tel_pers,dir_pers,cor_usu) VALUES (?,?,?,?)");
+                PreparedStatement ps1 = cn.prepareStatement("INSERT INTO persona (nom_pers, ape_pers, tel_pers,dir_pers,cor_usu,ape_pers) VALUES (?,?,?,?,?)");
                 ps1.setString(1, usu.getNombre());
-                ps1.setString(2, usu.getTelefono());
-                ps1.setString(3, usu.getDireccion());
-                ps1.setString(4, usu.getCorreo());
+                ps1.setString(2, usu.getApellido());
+                ps1.setString(3, usu.getTelefono());
+                ps1.setString(4, usu.getDireccion());
+                ps1.setString(5, usu.getCorreo());
                 int j = ps1.executeUpdate();
                 if (j == 1) {
                     resp = true;
@@ -549,7 +550,7 @@ public class UsuarioBD {
         try {
             PreparedStatement ps = cn.prepareStatement("DELETE ticket FROM ticket NATURAL JOIN descripcion NATURAL JOIN cita NATURAL JOIN articulo WHERE nom_art=? AND codi_cit=? AND cor_usu=?");
 
-            ps.setString(1, encargo.getArticulo());            
+            ps.setString(1, encargo.getArticulo());
             ps.setString(2, encargo.getCita());
             ps.setString(3, encargo.getCorreo());
             ps.executeUpdate();
@@ -559,6 +560,87 @@ public class UsuarioBD {
             System.out.println("f al borrar");
             System.out.println(e.toString());
             resp = false;
+        }
+        return resp;
+    }
+
+    public boolean cancelarCita(Cita cita, DescripcionServicio ds) {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        boolean resp = true;
+        try {
+            PreparedStatement ps = cn.prepareStatement("DELETE ticket FROM ticket NATURAL JOIN venta NATURAL JOIN descripcion NATURAL JOIN cita WHERE codi_cit=?");
+            ps.setString(1, cita.getCodigo());
+            ps.executeUpdate();
+
+            PreparedStatement ps5 = cn.prepareStatement("UPDATE descripcion NATURAL JOIN cita SET id_ven=null WHERE codi_cit=?");
+            ps5.setString(1, cita.getCodigo());
+
+            PreparedStatement ps1 = cn.prepareStatement("DELETE venta FROM venta NATURAL JOIN descripcion NATURAL JOIN cita WHERE codi_cit=?");
+            ps1.setString(1, cita.getCodigo());
+            ps1.executeUpdate();
+
+            PreparedStatement ps2 = cn.prepareStatement("DELETE descripcion FROM descripcion NATURAL JOIN cita WHERE codi_cit=?");
+            ps2.setString(1, cita.getCodigo());
+            ps2.executeUpdate();
+            ps2.executeUpdate();
+
+            PreparedStatement ps3 = cn.prepareStatement("DELETE cita FROM cita WHERE codi_cit=? AND cor_usu=?");
+            ps3.setString(1, cita.getCodigo());
+            ps3.setString(2, cita.getCliente());
+            ps3.executeUpdate();
+
+            resp = true;
+        } catch (Exception e) {
+            System.out.println("f al insertar");
+            System.out.println(e.toString());
+            resp = false;
+        }
+        return resp;
+    }
+
+    public Usuario consultarDatos(String correo) {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        Usuario usuario = new Usuario();
+        try {
+            PreparedStatement ps = cn.prepareStatement("SELECT nom_pers, ape_pers, tel_pers, dir_pers FROM usuario NATURAL JOIN persona WHERE cor_usu=?");
+            ps.setString(1, correo);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                usuario.setNombre(rs.getString("nom_pers"));
+                usuario.setApellido(rs.getString("ape_pers"));
+                usuario.setDireccion(rs.getString("dir_pers"));
+                usuario.setTelefono(rs.getString("tel_pers"));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return usuario;
+    }
+
+    public boolean editarDatosUsuario(Usuario usuario, String correo) {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        boolean resp= true;
+        try {
+            PreparedStatement ps = cn.prepareStatement("UPDATE persona NATURAL JOIN usuario SET nom_pers=?, ape_pers=?, tel_pers=?, dir_pers=? WHERE cor_usu=?");
+            ps.setString(1, usuario.getNombre());
+            ps.setString(2, usuario.getApellido());
+            ps.setString(3, usuario.getTelefono());
+            ps.setString(4, usuario.getDireccion());
+            ps.setString(5, correo);
+            ps.executeUpdate();
+            resp = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp=false;
         }
         return resp;
     }
