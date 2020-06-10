@@ -309,7 +309,7 @@ public class Cliente extends HttpServlet {
                                 }
                             }
                             break;
-                        case 2:
+                        case 2:                            
                             if (place.equals("page")) {
                                 response.sendRedirect("HTML/empleado/home.html");
                             } else if (place.equals("app")) {
@@ -325,6 +325,11 @@ public class Cliente extends HttpServlet {
                             }
                             break;
                         case 1:
+                            misesion.setAttribute("correo", usuario.getCorreo());
+                            System.out.println("El correo es " + usuario.getCorreo());
+                            Encargado encargado = new Encargado();
+                            misesion.setAttribute("servicios", encargado.serviciosEncargado());
+                            misesion.setAttribute("productos", encargado.productosEncargado());
                             if (place.equals("page")) {
                                 response.sendRedirect("JSP/encargado/home.jsp");
                             } else if (place.equals("app")) {
@@ -904,4 +909,6 @@ public class Cliente extends HttpServlet {
             }
         }
     }
+
+
 }

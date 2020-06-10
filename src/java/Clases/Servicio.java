@@ -11,10 +11,12 @@ package Clases;
  */
 public class Servicio {
 
-    String tallaperro;
-    String nombreservicio;
-    String descripcion;
-    String precio;
+    private String tallaperro;
+    private String nombreservicio;
+    private String descripcion;
+    private String precio;
+    private boolean visible;
+    
 
     public String getPrecio() {
         return precio;
@@ -46,6 +48,14 @@ public class Servicio {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
 }

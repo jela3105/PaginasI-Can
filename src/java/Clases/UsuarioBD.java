@@ -6,7 +6,7 @@
 package Clases;
 
 import Conexion.Conexion;
-import java.sql.CallableStatement;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -380,7 +380,7 @@ public class UsuarioBD {
         cn = con.conectar();
         ArrayList<Servicio> servicios = new ArrayList<Servicio>();
         try {
-            PreparedStatement ps = cn.prepareStatement("SELECT nom_ser, des_ser FROM servicio");
+            PreparedStatement ps = cn.prepareStatement("SELECT nom_ser, des_ser FROM servicio WHERE vis_ser=1");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Servicio ser = new Servicio();
