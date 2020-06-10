@@ -121,14 +121,14 @@ public class UsuarioBD {
         cn = con.conectar();
         ArrayList<Producto> productos = new ArrayList();
         try {
-            PreparedStatement ps = cn.prepareStatement("SELECT nom_art,des_art,fot_art,pre_art,exi_art FROM articulo WHERE (exi_art > 0)");
+            PreparedStatement ps = cn.prepareStatement("SELECT nom_art,des_art,pre_art,exi_art FROM articulo WHERE (exi_art > 0)");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 Producto pro = new Producto();
                 pro.setNombre(rs.getString("nom_art"));
                 pro.setDescripcion(rs.getString("des_art"));
-                pro.setFoto(rs.getString("fot_art"));
+                
                 pro.setPrecio(rs.getFloat("pre_art"));
                 productos.add(pro);
             }

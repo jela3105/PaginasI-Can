@@ -123,7 +123,7 @@
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4"><%=productos.get(i).getNombre()%><i class="material-icons right">more_vert</i></span>
-                                <p><a href="Servicios.jsp?modal=AgregarProducto&Producto=<%=productos.get(i).getNombre()%>">Hacer pedido</a></p>
+                                <p><a href="Servicios.jsp?modal=Editarproducto&Producto=<%=productos.get(i).getNombre()%>">Editar producto</a></p>
                             </div>
                             <div class="card-reveal">
                                 <span class="card-title grey-text text-darken-4"><%=productos.get(i).getNombre()%><i class="material-icons right">close</i></span>
@@ -212,7 +212,7 @@
                 <div class="modal-content">
 
                     <h2> Agregar servicio </h2>
-                    
+
                     <form action="..\..\Encargado" method="post" enctype="multipart/form-data">
                         <h5>Foto</h5>  
                         <div class="file-field input-field">
@@ -242,35 +242,45 @@
                     </form>
                 </div>
             </div>
-            <div id="AgregarProducto" class="modal">
+            <div id="Editarproducto" class="modal">
                 <div class="modal-content">
-                    <h2> Hacer pedido de <%=request.getParameter("Producto")%> </h2>
-
-                    <form action="..\..\Cliente" method="post">
-
-                        <label>Cita para recoger pedido: </label>
-                        <select name="cita">
-                            <option disabled selected>Selecciona la cita</option>
-                            <%                        ArrayList<Cita> citas = (ArrayList<Cita>) request.getSession().getAttribute("miniaturacitas");
-                                if (citas != null) {
-                                    for (int i = 0; i < citas.size(); i++) {
-                                        if (!citas.get(i).isEstado()) {
-                                            out.print("<option>" + citas.get(i).getCodigo() + "</option>");
-                                        }
-                                    }
-                                }
-                            %>
-                        </select>
-
-                        <div class="input-field">
-                            <input id="cantidad" name="cantidad" type="number" min="1" max="5">
-                            <label for="cantidad">Cantidad:</label>
+                    <h2> Editar producto <%=request.getParameter("Producto")%> </h2>
+                    <%
+                        Producto producto = new Producto();
+                        for (int i = 0; i < productos.size(); i++) {
+                            if (productos.get(i).getNombre().equals(request.getParameter("Producto"))) {
+                                producto = productos.get(i);
+                            }
+                        }
+                    %>
+                    <form action="..\..\Encargado" method="post" enctype="multipart/form-data">
+                        <h5>Foto</h5>  
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>Cambiar foto</span>
+                                <input type="file" name="imagen" accept="image/x-png,image/gif,image/jpeg">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
                         </div> 
-                        <input type="hidden" value="encargarProducto" name="action">
+                        <label for="nombreproducto">Nombre del producto:</label>
+                        <input id="nombreproducto" type="text" name='nombreproducto' class="input-field" value="<%=request.getParameter("Producto")%>">
+                        <label for="textarea1">Descripción</label>
+                        <textarea id="textarea1" class="materialize-textarea" name="descripcion"><%=producto.getDescripcion()%></textarea>
+                        <div class="input-field">
+                            <input id="cantidad" name="cantidad" type="number" value="<%=producto.getExistencia()%>">
+                            <label for="cantidad">Cantidad en inventario:</label>
+                        </div> 
+                        <div class="input-field">
+                            <input id="cantidad" name="precio" type="number" value="<%=producto.getPrecio()%>">
+                            <label for="cantidad">Precio:</label>
+                        </div> 
+                        <input type="hidden" value="editarProducto" name="action">
                         <input type="hidden" value="<%=request.getParameter("Producto")%>" name="producto">
                         <input type="hidden" value="page" name="place">
                         <br>
-                        <input type="submit" value="Encargar" class="btn small" name="boton">
+                        <input type="submit" value="Editar" class="btn small yellow darken-2" name="boton">
                     </form>
                 </div>
             </div>

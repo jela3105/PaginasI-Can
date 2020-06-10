@@ -29,15 +29,15 @@ public class EncargadoBD {
         cn = con.conectar();
         ArrayList<Producto> productos = new ArrayList();
         try {
-            PreparedStatement ps = cn.prepareStatement("SELECT nom_art,des_art,fot_art,pre_art,exi_art FROM articulo");
+            PreparedStatement ps = cn.prepareStatement("SELECT nom_art,des_art,pre_art,exi_art FROM articulo");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 Producto pro = new Producto();
                 pro.setNombre(rs.getString("nom_art"));
                 pro.setDescripcion(rs.getString("des_art"));
-                pro.setFoto(rs.getString("fot_art"));
                 pro.setPrecio(rs.getFloat("pre_art"));
+                pro.setExistencia(rs.getInt("exi_art"));
                 productos.add(pro);
             }
 
@@ -159,13 +159,34 @@ public class EncargadoBD {
                     ps1.setString(2, tamano);
                     ps1.setFloat(3, precio);
                     ps1.executeUpdate();
-                    
+
                 }
             }
 
             resp = true;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return resp;
+    }
+
+    public boolean editarProducto(Producto producto, String nombreOriginal) {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        boolean resp = false;
+        try {
+            PreparedStatement ps = cn.prepareStatement("UPDATE articulo SET nom_art=?, des_art=?, pre_art=?, exi_art=? WHERE nom_art=?");
+            ps.setString(1, producto.getNombre());
+            ps.setString(2, producto.getDescripcion());
+            ps.setFloat(3, producto.getPrecio());
+            ps.setInt(4, producto.getExistencia());
+            ps.setString(5, nombreOriginal);
+            ps.executeUpdate();
+            resp = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp=false;
         }
         return resp;
     }

@@ -46,6 +46,8 @@ public class Encargado extends HttpServlet {
             modificarServicio(request, response);
         } else if (ac.equals("agregarServicio")) {
             agregarServicio(request, response);
+        } else if (ac.equals("editarProducto")) {
+            editarProducto(request, response);
         }
     }
 
@@ -220,17 +222,76 @@ public class Encargado extends HttpServlet {
                 }
                 servicio.setPrecio(precio);
                 EncargadoBD eBD = new EncargadoBD();
-            if (eBD.altaServicio(servicio)) {
+                if (eBD.altaServicio(servicio)) {
+                    //System.out.println(precio.replaceAll("(\n|\r)", ";"));
+                    misesion.removeAttribute("servicios");
+                    misesion.setAttribute("servicios", serviciosEncargado());
+                    if (request.getParameter("place").equals("page")) {
+                        response.sendRedirect("JSP/encargado/Servicios.jsp");
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void editarProducto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession misesion = (HttpSession) request.getSession();
+        String correo = (String) misesion.getAttribute("correo");
+        String place = request.getParameter("place");
+        if (correo == null) {
+            if (place.equals("page")) {
+                response.sendRedirect("HTML/SesionUsuario.html");
+            }
+        } else {
+            String nombreOriginal = request.getParameter("producto");
+            String nombreCambiado = request.getParameter("nombreproducto");
+            String descripcion = request.getParameter("descripcion");
+            String cantidad = request.getParameter("cantidad");
+            String precio = request.getParameter("precio");
+            InputStream filecontent = null;
+            String context = request.getServletContext().getRealPath("/Img");
+            try {
+                Part filePart = request.getPart("imagen");
+                if (filePart.getSize() > 0) {
+                    System.out.println(context + "\\productos" + "\\" + nombreCambiado + ".jpg");
+                    filecontent = filePart.getInputStream();
+                    OutputStream os = new FileOutputStream(context + "\\productos" + "\\" + nombreCambiado + ".jpg");
+                    //System.out.println(context + "\\" + correo + "\\" + nombreCambiado + ".jpg");
+                    int read = 0;
+                    final byte[] bytes = new byte[1024];
+                    while ((read = filecontent.read(bytes)) != -1) {
+                        os.write(bytes, 0, read);
+                    }
+                    filecontent.close();
+                    os.flush();
+                    os.close();
+
+                }
+
+            } catch (Exception ex) {
+                System.out.println("fichero: " + ex.getMessage());
+            }
+            Producto producto = new Producto();
+            producto.setNombre(nombreCambiado);
+            producto.setDescripcion(descripcion);
+            producto.setExistencia(Integer.parseInt(cantidad));
+            producto.setPrecio(Float.parseFloat(precio));
+            
+            File imgcambiar = new File(context + "\\productos" + "\\" + nombreOriginal + ".jpg");
+            imgcambiar.renameTo(new File(context + "\\productos" + "\\" + nombreCambiado + ".jpg"));
+
+            EncargadoBD eBD = new EncargadoBD();
+            if (eBD.editarProducto(producto, nombreOriginal)) {
                 //System.out.println(precio.replaceAll("(\n|\r)", ";"));
-                misesion.removeAttribute("servicios");
-                misesion.setAttribute("servicios", serviciosEncargado());
+                misesion.removeAttribute("productos");
+                misesion.setAttribute("productos", productosEncargado());
                 if (request.getParameter("place").equals("page")) {
                     response.sendRedirect("JSP/encargado/Servicios.jsp");
                 }
             }
-            }
         }
-
+        
     }
 
 }
