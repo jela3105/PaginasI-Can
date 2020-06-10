@@ -97,9 +97,9 @@ public class EncargadoBD {
             PreparedStatement ps = cn.prepareStatement("UPDATE servicio SET nom_ser=?, des_ser=?, vis_ser=? WHERE nom_ser=?");
             ps.setString(1, servicio.getNombreservicio());
             ps.setString(2, servicio.getDescripcion());
-            if(servicio.isVisible()){
+            if (servicio.isVisible()) {
                 ps.setInt(3, 1);
-            }else{
+            } else {
                 ps.setInt(3, 0);
             }
             ps.setString(4, nombreOriginal);
@@ -107,12 +107,12 @@ public class EncargadoBD {
             System.out.println("se ejecuto");
             String preciosJuntos = servicio.getPrecio().replaceAll("(\n|\r)", ";");
             String[] precios = preciosJuntos.split(";;");
-            for(int i=0;i< precios.length;i++){
-                float precio = Float.parseFloat(precios[i].substring(precios[i].indexOf("$")+1));
+            for (int i = 0; i < precios.length; i++) {
+                float precio = Float.parseFloat(precios[i].substring(precios[i].indexOf("$") + 1));
                 String tamano = precios[i].substring(0, precios[i].indexOf(":"));
                 System.out.println(tamano);
                 System.out.println(precio + " f");
-                PreparedStatement ps1 =cn.prepareStatement("UPDATE servicio NATURAL JOIN precio SET pre_pre=? WHERE nom_ser=? AND tam_ser=?");
+                PreparedStatement ps1 = cn.prepareStatement("UPDATE servicio NATURAL JOIN precio SET pre_pre=? WHERE nom_ser=? AND tam_ser=?");
                 ps1.setFloat(1, precio);
                 ps1.setString(2, servicio.getNombreservicio());
                 ps1.setString(3, tamano);
@@ -123,6 +123,49 @@ public class EncargadoBD {
         } catch (Exception e) {
             System.out.println("f al editar");
             System.out.println(e.toString());
+        }
+        return resp;
+    }
+
+    public boolean altaServicio(Servicio servicio) {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        boolean resp = false;
+        try {
+            PreparedStatement ps = cn.prepareStatement("INSERT INTO servicio (nom_ser,des_ser,vis_ser) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            System.out.println("antes de ejecutar es statement");
+            ps.setString(1, servicio.getNombreservicio());
+            ps.setString(2, servicio.getDescripcion());
+            if (servicio.isVisible()) {
+                ps.setInt(3, 1);
+            } else {
+                ps.setInt(3, 0);
+            }
+            ps.executeUpdate();
+            System.out.println("se ejecuto");
+            int idGenerado;
+            ResultSet generatedKey = ps.getGeneratedKeys();
+            if (generatedKey.next()) {
+                idGenerado = generatedKey.getInt(1);
+                String preciosJuntos = servicio.getPrecio().replaceAll("(\n|\r)", ";");
+                String[] precios = preciosJuntos.split(";;");
+                for (int i = 0; i < precios.length; i++) {
+                    float precio = Float.parseFloat(precios[i].substring(precios[i].indexOf("$") + 1));
+                    String tamano = precios[i].substring(0, precios[i].indexOf(":"));
+                    System.out.print(idGenerado + tamano + precio);
+                    PreparedStatement ps1 = cn.prepareStatement("INSERT INTO precio (id_ser, tam_ser, pre_pre) VALUES (?,?,?)");
+                    ps1.setInt(1, idGenerado);
+                    ps1.setString(2, tamano);
+                    ps1.setFloat(3, precio);
+                    ps1.executeUpdate();
+                    
+                }
+            }
+
+            resp = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return resp;
     }

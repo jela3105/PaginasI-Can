@@ -85,11 +85,28 @@
                         </div>
                     </div>
                     <%                    }
+                    %>
+
+                    <div class="col s6 m6 l3 ">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="../../Img/agregarservicio.jpg">
+
+                                <a href="Servicios.jsp?modal=Agregarservicio" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title black-text">Agregar servicio</span>
+                                <p>Agrega el servicio que desees, será mostrado a los clientes </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <%
                         } else {
                             out.print("<p class=\"red background white-text\">No hay servicios</p>");
                         }
                     %>
-                    
+
                 </div>
                 <div class="row z-depth-5">
                     <h4>PRODUCTOS</h4>
@@ -120,6 +137,23 @@
                         </div>
                     </div>
                     <%                    }
+                    %>
+
+                    <div class="col s6 m6 l3 ">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="../../Img/agregarservicio.jpg">
+
+                                <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title black-text">Agregar producto</span>
+                                <p>Agrega el producto que desees, será mostrado a los clientes </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <%
                         } else {
                             out.print("<p class=\"red background white-text\">No hay productos</p>");
                         }
@@ -171,6 +205,40 @@
                         <input type="hidden" value="page" name="place">
                         <br>
                         <input type="submit" value="Editar" class="btn small yellow darken-2">
+                    </form>
+                </div>
+            </div>
+            <div id="Agregarservicio" class="modal">
+                <div class="modal-content">
+
+                    <h2> Agregar servicio </h2>
+                    
+                    <form action="..\..\Encargado" method="post" enctype="multipart/form-data">
+                        <h5>Foto</h5>  
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>Agregar foto</span>
+                                <input type="file" name="imagenp" accept="image/x-png,image/gif,image/jpeg">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div> 
+                        <label for="nombreservicio">Nombre del servicio:</label>
+                        <input id="nombreservicio" type="text" name='nombreservicio' class="input-field">
+                        <label for="textarea1">Descripción</label>
+                        <textarea id="textarea1" class="materialize-textarea" name="descripcion"></textarea>
+                        <p>
+                            <label>
+                                <input type='checkbox' checked='checked' name='visible'/>
+                                <span>Visible</span>
+                            </label>
+                        </p>
+                        <textarea id="textarea1" class="materialize-textarea" name="precio"></textarea>
+                        <input type="hidden" value="agregarServicio" name="action">
+                        <input type="hidden" value="page" name="place">
+                        <br>
+                        <input type="submit" value="Aceptar" class="btn small">
                     </form>
                 </div>
             </div>

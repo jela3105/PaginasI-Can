@@ -44,6 +44,8 @@ public class Encargado extends HttpServlet {
         String ac = request.getParameter("action");
         if (ac.equals("modificarServicio")) {
             modificarServicio(request, response);
+        } else if (ac.equals("agregarServicio")) {
+            agregarServicio(request, response);
         }
     }
 
@@ -145,7 +147,9 @@ public class Encargado extends HttpServlet {
                 //System.out.println(precio.replaceAll("(\n|\r)", ";"));
                 misesion.removeAttribute("servicios");
                 misesion.setAttribute("servicios", serviciosEncargado());
-                response.sendRedirect("JSP/encargado/Servicios.jsp");
+                if (request.getParameter("place").equals("page")) {
+                    response.sendRedirect("JSP/encargado/Servicios.jsp");
+                }
             }
 
         }
@@ -159,6 +163,74 @@ public class Encargado extends HttpServlet {
     public ArrayList<Producto> productosEncargado() {
         EncargadoBD eBD = new EncargadoBD();
         return eBD.consultarProductos();
+    }
+
+    private void agregarServicio(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession misesion = (HttpSession) request.getSession();
+        String correo = (String) misesion.getAttribute("correo");
+        String place = request.getParameter("place");
+        if (correo == null) {
+            if (place.equals("page")) {
+                response.sendRedirect("HTML/SesionUsuario.html");
+            }
+        } else {
+            String nombre = request.getParameter("nombreservicio");
+            String descripcion = request.getParameter("descripcion");
+            String visible = request.getParameter("visible");
+            String precio = request.getParameter("precio");
+
+            InputStream filecontent = null;
+            String context = request.getServletContext().getRealPath("/Img");
+            try {
+                Part filePart = request.getPart("imagenp");
+                if (filePart.getSize() > 0) {
+                    System.out.println(context + "\\servicios" + "\\" + nombre + ".jpg");
+                    filecontent = filePart.getInputStream();
+                    OutputStream os = new FileOutputStream(context + "\\servicios" + "\\" + nombre + ".jpg");
+                    System.out.println(context + "\\" + correo + "\\" + nombre + ".jpg");
+                    int read = 0;
+                    final byte[] bytes = new byte[1024];
+                    while ((read = filecontent.read(bytes)) != -1) {
+                        os.write(bytes, 0, read);
+                    }
+                    filecontent.close();
+                    os.flush();
+                    os.close();
+
+                }
+
+            } catch (Exception ex) {
+                System.out.println("fichero: " + ex.getMessage());
+            }
+            if (nombre.equals("") || (descripcion.equals("")) || (precio.equals(""))) {
+                if (place.equals("page")) {
+                    String men = "Llena todos los campos";
+                    response.sendRedirect("JSP/encargado/home.jsp?mens=" + men);
+                } else if (place.equals("app")) {
+
+                }
+            } else {
+                Servicio servicio = new Servicio();
+                servicio.setNombreservicio(nombre);
+                servicio.setDescripcion(descripcion);
+                if (visible.equals("on")) {
+                    servicio.setVisible(true);
+                } else {
+                    servicio.setVisible(false);
+                }
+                servicio.setPrecio(precio);
+                EncargadoBD eBD = new EncargadoBD();
+            if (eBD.altaServicio(servicio)) {
+                //System.out.println(precio.replaceAll("(\n|\r)", ";"));
+                misesion.removeAttribute("servicios");
+                misesion.setAttribute("servicios", serviciosEncargado());
+                if (request.getParameter("place").equals("page")) {
+                    response.sendRedirect("JSP/encargado/Servicios.jsp");
+                }
+            }
+            }
+        }
+
     }
 
 }
