@@ -25,6 +25,21 @@
         <script src="../../JS/Efectos.js"></script>
     </head>
     <body onload="javascript:abrirModal('<%= request.getParameter("modal")%>')">
+         <script type="text/javascript">
+            $(document).ready(function () {
+                setTimeout(function () {
+                    $(".mensaje").fadeOut(3000);
+                }, 3000);
+            });
+            
+        </script>
+        <p class="mensaje">
+            <%
+                if (request.getParameter("mens") != null) {
+                    out.println(request.getParameter("mens"));
+                }
+            %>
+        </p>
         <header>
             <nav class="responsive-table red">
                 <div class="nav-wrapper">

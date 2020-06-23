@@ -40,7 +40,7 @@ public class UsuarioBD {
             //En caso de que se haya podido agregar el usuario correctamente
             if (i == 1) {
 
-                PreparedStatement ps1 = cn.prepareStatement("INSERT INTO persona (nom_pers, ape_pers, tel_pers,dir_pers,cor_usu,ape_pers) VALUES (?,?,?,?,?)");
+                PreparedStatement ps1 = cn.prepareStatement("INSERT INTO persona (nom_pers, ape_pers, tel_pers,dir_pers,cor_usu) VALUES (?,?,?,?,?)");
                 ps1.setString(1, usu.getNombre());
                 ps1.setString(2, usu.getApellido());
                 ps1.setString(3, usu.getTelefono());
@@ -128,7 +128,7 @@ public class UsuarioBD {
                 Producto pro = new Producto();
                 pro.setNombre(rs.getString("nom_art"));
                 pro.setDescripcion(rs.getString("des_art"));
-                
+
                 pro.setPrecio(rs.getFloat("pre_art"));
                 productos.add(pro);
             }
@@ -221,7 +221,7 @@ public class UsuarioBD {
                     resp = true;
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
             return resp;
         } else {
@@ -573,24 +573,29 @@ public class UsuarioBD {
             PreparedStatement ps = cn.prepareStatement("DELETE ticket FROM ticket NATURAL JOIN venta NATURAL JOIN descripcion NATURAL JOIN cita WHERE codi_cit=?");
             ps.setString(1, cita.getCodigo());
             ps.executeUpdate();
+            System.out.println("primero");
 
             PreparedStatement ps5 = cn.prepareStatement("UPDATE descripcion NATURAL JOIN cita SET id_ven=null WHERE codi_cit=?");
             ps5.setString(1, cita.getCodigo());
+            ps5.executeUpdate();
+            System.out.println("seugnog");
 
             PreparedStatement ps1 = cn.prepareStatement("DELETE venta FROM venta NATURAL JOIN descripcion NATURAL JOIN cita WHERE codi_cit=?");
             ps1.setString(1, cita.getCodigo());
             ps1.executeUpdate();
+            System.out.println("tercero");
 
             PreparedStatement ps2 = cn.prepareStatement("DELETE descripcion FROM descripcion NATURAL JOIN cita WHERE codi_cit=?");
             ps2.setString(1, cita.getCodigo());
             ps2.executeUpdate();
             ps2.executeUpdate();
+            System.out.println("cuarto");
 
             PreparedStatement ps3 = cn.prepareStatement("DELETE cita FROM cita WHERE codi_cit=? AND cor_usu=?");
             ps3.setString(1, cita.getCodigo());
             ps3.setString(2, cita.getCliente());
             ps3.executeUpdate();
-
+            System.out.println("quinto");
             resp = true;
         } catch (Exception e) {
             System.out.println("f al insertar");
@@ -628,7 +633,7 @@ public class UsuarioBD {
         Connection cn;
         Conexion con = new Conexion();
         cn = con.conectar();
-        boolean resp= true;
+        boolean resp = true;
         try {
             PreparedStatement ps = cn.prepareStatement("UPDATE persona NATURAL JOIN usuario SET nom_pers=?, ape_pers=?, tel_pers=?, dir_pers=? WHERE cor_usu=?");
             ps.setString(1, usuario.getNombre());
@@ -640,7 +645,7 @@ public class UsuarioBD {
             resp = true;
         } catch (Exception e) {
             e.printStackTrace();
-            resp=false;
+            resp = false;
         }
         return resp;
     }

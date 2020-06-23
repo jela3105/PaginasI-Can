@@ -74,6 +74,8 @@ public class Cliente extends HttpServlet {
             editarCita(request, response);
         } else if (ac.equals("editarDatos")) {
             editarDatos(request, response);
+        } else if (ac.equals("consultarServicios")) {
+            consultarServicios(request, response);
         }
 
         //
@@ -295,7 +297,7 @@ public class Cliente extends HttpServlet {
                             misesion.setAttribute("encargos", encargos(usuario.getCorreo()));
                             misesion.setAttribute("datoscliente", datosCliente(usuario.getCorreo()));
                             if (place.equals("page")) {
-                                response.sendRedirect("JSP/cliente/home.jsp?id=" + miniaturaMascota(usuario.getCorreo()).get(0).getNombre());
+                                response.sendRedirect("JSP/cliente/home.jsp");
                             } else if (place.equals("app")) {
                                 JSONObject jsonObject1 = new JSONObject();
                                 JSONArray jsArray = new JSONArray(productos());
@@ -309,7 +311,7 @@ public class Cliente extends HttpServlet {
                                 }
                             }
                             break;
-                        case 2:                            
+                        case 2:
                             if (place.equals("page")) {
                                 response.sendRedirect("HTML/empleado/home.html");
                             } else if (place.equals("app")) {
@@ -330,6 +332,8 @@ public class Cliente extends HttpServlet {
                             Encargado encargado = new Encargado();
                             misesion.setAttribute("servicios", encargado.serviciosEncargado());
                             misesion.setAttribute("productos", encargado.productosEncargado());
+                            misesion.setAttribute("miniaturacitas", encargado.miniaturacitas());
+                            misesion.setAttribute("encargos", encargado.encargosRealizados());
                             if (place.equals("page")) {
                                 response.sendRedirect("JSP/encargado/home.jsp");
                             } else if (place.equals("app")) {
@@ -435,7 +439,7 @@ public class Cliente extends HttpServlet {
                     System.out.println(genero);
                     System.out.println(talla);
                     String men = "Llena todos los campos";
-                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + men);
                 } else if (place.equals("app")) {
 
                 }
@@ -460,7 +464,7 @@ public class Cliente extends HttpServlet {
                     misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
                     if (place.equals("page")) {
                         String men = "Registro correcto";
-                        response.sendRedirect("JSP/cliente/home.jsp?mans=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                        response.sendRedirect("JSP/cliente/home.jsp?mans=" + men);
                     } else if (place.equals("app")) {
 
                     }
@@ -525,7 +529,7 @@ public class Cliente extends HttpServlet {
                 f.delete();
                 if (request.getParameter("place").equals("page")) {
                     String men = "Se ha eliminado " + mascota;
-                    response.sendRedirect("JSP/cliente/home.jsp?=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                    response.sendRedirect("JSP/cliente/home.jsp?=" + men);
 
                 } else if (request.getParameter("place").equals("app")) {
 
@@ -580,7 +584,7 @@ public class Cliente extends HttpServlet {
 
                 if (place.equals("page")) {
                     String men = "Llena todos los campos";
-                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                    response.sendRedirect("JSP/cliente/home.jsp?mens=" + men);
                 } else if (place.equals("app")) {
 
                 }
@@ -598,8 +602,9 @@ public class Cliente extends HttpServlet {
                     perro.setDueno(correo);
                     perro.setArchivoimg(context + "\\" + correo + "\\" + nombre + ".png");
                     File imgcambiar = new File(context + "\\" + correo + "\\" + request.getParameter("mascota") + ".png");
+                    System.out.println(imgcambiar.getAbsolutePath());
                     imgcambiar.renameTo(new File(context + "\\" + correo + "\\" + nombre + ".png"));
-
+                    System.out.println(imgcambiar);
                     UsuarioBD usuarioBD = new UsuarioBD();
                     boolean editado = usuarioBD.editarMascota(perro, request.getParameter("mascota"));
                     if (editado == true) {
@@ -607,14 +612,14 @@ public class Cliente extends HttpServlet {
                         misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
                         if (place.equals("page")) {
                             String men = "Editado correcto";
-                            response.sendRedirect("JSP/cliente/home.jsp" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                            response.sendRedirect("JSP/cliente/home.jsp?mens=" + men);
                         } else if (place.equals("app")) {
 
                         }
                     } else {
                         if (place.equals("page")) {
                             String men = "Error al editar";
-                            response.sendRedirect("JSP/RegistroUsuario.jsp?mens=" + men);
+                            response.sendRedirect("JSP/home.jsp?mens=" + men);
                         } else if (place.equals("app")) {
                         }
                     }
@@ -638,7 +643,7 @@ public class Cliente extends HttpServlet {
                         misesion.setAttribute("miniaturaperro", miniaturaMascota(correo));
                         if (place.equals("page")) {
                             String men = "Registro correcto";
-                            response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                            response.sendRedirect("JSP/cliente/home.jsp?mens=" + men);
                         } else if (place.equals("app")) {
                         }
                         //En caso de que no se haya podido registrar    
@@ -696,7 +701,7 @@ public class Cliente extends HttpServlet {
                         misesion.removeAttribute("miniaturacitas");
                         misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));
                         String men = "Cita enviada, espera la respuesta de confirmacion";
-                        response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                        response.sendRedirect("JSP/cliente/home.jsp?mens=" + men);
                     } else if (request.getParameter("place").equals("app")) {
 
                     }
@@ -827,7 +832,7 @@ public class Cliente extends HttpServlet {
                         misesion.removeAttribute("miniaturacitas");
                         misesion.setAttribute("miniaturacitas", miniaturaCita((String) misesion.getAttribute("correo")));
                         String men = "Edicion enviada, espera la respuesta de confirmacion";
-                        response.sendRedirect("JSP/cliente/home.jsp?mens=" + men + "&id=" + miniaturaCita((String) request.getSession().getAttribute("correo")).get(0).getMascota());
+                        response.sendRedirect("JSP/cliente/home.jsp?mens=" + men);
                     } else if (request.getParameter("place").equals("app")) {
 
                     }
@@ -882,19 +887,19 @@ public class Cliente extends HttpServlet {
 
     private void editarDatos(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession misesion = (HttpSession) request.getSession();
-        if(misesion!=null){
+        if (misesion != null) {
             String nombre = request.getParameter("nombre");
             String apellido = request.getParameter("apellido");
             String telefono = request.getParameter("telefono");
             String direccion = request.getParameter("direccion");
-            if(telefono.length()==8 || telefono.length()== 10){
+            if (telefono.length() == 8 || telefono.length() == 10) {
                 Usuario usuario = new Usuario();
                 usuario.setNombre(nombre);
                 usuario.setApellido(apellido);
                 usuario.setTelefono(telefono);
                 usuario.setDireccion(direccion);
                 UsuarioBD usuBD = new UsuarioBD();
-                if(usuBD.editarDatosUsuario(usuario, (String) misesion.getAttribute("correo"))){
+                if (usuBD.editarDatosUsuario(usuario, (String) misesion.getAttribute("correo"))) {
                     if (request.getParameter("place").equals("page")) {
                         misesion.removeAttribute("datoscliente");
                         misesion.setAttribute("datoscliente", datosCliente((String) misesion.getAttribute("correo")));
@@ -904,11 +909,18 @@ public class Cliente extends HttpServlet {
 
                     }
                 }
-            }else{
-                
+            } else {
+
             }
         }
     }
 
+    private void consultarServicios(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getParameter("place").equals("app")) {
+            JSONArray jsArray = new JSONArray(servicios());
+            PrintWriter pw = response.getWriter();
+            pw.write(jsArray.toString());
+        }
+    }
 
 }

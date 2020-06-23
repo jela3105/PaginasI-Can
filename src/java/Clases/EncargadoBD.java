@@ -186,9 +186,60 @@ public class EncargadoBD {
             resp = true;
         } catch (Exception e) {
             e.printStackTrace();
-            resp=false;
+            resp = false;
         }
         return resp;
     }
+
+    public ArrayList<Cita> consultarCitas() {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        ArrayList<Cita> obtenido = new ArrayList();
+        try {
+            PreparedStatement ps = cn.prepareStatement("SELECT fec_cit, hor_cit, codi_cit, est_cit, nom_per, nom_ser  FROM cita NATURAL JOIN perro NATURAL JOIN servicio NATURAL JOIN descripcion WHERE fin_cit=0 ORDER BY est_cit DESC, fec_cit ASC, hor_cit ASC");
+            
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Cita cita = new Cita();
+                DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                cita.setFecha(df.format(rs.getDate("fec_cit")));
+                cita.setHora(rs.getTime("hor_cit") + "00");
+                cita.setCodigo(rs.getString("codi_cit"));
+                cita.setMascota(rs.getString("nom_per"));
+                cita.setEstado(rs.getBoolean("est_cit"));
+                cita.setServicio(rs.getString("nom_ser"));
+                obtenido.add(cita);
+
+                System.out.println(cita.getMascota());
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return obtenido;
+    }
+
+    public ArrayList<Encargo> consultarEncargos() {
+        Connection cn;
+        Conexion con = new Conexion();
+        cn = con.conectar();
+        ArrayList<Encargo> encargos = new ArrayList<Encargo>();
+        try {
+            PreparedStatement ps = cn.prepareStatement("SELECT codi_cit, nom_art, can_tic FROM descripcion natural join cita natural join venta natural join ticket NATURAL JOIN articulo where id_ven IS NOT NULL AND fin_cit=0");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Encargo encargo = new Encargo();
+                encargo.setCita(rs.getString("codi_cit"));
+                encargo.setArticulo(rs.getString("nom_art"));
+                encargo.setCantidad(rs.getInt("can_tic"));
+                encargos.add(encargo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return encargos;}
+    
 
 }

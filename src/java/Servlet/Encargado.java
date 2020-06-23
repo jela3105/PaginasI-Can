@@ -5,9 +5,12 @@
  */
 package Servlet;
 
+import Clases.Cita;
 import Clases.EncargadoBD;
+import Clases.Encargo;
 import Clases.Producto;
 import Clases.Servicio;
+import Clases.UsuarioBD;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -134,7 +137,7 @@ public class Encargado extends HttpServlet {
             Servicio servicio = new Servicio();
             servicio.setNombreservicio(nombreCambiado);
             servicio.setDescripcion(descripcion);
-            if (visible.equals("on")) {
+            if (visible!=null) {
                 servicio.setVisible(true);
             } else {
                 servicio.setVisible(false);
@@ -150,7 +153,8 @@ public class Encargado extends HttpServlet {
                 misesion.removeAttribute("servicios");
                 misesion.setAttribute("servicios", serviciosEncargado());
                 if (request.getParameter("place").equals("page")) {
-                    response.sendRedirect("JSP/encargado/Servicios.jsp");
+                    String men ="Se ha modificado de manera correcta";
+                    response.sendRedirect("JSP/encargado/Servicios.jsp?mens=" + men);
                 }
             }
 
@@ -165,6 +169,11 @@ public class Encargado extends HttpServlet {
     public ArrayList<Producto> productosEncargado() {
         EncargadoBD eBD = new EncargadoBD();
         return eBD.consultarProductos();
+    }
+    
+    public ArrayList<Cita> miniaturacitas(){
+        EncargadoBD eBD = new EncargadoBD();
+        return eBD.consultarCitas();
     }
 
     private void agregarServicio(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -280,7 +289,7 @@ public class Encargado extends HttpServlet {
             
             File imgcambiar = new File(context + "\\productos" + "\\" + nombreOriginal + ".jpg");
             imgcambiar.renameTo(new File(context + "\\productos" + "\\" + nombreCambiado + ".jpg"));
-
+            
             EncargadoBD eBD = new EncargadoBD();
             if (eBD.editarProducto(producto, nombreOriginal)) {
                 //System.out.println(precio.replaceAll("(\n|\r)", ";"));
@@ -292,6 +301,14 @@ public class Encargado extends HttpServlet {
             }
         }
         
+    }
+
+   
+
+    public ArrayList<Encargo> encargosRealizados() throws IOException {
+        EncargadoBD eBD = new EncargadoBD();
+        ArrayList<Encargo> encargos = eBD.consultarEncargos();
+        return encargos;
     }
 
 }
